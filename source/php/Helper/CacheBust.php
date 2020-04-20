@@ -31,7 +31,7 @@ class CacheBust
      */
     public static function getRevManifest()
     {
-        $jsonPath = ALGOLIAINDEXJSSEARCHPAGE_PATH . apply_filters('AlgoliaIndexJsSearchpage/Helper/CacheBust/RevManifestPath', 'dist/rev-manifest.json');
+        $jsonPath = ALGOLIAINDEXJSSEARCHPAGE_PATH . apply_filters('AlgoliaIndexJsSearchpage/Helper/CacheBust/RevManifestPath', 'dist/manifest.json');
 
         if (file_exists($jsonPath)) {
             return json_decode(file_get_contents($jsonPath), true);
