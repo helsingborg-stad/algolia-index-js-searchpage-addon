@@ -10,6 +10,16 @@
     border-radius: 2px;
   }
 
+  &__item + &__item {
+    margin-top: 8px * 4;
+  }
+
+  &__grid {
+    display: grid; 
+    grid-template-columns: 1fr 100px;
+    grid-column-gap: 8px * 8;
+  }
+
   &__heading, 
   &__content, 
   &__metainfo {
@@ -19,10 +29,12 @@
   &__heading {
     font-size: 1.9em;
     color: #000; 
+    margin-top: -0.2em;
   }
 
   &__content {
     font-size: 1.1em;
+    max-width: 700px;
   }
 
   &__origin {
@@ -30,12 +42,6 @@
     font-size: .5em;
     color: #999;
     font-weight: normal;
-  }
-
-  &__grid {
-    display: grid; 
-    grid-template-columns: 1fr 100px;
-    grid-column-gap: 8px * 8;
   }
 
   &__thumbnail {
@@ -46,18 +52,11 @@
     border-radius: 3px;
   }
 
-  &__content {
-    max-width: 700px;
-  }
-  
   &__thumbnail-placeholder {
     background: #eee;
     border: 1px solid #999;
   }
 
-  &__item + &__item {
-    margin-top: 8px * 4;
-  }
   &__permalink {
     color: #999;
   }
