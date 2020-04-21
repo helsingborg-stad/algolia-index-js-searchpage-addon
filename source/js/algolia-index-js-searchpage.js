@@ -3,18 +3,17 @@ import ReactDOM from 'react-dom';
 import algoliasearch from 'algoliasearch/lite';
 import { 
   InstantSearch, 
-  SearchBox, 
-  Hits, 
   Highlight, 
-  RefinementList,
-  connectSearchBox
+  Pagination,
+  connectSearchBox,
+  connectHits,
+  ScrollTo
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
   'latency',
   '6be0576ff61c053d5f9a3225e2a90f76'
 );
-
 
 class AlgoliaIndexJsSearchpage {
   constructor() {
@@ -23,42 +22,50 @@ class AlgoliaIndexJsSearchpage {
 
   renderModule() {
 
-
-    const Hit = ({ hit }) => (
-      <p>
-        <Highlight attribute="name" hit={hit} tagName="mark"/>
-      </p>
+    const SearchHit = ({ hit }) => (
+      <div className="search-result-item">
+        <h3>
+          <a className="link-item " href="https://businesshelsingborg.com/kontakt/">
+            <Highlight attribute="name" hit={hit} tagName="mark"/>
+          </a>
+        </h3>
+      </div>
     );
 
-    /*const SearchBox = ({ searchbox }) => (
-      <div class="input-group input-group-lg">
-        <input itemprop="query-input" required="" id="searchkeyword-1" autocomplete="off" class="form-control form-control-lg validated invalid" type="search" name="s" placeholder="What are you looking for?" value="" aria-invalid="true" />
-        <span class="input-group-addon-btn">
-            <input type="submit" class="btn btn-primary btn-lg" value="Sök" />
-        </span>
-      </div>
-    );*/ 
-/*
-<form method="get" action="https://developement.local.app" itemprop="potentialAction" itemscope="" itemtype="http://schema.org/SearchAction">
-        <meta itemprop="target" content="https://developement.local.app/?s={search_term_string}">
+    const Hits = ({ hits }) => (
+      <ul className="search-result-list">
+        {hits.map(hit => (
+          <div key={hit.objectID} className="search-result-item">
 
-                    <label for="searchkeyword-1" class="sr-only">Search</label>
-        
-        <div class="input-group input-group-lg">
-            <input itemprop="query-input" required="" id="searchkeyword-1" autocomplete="off" class="form-control form-control-lg validated invalid" type="search" name="s" placeholder="What are you looking for?" value="" aria-invalid="true">
-            <span class="input-group-addon-btn">
-                <input type="submit" class="btn btn-primary btn-lg" value="Sök">
-            </span>
-        </div>
-    </form>*/ 
+            <img src="{hit.thumbnailImage}" />
+
+            <h3><a href="#">{hit.name}</a></h3>
+            <p>{hit.shortDescription}</p>
+
+            <div className="search-result-info">
+              <span className="search-result-url">
+                
+                <i className="fa fa-globe"></i> 
+                
+                <a href="{hit.url}">
+                  {hit.url}
+                </a>
+
+              </span>
+            </div>
+            
+          </div>
+        ))}
+      </ul>
+    );
 
     const SearchBox = ({ currentRefinement, isSearchStalled, refine }) => (
-      <form noValidate="noValidate" action="" role="search" itemprop="potentialAction" itemscope="" itemtype="http://schema.org/SearchAction">
-        <label for="searchkeyword" class="sr-only">Search</label>
+      <form noValidate="noValidate" action="" role="search" itemProp="potentialAction" itemScope="" itemType="http://schema.org/SearchAction">
+        <label htmlFor="searchkeyword" className="sr-only">Search</label>
         <input
           id="searchkeyword"
-          class="form-control form-control-lg validated invalid"
-          autocomplete="off" 
+          className="form-control form-control-lg validated invalid"
+          autoComplete="off" 
           type="search"
           value={currentRefinement}
           onChange={event => refine(event.currentTarget.value)}
@@ -68,15 +75,22 @@ class AlgoliaIndexJsSearchpage {
       </form>
     );
 
-    const CustomSearchBox = connectSearchBox(SearchBox);
+    const CustomSearchBox   = connectSearchBox(SearchBox);
+    const CustomHits = connectHits(Hits);
 
     const domElement = document.getElementById('algolia-instantsearch-react');
 
     if(typeof domElement !== 'undefined') {
       ReactDOM.render(
         <InstantSearch indexName="bestbuy" searchClient={searchClient}>
-          <CustomSearchBox autoFocus  searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
-          <Hits hitComponent={Hit} />
+          
+          <ScrollTo>
+            <CustomSearchBox autoFocus  searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
+            <CustomHits hitComponent={Hits} />
+          </ScrollTo>
+
+          <Pagination />
+
         </InstantSearch>,
         domElement
       );
