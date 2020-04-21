@@ -22,16 +22,6 @@ class AlgoliaIndexJsSearchpage {
 
   renderModule() {
 
-    const SearchHit = ({ hit }) => (
-      <div className="search-result-item">
-        <h3>
-          <a className="link-item " href="https://businesshelsingborg.com/kontakt/">
-            <Highlight attribute="name" hit={hit} tagName="mark"/>
-          </a>
-        </h3>
-      </div>
-    );
-
     const Hits = ({ hits }) => (
       <ul className="search-result-list">
         {hits.map(hit => (
@@ -40,20 +30,16 @@ class AlgoliaIndexJsSearchpage {
             <img src="{hit.thumbnailImage}" />
 
             <h3><a href="#">{hit.name}</a></h3>
+
             <p>{hit.shortDescription}</p>
 
             <div className="search-result-info">
               <span className="search-result-url">
-                
-                <i className="fa fa-globe"></i> 
-                
                 <a href="{hit.url}">
                   {hit.url}
                 </a>
-
               </span>
             </div>
-            
           </div>
         ))}
       </ul>
