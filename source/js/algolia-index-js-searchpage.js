@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import algoliasearch from 'algoliasearch/lite';
 import { 
   InstantSearch, 
-  Highlight, 
   Pagination,
   connectSearchBox,
   connectHits,
@@ -11,14 +10,28 @@ import {
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
-  'latency',
-  '6be0576ff61c053d5f9a3225e2a90f76'
+  'HXD0SP844N',
+  'f6ae04dce9282daded14443af2f39661'
 );
 
 class AlgoliaIndexJsSearchpage {
   constructor() {
     this.renderModule();
   }
+
+  truncateString(str, length, ending) {
+    if (length == null) {
+      length = 100;
+    }
+    if (ending == null) {
+      ending = '...';
+    }
+    if (str.length > length) {
+      return str.substring(0, length - ending.length) + ending;
+    } else {
+      return str;
+    }
+  };
 
   renderModule() {
 
@@ -29,14 +42,14 @@ class AlgoliaIndexJsSearchpage {
 
             <img src="{hit.thumbnailImage}" />
 
-            <h3><a href="#">{hit.name}</a></h3>
+            <h3><a href="#">{hit.post_title}</a></h3>
 
-            <p>{hit.shortDescription}</p>
+            <p>{this.truncateString(hit.content, 400)}</p>
 
             <div className="search-result-info">
               <span className="search-result-url">
-                <a href="{hit.url}">
-                  {hit.url}
+                <a href="{hit.permalink}">
+                  {hit.permalink}
                 </a>
               </span>
             </div>
@@ -68,7 +81,7 @@ class AlgoliaIndexJsSearchpage {
 
     if(typeof domElement !== 'undefined') {
       ReactDOM.render(
-        <InstantSearch indexName="bestbuy" searchClient={searchClient}>
+        <InstantSearch indexName="developement-local-app" searchClient={searchClient}>
           
           <ScrollTo>
             <CustomSearchBox autoFocus  searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
