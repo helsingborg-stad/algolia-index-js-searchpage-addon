@@ -6,13 +6,24 @@ import {
   Pagination,
   connectSearchBox,
   connectHits,
-  ScrollTo
+  ScrollTo,
+  RefinementList
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
   'HXD0SP844N',
   'f6ae04dce9282daded14443af2f39661'
 );
+
+class Thumbnail extends React.Component {
+  render() {
+    return (
+      <div>
+        <p>Hello World!</p>
+      </div>
+    )
+  }
+}
 
 class AlgoliaIndexJsSearchpage {
   constructor() {
@@ -36,23 +47,34 @@ class AlgoliaIndexJsSearchpage {
   renderModule() {
 
     const Hits = ({ hits }) => (
-      <ul className="search-result-list">
+      <ul className="c-searchresult">
         {hits.map(hit => (
-          <div key={hit.objectID} className="search-result-item">
+          <div key={hit.objectID} className="c-searchresult__item">
 
-            <img src="{hit.thumbnailImage}" />
+            <div class="c-searchresult__grid">
+              
+              <div className="c-searchresult__inlay">
+                <h3 className="c-searchresult__heading">
+                  <a href="{hit.permalink}" className="c-searchresult__href">{hit.post_title}</a>
+                  <div className="c-searchresult__origin">{hit.origin_site}</div> 
+                </h3>
 
-            <h3><a href="#">{hit.post_title}</a></h3>
+                <p className="c-searchresult__content">
+                  {this.truncateString(hit.content, 400)}
+                </p>
 
-            <p>{this.truncateString(hit.content, 400)}</p>
+              </div>
 
-            <div className="search-result-info">
-              <span className="search-result-url">
-                <a href="{hit.permalink}">
-                  {hit.permalink}
-                </a>
-              </span>
+              <img src={ hit.thumbnail } className="c-searchresult__thumbnail"/>
+
             </div>
+
+            <div className="c-searchresult__metainfo">
+              <a className="c-searchresult__permalink" href="{hit.permalink}">
+                {this.truncateString(hit.permalink, 100)}
+              </a>
+            </div>
+
           </div>
         ))}
       </ul>
@@ -83,6 +105,8 @@ class AlgoliaIndexJsSearchpage {
       ReactDOM.render(
         <InstantSearch indexName="developement-local-app" searchClient={searchClient}>
           
+          <RefinementList attribute="origin_site" />
+
           <ScrollTo>
             <CustomSearchBox autoFocus  searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
             <CustomHits hitComponent={Hits} />

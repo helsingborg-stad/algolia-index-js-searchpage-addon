@@ -18,8 +18,7 @@ class App
      */
     public function enqueueStyles()
     {
-        wp_enqueue_style('algolia-index-js-searchpage-css', 'https://cdn.jsdelivr.net/npm/instantsearch.css@7.3.1/themes/algolia-min.css'); 
-        //wp_register_style('', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('js/app.css'));
+        wp_enqueue_style('algolia-index-js-searchpage-css', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('css/app.css')); 
     }
 
     /**
@@ -29,7 +28,6 @@ class App
     public function enqueueScripts()
     {
         wp_enqueue_script('algolia-index-js-searchpage-js', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('js/app.js'));
-        //wp_enqueue_script('algolia-index-js-searchpage-js'); 
     }
 
     public function renderSearchpageMount($query) {
