@@ -7,7 +7,9 @@ import {
   connectSearchBox,
   connectHits,
   ScrollTo,
-  RefinementList
+  RefinementList,
+  Snippet,
+  Highlight,
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
@@ -30,20 +32,6 @@ class AlgoliaIndexJsSearchpage {
     this.renderModule();
   }
 
-  truncateString(str, length, ending) {
-    if (length == null) {
-      length = 100;
-    }
-    if (ending == null) {
-      ending = '...';
-    }
-    if (str.length > length) {
-      return str.substring(0, length - ending.length) + ending;
-    } else {
-      return str;
-    }
-  };
-
   renderModule() {
 
     const Hits = ({ hits }) => (
@@ -51,27 +39,32 @@ class AlgoliaIndexJsSearchpage {
         {hits.map(hit => (
           <div key={hit.objectID} className="c-searchresult__item">
 
-            <div class="c-searchresult__grid">
+            <div className="c-searchresult__grid">
               
               <div className="c-searchresult__inlay">
+                
                 <h3 className="c-searchresult__heading">
-                  <a href="{hit.permalink}" className="c-searchresult__href">{hit.post_title}</a>
-                  <div className="c-searchresult__origin">{hit.origin_site}</div> 
+                  <a href={hit.permalink} className="c-searchresult__href">
+                    <Snippet attribute="post_title" hit={hit}></Snippet>
+                  </a>
+                  <span className="c-searchresult__origin">
+                    {hit.origin_site}
+                  </span>
                 </h3>
 
                 <p className="c-searchresult__content">
-                  {this.truncateString(hit.content, 400)}
+                  <Snippet attribute="content" hit={hit}></Snippet>
                 </p>
 
               </div>
 
-              <img src={ hit.thumbnail } className="c-searchresult__thumbnail"/>
+              {hit.thumbnail ? <img src={ hit.thumbnail } className="c-searchresult__thumbnail"/> : ''}
 
             </div>
 
             <div className="c-searchresult__metainfo">
-              <a className="c-searchresult__permalink" href="{hit.permalink}">
-                {this.truncateString(hit.permalink, 100)}
+              <a className="c-searchresult__permalink" href={hit.permalink}>
+                <Snippet attribute="permalink" hit={hit}></Snippet>
               </a>
             </div>
 
@@ -108,7 +101,7 @@ class AlgoliaIndexJsSearchpage {
           <RefinementList attribute="origin_site" />
 
           <ScrollTo>
-            <CustomSearchBox autoFocus  searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
+            <CustomSearchBox autoFocus searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
             <CustomHits hitComponent={Hits} />
           </ScrollTo>
 

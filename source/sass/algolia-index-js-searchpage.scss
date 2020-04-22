@@ -30,6 +30,7 @@
     font-size: 1.9em;
     color: #000; 
     margin-top: -0.2em;
+    text-transform: capitalize;
   }
 
   &__content {
@@ -42,6 +43,7 @@
     font-size: .5em;
     color: #999;
     font-weight: normal;
+    display: block;
   }
 
   &__thumbnail {
