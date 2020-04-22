@@ -8,24 +8,13 @@ import {
   connectHits,
   ScrollTo,
   RefinementList,
-  Snippet,
-  Highlight,
+  Snippet
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
   'HXD0SP844N',
   'f6ae04dce9282daded14443af2f39661'
 );
-
-class Thumbnail extends React.Component {
-  render() {
-    return (
-      <div>
-        <p>Hello World!</p>
-      </div>
-    )
-  }
-}
 
 class AlgoliaIndexJsSearchpage {
   constructor() {
@@ -34,6 +23,7 @@ class AlgoliaIndexJsSearchpage {
 
   renderModule() {
 
+    //Results list
     const Hits = ({ hits }) => (
       <ul className="c-searchresult">
         {hits.map(hit => (
@@ -73,27 +63,32 @@ class AlgoliaIndexJsSearchpage {
       </ul>
     );
 
+    //Search input
     const SearchBox = ({ currentRefinement, isSearchStalled, refine }) => (
-      <form noValidate="noValidate" action="" role="search" itemProp="potentialAction" itemScope="" itemType="http://schema.org/SearchAction">
-        <label htmlFor="searchkeyword" className="sr-only">Search</label>
+      <form className="c-searchform" noValidate="noValidate" action="/" role="search" itemProp="potentialAction" itemScope="" itemType="http://schema.org/SearchAction">
+        <label htmlFor="searchkeyword" className="sr-only c-searchform__label">Search</label>
         <input
           id="searchkeyword"
-          className="form-control form-control-lg validated invalid"
-          autoComplete="off" 
+          className="c-searchform__input"
+          autoComplete="off"
           type="search"
           value={currentRefinement}
           onChange={event => refine(event.currentTarget.value)}
           required=""
           placeholder="What are you looking for?"
+          name="s"
         />
       </form>
     );
 
+    //Map props
     const CustomSearchBox   = connectSearchBox(SearchBox);
-    const CustomHits = connectHits(Hits);
+    const CustomHits        = connectHits(Hits);
 
+    //Get dom element
     const domElement = document.getElementById('algolia-instantsearch-react');
 
+    //Render if found
     if(typeof domElement !== 'undefined') {
       ReactDOM.render(
         <InstantSearch indexName="developement-local-app" searchClient={searchClient}>

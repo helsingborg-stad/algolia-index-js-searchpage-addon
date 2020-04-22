@@ -1,3 +1,4 @@
+/* Searchresult */
 .c-searchresult {
   margin-top: 8px * 4;
 
@@ -6,7 +7,7 @@
     background: #fff;
     box-shadow: 0 0 8px*2 rgba(0,0,0,.1);
     padding: 8px*4;
-    animation: fadein 1s;
+    animation: newItemAnimation 1s;
     border-radius: 2px;
   }
 
@@ -31,11 +32,19 @@
     color: #000; 
     margin-top: -0.2em;
     text-transform: capitalize;
+    
+    em {
+      background: rgba(#00ff00, .4);
+    }
   }
 
   &__content {
     font-size: 1.1em;
     max-width: 700px;
+
+    em {
+      background: rgba(#00ff00, .4);
+    }
   }
 
   &__origin {
@@ -64,7 +73,14 @@
   }
 }
 
-@keyframes fadein {
+/* Search input */
+.c-searchform .c-searchform__input {
+    font-size: 1.2em;
+    padding: 8*2; 
+}
+
+/* New item animation */
+@keyframes newItemAnimation {
   from {
       opacity:0;
   }
