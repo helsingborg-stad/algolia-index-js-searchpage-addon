@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom';
 import algoliasearch from 'algoliasearch/lite';
 import { 
   InstantSearch, 
-  Pagination,
-  connectSearchBox,
-  connectHits,
+  
   ScrollTo,
   RefinementList,
-  Snippet
+  Snippet,
+
+  connectSearchBox,
+  connectHits,
+  connectPagination,
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
@@ -81,9 +83,38 @@ class AlgoliaIndexJsSearchpage {
       </form>
     );
 
+    //Pagination
+    const Pagination = ({ currentRefinement, nbPages, refine, createURL }) => (
+      <ul className="c-searchpagination">
+        {new Array(nbPages).fill(null).map((_, index) => {
+          const page = index + 1;
+          const style = {
+            fontWeight: currentRefinement === page ? 'bold' : '',
+            color: currentRefinement === page ? '' : '#000',
+          };
+    
+          return (
+            <li className="c-searchpagination__item" key={index}>
+              <a
+                href={createURL(page)}
+                style={style}
+                onClick={event => {
+                  event.preventDefault();
+                  refine(page);
+                }}
+              >
+                {page}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    );
+
     //Map props
     const CustomSearchBox   = connectSearchBox(SearchBox);
     const CustomHits        = connectHits(Hits);
+    const CustomPagination        = connectPagination(Pagination);
 
     //Get dom element
     const domElement = document.getElementById('algolia-instantsearch-react');
@@ -93,14 +124,14 @@ class AlgoliaIndexJsSearchpage {
       ReactDOM.render(
         <InstantSearch indexName="developement-local-app" searchClient={searchClient}>
           
-          <RefinementList attribute="origin_site" />
+          <RefinementList attribute="origin_site"/>
 
           <ScrollTo>
             <CustomSearchBox autoFocus searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
             <CustomHits hitComponent={Hits} />
           </ScrollTo>
 
-          <Pagination />
+          <CustomPagination/>
 
         </InstantSearch>,
         domElement
