@@ -119,7 +119,7 @@ class AlgoliaIndexJsSearchpage {
     //Site menu
     const Menu = ({ items, isFromSearch, refine, searchForItems, createURL }) => (
       <div className="c-searchtabs">
-        <label className="c-searchtabs__label">Filter results from: </label>
+        {items.length != 0 ? <label className="c-searchtabs__label">Filter results from: </label> : ''}
         <ul>
           {items.map(item => (
             <li className="c-searchtabs__tab" key={item.value}>
