@@ -118,24 +118,27 @@ class AlgoliaIndexJsSearchpage {
 
     //Site menu
     const Menu = ({ items, isFromSearch, refine, searchForItems, createURL }) => (
-      <ul className="c-searchtabs">
-        {items.map(item => (
-          <li className="c-searchtabs__tab" key={item.value}>
-            <a
-              className="c-searchtabs__link"
-              href={createURL(item.value)}
-              style={{ fontWeight: item.isRefined ? 'bold' : '' }}
-              onClick={event => {
-                event.preventDefault();
-                refine(item.value);
-              }}
-            >
-              <span className="c-searchtabs_label">{item.label}</span> 
-              <span className="c-searchtabs_count">{item.count}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div className="c-searchtabs">
+        <label className="c-searchtabs__label">Filter results from: </label>
+        <ul>
+          {items.map(item => (
+            <li className="c-searchtabs__tab" key={item.value}>
+              <a
+                className="c-searchtabs__link"
+                href={createURL(item.value)}
+                style={{ fontWeight: item.isRefined ? 'bold' : '' }}
+                onClick={event => {
+                  event.preventDefault();
+                  refine(item.value);
+                }}
+              >
+                <span className="c-searchtabs_label">{item.label}</span>
+                <span className="c-searchtabs_count">{item.count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     );
 
     const StateResults = ({ searchResults }) => {
@@ -164,9 +167,10 @@ class AlgoliaIndexJsSearchpage {
 
             <CustomSearchBox autoFocus searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
 
-            <CustomStateResults />
-            
-            <CustomMenu attribute="origin_site"/>
+            <div className="c-searchmeta">
+              <CustomStateResults />
+              <CustomMenu attribute="origin_site"/>
+            </div>
 
             <CustomHits hitComponent={Hits} />
 
