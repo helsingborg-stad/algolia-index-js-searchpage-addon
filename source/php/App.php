@@ -10,6 +10,7 @@ class App
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
         add_action('get_search_form', array($this, 'renderSearchpageMount'));
+        add_filter('AlgoliaIndex/BackendSearchActive', '__return_false');
     }
 
     /**
