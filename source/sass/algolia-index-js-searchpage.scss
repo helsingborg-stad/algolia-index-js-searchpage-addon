@@ -95,6 +95,46 @@
 
 }
 
+/* Searchresult counter */
+
+.c-searchresusult__postcount {
+  display: inline-block;
+  padding: 4px 0 0 0;
+  font-size: .9em;
+  color: #999;
+}
+
+/* Searchtabs */
+.c-searchtabs {
+  display: block;
+  list-style: none;
+  padding: 0; 
+}
+
+.c-searchtabs__tab {
+  display: inline-block; 
+}
+
+.c-searchtabs__tab + .c-searchtabs__tab {
+  margin-left: 8px;
+}
+
+.c-searchtabs__link {
+  display: block;
+  background: #999; 
+  border-radius: 30px;
+  padding: 6px 12px;
+  position: relative;
+}
+
+.c-searchtabs_count:before { 
+  content: " ("; 
+}
+
+.c-searchtabs_count:after { 
+  content: ")"; 
+}
+
 /* New item animation */
 @keyframes newItemAnimation {
   0% {

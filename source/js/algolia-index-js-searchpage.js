@@ -7,10 +7,15 @@ import {
   ScrollTo,
   RefinementList,
   Snippet,
+  PoweredBy,
+  Menu,
+  Stats,
 
   connectSearchBox,
   connectHits,
   connectPagination,
+  connectStateResults,
+  connectMenu
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
@@ -111,10 +116,41 @@ class AlgoliaIndexJsSearchpage {
       </ul>
     );
 
+    //Site menu
+    const Menu = ({ items, isFromSearch, refine, searchForItems, createURL }) => (
+      <ul className="c-searchtabs">
+        {items.map(item => (
+          <li className="c-searchtabs__tab" key={item.value}>
+            <a
+              className="c-searchtabs__link"
+              href={createURL(item.value)}
+              style={{ fontWeight: item.isRefined ? 'bold' : '' }}
+              onClick={event => {
+                event.preventDefault();
+                refine(item.value);
+              }}
+            >
+              <span className="c-searchtabs_label">{item.label}</span> 
+              <span className="c-searchtabs_count">{item.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    );
+
+    const StateResults = ({ searchResults }) => {
+      const nbHits = searchResults && searchResults.nbHits;
+      return (
+        <div className="c-searchresusult__postcount"><strong>{nbHits}</strong> posts found on your query.</div>
+      );
+    };
+
     //Map props
-    const CustomSearchBox   = connectSearchBox(SearchBox);
-    const CustomHits        = connectHits(Hits);
-    const CustomPagination        = connectPagination(Pagination);
+    const CustomSearchBox    = connectSearchBox(SearchBox);
+    const CustomHits         = connectHits(Hits);
+    const CustomPagination   = connectPagination(Pagination);
+    const CustomStateResults = connectStateResults(StateResults);
+    const CustomMenu         = connectMenu(Menu);
 
     //Get dom element
     const domElement = document.getElementById('algolia-instantsearch-react');
@@ -123,12 +159,17 @@ class AlgoliaIndexJsSearchpage {
     if(typeof domElement !== 'undefined') {
       ReactDOM.render(
         <InstantSearch indexName="developement-local-app" searchClient={searchClient}>
-          
-          <RefinementList attribute="origin_site"/>
 
           <ScrollTo>
+
             <CustomSearchBox autoFocus searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
+
+            <CustomStateResults />
+            
+            <CustomMenu attribute="origin_site"/>
+
             <CustomHits hitComponent={Hits} />
+
           </ScrollTo>
 
           <CustomPagination/>
