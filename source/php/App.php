@@ -20,6 +20,9 @@ class App
      */
     public function enqueueStyles()
     {
+        if(!is_search()) {
+            return; 
+        }
         wp_enqueue_style('algolia-index-js-searchpage-css', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('css/app.css')); 
     }
 
@@ -29,10 +32,17 @@ class App
      */
     public function enqueueScripts()
     {
+        if(!is_search()) {
+            return; 
+        }
         wp_enqueue_script('algolia-index-js-searchpage-js', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('js/app.js'));
     }
 
     public function renderSearchpageMount($query) {
+        if(!is_search()) {
+            return; 
+        }
+
         global $renderedSearch; 
         if(!isset($renderedSearch)) {
             $renderedSearch = true; 

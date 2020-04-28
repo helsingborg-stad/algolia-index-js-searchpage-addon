@@ -33,7 +33,7 @@ class AlgoliaIndexJsSearchpage {
         ) : (
           <div className="notice info">
             <i className="fa fa-info-circle"></i>
-            No results have been found for "{searchState.query}".            
+            No results have been found for "{searchState.query ? searchState.query : qs.parse(location.search.slice(1)).s}".            
           </div>
         )
     );
