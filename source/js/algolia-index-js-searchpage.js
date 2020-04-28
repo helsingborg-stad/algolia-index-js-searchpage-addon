@@ -1,17 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import algoliasearch from 'algoliasearch/lite';
+import qs from 'qs';
 import { 
-  InstantSearch, 
-  
+  InstantSearch,
   ScrollTo,
-  RefinementList,
   Snippet,
-  PoweredBy,
-  Menu,
-  Stats,
-  Results,
-
   connectSearchBox,
   connectHits,
   connectPagination,
@@ -37,8 +31,8 @@ class AlgoliaIndexJsSearchpage {
         searchResults && searchResults.nbHits !== 0 ? (
           children
         ) : (
-          <div class="notice info">
-            <i class="fa fa-info-circle"></i>
+          <div className="notice info">
+            <i className="fa fa-info-circle"></i>
             No results have been found for "{searchState.query}".            
           </div>
         )
@@ -183,7 +177,7 @@ class AlgoliaIndexJsSearchpage {
 
           <ScrollTo>
 
-            <CustomSearchBox autoFocus searchBoxComponent={SearchBox} onSubmit={event => { event.preventDefault(); }} />
+            <CustomSearchBox autoFocus defaultRefinement={qs.parse(location.search.slice(1)).s} onSubmit={event => { event.preventDefault(); }} />
 
             <div className="c-searchmeta">
               <CustomStateResults />

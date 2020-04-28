@@ -153,3 +153,11 @@
     opacity: 1;
   }
 }
+
+/* Hide all siblings in the container
+ * The intention is to hide default 
+ * search stuff.
+ */
+#algolia-instantsearch-react ~ * {
+  display: none;
+}
