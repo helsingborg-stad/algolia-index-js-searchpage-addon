@@ -1,4 +1,7 @@
 /* Searchresult */
+
+$bp: 900px;
+
 .c-searchresult {
   margin-top: 8px * 2;
 
@@ -94,6 +97,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 8px*4;
+  flex-wrap: wrap;
 }
 
 /* Searchresult counter */
@@ -101,13 +105,20 @@
   display: inline-block;
   color: #999;
   line-height: 34px;
+
+  @media (max-width:$bp) {
+    display: none;
+  }
 }
 
 /* Searchtabs */
 .c-searchtabs {
-  flex-wrap: norwrap;
-  display: flex;
+  display: flex; 
   line-height: 34px;
+
+  @media (max-width:$bp) {
+    width: 100%;
+  }
 }
 
 .c-searchtabs ul {
@@ -115,9 +126,24 @@
   padding: 0; 
 }
 
+.c-searchtabs__icon {
+  display: inline-block;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0Ij48cGF0aCBkPSJNMTAgMThoNHYtMmgtNHYyek0zIDZ2MmgxOFY2SDN6bTMgN2gxMnYtMkg2djJ6Ii8+PHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==");
+  height: 1em;
+  width: 1em; 
+  background-size: contain;
+  background-position: center center;
+}
+
 .c-searchtabs__label {
   color: #999;
   padding-right: 10px;
+  white-space: nowrap;
+
+  @media (max-width:$bp) {
+    display: none;
+    padding-right: 0;
+  }
 }
 
 .c-searchtabs__tab {
