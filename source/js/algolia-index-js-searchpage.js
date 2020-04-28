@@ -10,6 +10,7 @@ import {
   PoweredBy,
   Menu,
   Stats,
+  Results,
 
   connectSearchBox,
   connectHits,
@@ -29,6 +30,19 @@ class AlgoliaIndexJsSearchpage {
   }
 
   renderModule() {
+
+    // Results message
+    const Results = connectStateResults(
+      ({ searchState, searchResults, children }) =>
+        searchResults && searchResults.nbHits !== 0 ? (
+          children
+        ) : (
+          <div class="notice info">
+            <i class="fa fa-info-circle"></i>
+            No results have been found for "{searchState.query}".            
+          </div>
+        )
+    );
 
     //Results list
     const Hits = ({ hits }) => (
@@ -143,9 +157,13 @@ class AlgoliaIndexJsSearchpage {
 
     const StateResults = ({ searchResults }) => {
       const nbHits = searchResults && searchResults.nbHits;
-      return (
-        <div className="c-searchresusult__postcount"><strong>{nbHits}</strong> posts found on your query.</div>
-      );
+      if(nbHits) {
+        return (
+          <div className="c-searchresusult__postcount"><strong>{nbHits}</strong> posts found on your query.</div>
+        );
+      }
+
+      return (<div className="c-searchresusult__postcount c-searchresusult__postcount--hidden"></div>);
     };
 
     //Map props
@@ -172,7 +190,9 @@ class AlgoliaIndexJsSearchpage {
               <CustomMenu attribute="origin_site"/>
             </div>
 
-            <CustomHits hitComponent={Hits} />
+            <Results>
+              <CustomHits hitComponent={Hits} />
+            </Results>
 
           </ScrollTo>
 
