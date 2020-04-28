@@ -35,7 +35,16 @@ class App
         if(!is_search()) {
             return; 
         }
+
+        //Register & enqueue script
         wp_enqueue_script('algolia-index-js-searchpage-js', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('js/app.js'));
+    
+        //Localize script
+        wp_localize_script('algolia-index-js-searchpage-js', 'algoliaTranslations',[
+            'noresult' => __("No matches where found on the query", 'algolia-index-js-searchpage'),
+            'filter' => __("Filter results from", 'algolia-index-js-searchpage'),
+            'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
+        ]);
     }
 
     public function renderSearchpageMount($query) {

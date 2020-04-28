@@ -33,7 +33,7 @@ class AlgoliaIndexJsSearchpage {
         ) : (
           <div className="notice info">
             <i className="fa fa-info-circle"></i>
-            No results have been found for "{searchState.query ? searchState.query : qs.parse(location.search.slice(1)).s}".            
+            {algoliaTranslations.noresult} "{searchState.query ? searchState.query : qs.parse(location.search.slice(1)).s}".            
           </div>
         )
     );
@@ -127,7 +127,7 @@ class AlgoliaIndexJsSearchpage {
     //Site menu
     const Menu = ({ items, isFromSearch, refine, searchForItems, createURL }) => (
       <div className="c-searchtabs">
-        {items.length != 0 ? <label className="c-searchtabs__label"><span className="c-searchtabs__icon"></span> <span className="c-searchtabs__text">Filter results from: </span></label> : ''}
+        {items.length != 0 ? <label className="c-searchtabs__label"><span className="c-searchtabs__icon"></span> <span className="c-searchtabs__text">{algoliaTranslations.filter}: </span></label> : ''}
         <ul>
           {items.map(item => (
             <li className="c-searchtabs__tab" key={item.value}>
@@ -153,7 +153,7 @@ class AlgoliaIndexJsSearchpage {
       const nbHits = searchResults && searchResults.nbHits;
       if(nbHits) {
         return (
-          <div className="c-searchresusult__postcount"><strong>{nbHits}</strong> posts found on your query.</div>
+          <div className="c-searchresusult__postcount"><strong>{nbHits}</strong> {algoliaTranslations.nposts}</div>
         );
       }
 
