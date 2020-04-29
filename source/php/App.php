@@ -47,9 +47,9 @@ class App
         ]);
 
         wp_localize_script('algolia-index-js-searchpage-js', 'algoliaSearchData',[
-            'apikey' => '',
-            'applicationid' => '',
-            'indexname' => '',
+            'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
+            'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
+            'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
         ]);
     }
 

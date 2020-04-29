@@ -14,8 +14,8 @@ import {
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
-  'HXD0SP844N',
-  'f6ae04dce9282daded14443af2f39661'
+  algoliaSearchData.applicationId,
+  algoliaSearchData.publicApiKey,
 );
 
 class AlgoliaIndexJsSearchpage {
@@ -173,7 +173,7 @@ class AlgoliaIndexJsSearchpage {
     //Render if found
     if(typeof domElement !== 'undefined') {
       ReactDOM.render(
-        <InstantSearch indexName="developement-local-app" searchClient={searchClient}>
+        <InstantSearch indexName={algoliaSearchData.indexName} searchClient={searchClient}>
 
           <ScrollTo>
 
