@@ -11,7 +11,7 @@ class App
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
         add_action('get_search_form', array($this, 'renderSearchpageMount'));
         add_filter('AlgoliaIndex/BackendSearchActive', '__return_false');
-        add_filter('get_search_form', create_function( '$a', "return null;" ));
+        add_filter('get_search_form', '__return_null');
     }
 
     /**
@@ -44,6 +44,12 @@ class App
             'noresult' => __("No matches where found on the query", 'algolia-index-js-searchpage'),
             'filter' => __("Filter results from", 'algolia-index-js-searchpage'),
             'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
+        ]);
+
+        wp_localize_script('algolia-index-js-searchpage-js', 'algoliaSearchData',[
+            'apikey' => '',
+            'applicationid' => '',
+            'indexname' => '',
         ]);
     }
 
