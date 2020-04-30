@@ -6,7 +6,6 @@ class App
 {
     public function __construct()
     {
-        
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
         add_action('get_search_form', array($this, 'renderSearchpageMount'));
@@ -46,6 +45,7 @@ class App
             'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
         ]);
 
+        //Get keys & indexname
         wp_localize_script('algolia-index-js-searchpage-js', 'algoliaSearchData',[
             'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
