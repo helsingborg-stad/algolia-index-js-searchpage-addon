@@ -1,6 +1,7 @@
 {
   "name": "helsingborg-stad/algolia-index-js-searchpage-addon",
   "description": "https://github.com/helsingborg-stad/algolia-index-js-searchpage-addon",
+  "type": "wordpress-plugin",
   "license": "MIT",
   "authors": [
       {
