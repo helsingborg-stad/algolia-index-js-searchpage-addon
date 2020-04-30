@@ -35,8 +35,15 @@ class App
             return; 
         }
 
+        //React
+        \AlgoliaIndexJsSearchpage\Helper\React::enqueue(); 
+
         //Register & enqueue script
-        wp_enqueue_script('algolia-index-js-searchpage-js', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('js/app.js'));
+        wp_enqueue_script(
+            'algolia-index-js-searchpage-js', 
+            ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('js/app.js'), 
+            ['react', 'react-dom']
+        );
     
         //Localize script
         wp_localize_script('algolia-index-js-searchpage-js', 'algoliaTranslations',[
