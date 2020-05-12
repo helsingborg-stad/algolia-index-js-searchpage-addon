@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import algoliasearch from 'algoliasearch/lite';
 import qs from 'qs';
 import { 
@@ -126,8 +125,9 @@ class AlgoliaIndexJsSearchpage {
 
     //Site menu
     const Menu = ({ items, isFromSearch, refine, searchForItems, createURL }) => (
-      <div className="c-searchtabs">
-        {items.length != 0 ? <label className="c-searchtabs__label"><span className="c-searchtabs__icon"></span> <span className="c-searchtabs__text">{algoliaTranslations.filter}: </span></label> : ''}
+      <div className={`c-searchtabs ${items.length > 1 ? "c-searchtabs--visible" : "c-searchtabs--hidden"}`}>
+
+        <label className="c-searchtabs__label"><span className="c-searchtabs__icon"></span> <span className="c-searchtabs__text">{algoliaTranslations.filter}: </span></label>
         <ul>
           {items.map(item => (
             <li className="c-searchtabs__tab" key={item.value}>
