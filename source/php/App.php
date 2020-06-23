@@ -8,9 +8,14 @@ class App
     {
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
-        add_action('get_search_form', array($this, 'renderSearchpageMount'));
+        
         add_filter('AlgoliaIndex/BackendSearchActive', '__return_false');
         add_filter('get_search_form', '__return_null');
+
+        add_action(
+            apply_filters('AlgoliaIndexJSSearchPage/ActionMountPoint', 'get_search_form'), 
+            array($this, 'renderSearchpageMount')
+        );
     }
 
     /**
