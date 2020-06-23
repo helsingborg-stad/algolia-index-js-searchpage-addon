@@ -12,10 +12,13 @@ class App
         add_filter('AlgoliaIndex/BackendSearchActive', '__return_false');
         add_filter('get_search_form', '__return_null');
 
-        add_action(
-            apply_filters('AlgoliaIndexJSSearchPage/ActionMountPoint', 'get_search_form'), 
-            array($this, 'renderSearchpageMount')
-        );
+        //Mount point & render
+        add_action('init', function() {
+            add_action(
+                apply_filters('AlgoliaIndexJSSearchPage/ActionMountPoint', 'get_search_form'), 
+                array($this, 'renderSearchpageMount')
+            );
+        });
     }
 
     /**
