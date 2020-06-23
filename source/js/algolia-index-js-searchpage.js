@@ -5,6 +5,7 @@ import {
   InstantSearch,
   ScrollTo,
   Snippet,
+  MenuSelect,
   connectSearchBox,
   connectHits,
   connectPagination,
@@ -180,8 +181,11 @@ class AlgoliaIndexJsSearchpage {
             <CustomSearchBox autoFocus defaultRefinement={qs.parse(location.search.slice(1)).s} onSubmit={event => { event.preventDefault(); }} />
 
             <div className="c-searchmeta">
+
               <CustomStateResults />
-              <CustomMenu attribute="origin_site"/>
+
+              {false ? <CustomMenu attribute="origin_site"/> : <MenuSelect attribute="origin_site"/>}
+
             </div>
 
             <Results>
