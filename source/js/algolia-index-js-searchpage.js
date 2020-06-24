@@ -81,7 +81,7 @@ class AlgoliaIndexJsSearchpage {
     //Search input
     const SearchBox = ({ currentRefinement, isSearchStalled, refine }) => (
       <form className="c-searchform" noValidate="noValidate" action="/" role="search" itemProp="potentialAction" itemScope="" itemType="http://schema.org/SearchAction">
-        <label htmlFor="searchkeyword" className="sr-only c-searchform__label">Search</label>
+        <label htmlFor="searchkeyword" className="sr-only c-searchform__label">{algoliaTranslations.submit}</label>
         <input
           id="searchkeyword"
           className="c-searchform__input"
@@ -90,7 +90,7 @@ class AlgoliaIndexJsSearchpage {
           value={currentRefinement}
           onChange={event => refine(event.currentTarget.value)}
           required=""
-          placeholder="What are you looking for?"
+          placeholder={algoliaTranslations.placeholder}
           name="s"
         />
       </form>
@@ -184,7 +184,7 @@ class AlgoliaIndexJsSearchpage {
 
               <CustomStateResults />
 
-              {false ? <CustomMenu attribute="origin_site"/> : <MenuSelect attribute="origin_site"/>}
+              {false ? <CustomMenu attribute="origin_site"/> : <MenuSelect translations={{ seeAllOption: algoliaTranslations.facetFilterString }} attribute="origin_site"/>}
 
             </div>
 

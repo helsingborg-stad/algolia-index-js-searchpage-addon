@@ -13,7 +13,7 @@ class App
         add_filter('get_search_form', '__return_null');
 
         //Mount point & render
-        add_action('init', function() {
+        add_action('plugins_loaded', function() {
             add_action(
                 apply_filters('AlgoliaIndexJSSearchPage/ActionMountPoint', 'get_search_form'), 
                 array($this, 'renderSearchpageMount')
@@ -58,6 +58,9 @@ class App
             'noresult' => __("No matches where found on the query", 'algolia-index-js-searchpage'),
             'filter' => __("Filter results from", 'algolia-index-js-searchpage'),
             'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
+            'placeholder' => __("What are you looking for?", 'algolia-index-js-searchpage'),
+            'submit' => __("Search", 'algolia-index-js-searchpage'),
+            'facetFilterString' => __("Select origin", 'algolia-index-js-searchpage')
         ]);
 
         //Get keys & indexname
@@ -65,6 +68,11 @@ class App
             'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
             'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
+        ]);
+
+        //UI settings
+        wp_localize_script('algolia-index-js-searchpage-js', 'algoliaSettings',[
+            'facettingApperanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU') ? true : false,
         ]);
     }
 
