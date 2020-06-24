@@ -184,7 +184,7 @@ class AlgoliaIndexJsSearchpage {
 
               <CustomStateResults />
 
-              {false ? <CustomMenu attribute="origin_site"/> : <MenuSelect translations={{ seeAllOption: algoliaTranslations.facetFilterString }} attribute="origin_site"/>}
+              {algoliaSettings.facettingApperanceMenu == 'false' ? <CustomMenu attribute="origin_site"/> : <MenuSelect translations={{ seeAllOption: algoliaTranslations.facetFilterString }} attribute="origin_site"/>}
 
             </div>
 

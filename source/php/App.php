@@ -72,7 +72,7 @@ class App
 
         //UI settings
         wp_localize_script('algolia-index-js-searchpage-js', 'algoliaSettings',[
-            'facettingApperanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU') ? true : false,
+            'facettingApperanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU') ? "true" : "false",
         ]);
     }
 
