@@ -84,7 +84,7 @@ class App
         global $renderedSearch; 
         if(!isset($renderedSearch)) {
             $renderedSearch = true; 
-            echo '<div id="algolia-instantsearch-react"></div>'; 
+            echo '<div id="algolia-instantsearch-react"><div class="c-algolia-instantsearch-ripple" data-label="' . __("Searching", 'algolia-index-js-searchpage') . '"><div></div><div></div></div></div>'; 
         }
     }
 }

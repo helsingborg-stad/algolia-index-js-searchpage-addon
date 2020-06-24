@@ -1,16 +1,17 @@
 import React from 'react';
+import he from 'he';
 import algoliasearch from 'algoliasearch/lite';
 import qs from 'qs';
 import { 
   InstantSearch,
   ScrollTo,
-  Snippet,
   MenuSelect,
   connectSearchBox,
   connectHits,
   connectPagination,
   connectStateResults,
-  connectMenu
+  connectMenu,
+  connectHighlight
 } from 'react-instantsearch-dom';
 
 const searchClient = algoliasearch(
@@ -50,15 +51,15 @@ class AlgoliaIndexJsSearchpage {
                 
                 <h3 className="c-searchresult__heading">
                   <a href={hit.permalink} className="c-searchresult__href">
-                    <Snippet attribute="post_title" hit={hit}></Snippet>
+                    <CustomSnippet attribute="post_title" hit={hit}></CustomSnippet>
                   </a>
                   <span className="c-searchresult__origin">
-                    {hit.origin_site}
+                    {he.decode(hit.origin_site)}
                   </span>
                 </h3>
 
                 <p className="c-searchresult__content">
-                  <Snippet attribute="content" hit={hit}></Snippet>
+                  <CustomSnippet attribute="content" hit={hit}></CustomSnippet>
                 </p>
 
               </div>
@@ -69,7 +70,7 @@ class AlgoliaIndexJsSearchpage {
 
             <div className="c-searchresult__metainfo">
               <a className="c-searchresult__permalink" href={hit.permalink}>
-                <Snippet attribute="permalink" hit={hit}></Snippet>
+                <CustomSnippet attribute="permalink" hit={hit}></CustomSnippet>
               </a>
             </div>
 
@@ -157,8 +158,28 @@ class AlgoliaIndexJsSearchpage {
           <div className="c-searchresusult__postcount"><strong>{nbHits}</strong> {algoliaTranslations.nposts}</div>
         );
       }
-
       return (<div className="c-searchresusult__postcount c-searchresusult__postcount--hidden"></div>);
+    };
+
+    const Snippet = ({ highlight, attribute, hit }) => {
+      const parsedHit = highlight({
+        highlightProperty: '_snippetResult',
+        attribute,
+        hit,
+      });
+    
+      return (
+        <span>
+          {parsedHit.map(
+            (part, index) =>
+              part.isHighlighted ? (
+                <mark key={index}>{part.value}</mark>
+              ) : (
+                <span key={index}>{part.value}</span>
+              )
+          )}
+        </span>
+      );
     };
 
     //Map props
@@ -167,6 +188,7 @@ class AlgoliaIndexJsSearchpage {
     const CustomPagination   = connectPagination(Pagination);
     const CustomStateResults = connectStateResults(StateResults);
     const CustomMenu         = connectMenu(Menu);
+    const CustomSnippet      = connectHighlight(Snippet);
 
     //Get dom element
     const domElement = document.getElementById('algolia-instantsearch-react');
@@ -195,7 +217,7 @@ class AlgoliaIndexJsSearchpage {
           </ScrollTo>
 
           <CustomPagination/>
-
+ 
         </InstantSearch>,
         domElement
       );

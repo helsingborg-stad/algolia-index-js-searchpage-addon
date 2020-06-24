@@ -34,7 +34,10 @@ $bp: 900px;
     font-size: 1.9em;
     color: #000; 
     margin-top: -0.2em;
-    text-transform: capitalize;
+    
+    &:first-letter {
+      text-transform: uppercase;
+    }
 
     em {
       background: rgba(#00ff00, .4);
@@ -190,4 +193,48 @@ $bp: 900px;
  */
 #algolia-instantsearch-react ~ * {
   display: none;
+}
+
+/* Preloader animation */
+.c-algolia-instantsearch-ripple {
+  margin: 20vh auto;
+  display: block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.c-algolia-instantsearch-ripple:after {
+  content: attr(data-label) "...";
+  top: 80px;
+  position: absolute;
+  opacity: .7;
+}
+
+.c-algolia-instantsearch-ripple div {
+  position: absolute;
+  border: 4px solid #000;
+  opacity: 1;
+  border-radius: 50%;
+  animation: c-algolia-instantsearch-ripple-animation 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.c-algolia-instantsearch-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+
+@keyframes c-algolia-instantsearch-ripple-animation {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
+  }
 }
