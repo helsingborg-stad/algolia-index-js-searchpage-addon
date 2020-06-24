@@ -15,7 +15,7 @@ class App
         //Mount point & render
         add_action('plugins_loaded', function() {
             add_action(
-                apply_filters('AlgoliaIndexJSSearchPage/ActionMountPoint', 'get_search_form'), 
+                defined('ALGOLIA_INDEX_MOUNT_POINT') ? ALGOLIA_INDEX_MOUNT_POINT : 'get_search_form',
                 array($this, 'renderSearchpageMount')
             );
         });
@@ -27,7 +27,7 @@ class App
      */
     public function enqueueStyles()
     {
-        if(!is_search()) {
+        if(!self::isSearchPage()) {
             return; 
         }
         wp_enqueue_style('algolia-index-js-searchpage-css', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('css/app.css')); 
@@ -39,7 +39,7 @@ class App
      */
     public function enqueueScripts()
     {
-        if(!is_search()) {
+        if(!self::isSearchPage()) {
             return; 
         }
 
@@ -76,8 +76,13 @@ class App
         ]);
     }
 
+    /**
+     * Print the search page mount
+     *
+     * @return boolean
+     */
     public function renderSearchpageMount($query) {
-        if(!is_search()) {
+        if(!self::isSearchPage()) {
             return; 
         }
 
@@ -87,4 +92,18 @@ class App
             echo '<div id="algolia-instantsearch-react"><div class="c-algolia-instantsearch-ripple" data-label="' . __("Searching", 'algolia-index-js-searchpage') . '"><div></div><div></div></div></div>'; 
         }
     }
+
+    /**
+     * Check if search page is active page
+     *
+     * @return boolean
+     */
+    private static function isSearchPage()
+    {
+        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "" && is_search()) {
+            return true;
+        }
+        return false;
+    }
+
 }
