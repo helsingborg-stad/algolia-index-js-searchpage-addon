@@ -98,11 +98,18 @@ class App
      *
      * @return boolean
      */
-    private static function isSearchPage()
-    {
+    private static function isSearchPage() {
+
+        if (is_multisite() && (defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL === false)) {
+            if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == trim(get_blog_details()->path, "/") && is_search()) {
+                return true;
+            }
+        }
+
         if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "" && is_search()) {
             return true;
         }
+        
         return false;
     }
 
