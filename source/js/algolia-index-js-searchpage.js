@@ -135,7 +135,7 @@ class AlgoliaIndexJsSearchpage {
       <div className={`c-searchtabs ${items.length > 1 ? "c-searchtabs--visible" : "c-searchtabs--hidden"}`}>
 
         <label className="c-searchtabs__label"><span className="c-searchtabs__icon"></span> <span className="c-searchtabs__text">{algoliaTranslations.filter}: </span></label>
-        <ul>
+        <ul className="u-margin--0">
           {items.map(item => (
             <li className="c-searchtabs__tab" key={item.value}>
               <a
