@@ -4,6 +4,8 @@
 
 # ignore node/grunt dependency directories
 node_modules/
+vendor/
+assets/dist/
 
 # ignore composer lock file
 composer.lock
