@@ -47,38 +47,23 @@ class AlgoliaIndexJsSearchpage {
     const Hits = ({ hits }) => (
       <section className="c-searchresult">
         {hits.map(hit => (
-          <div key={hit.objectID} className="c-searchresult__item">
+          <a key={hit.objectID}  href={hit.permalink} className="c-card u-margin__top--4 u-display--flex u-align-content--center">
 
-            <div className="c-searchresult__grid">
-              
-              <div className="c-searchresult__inlay">
-                
-                <h3 className="c-searchresult__heading">
-                  <a href={hit.permalink} className="c-searchresult__href">
-                    <CustomSnippet attribute="post_title" hit={hit}></CustomSnippet>
-                  </a>
-                  <span className="c-searchresult__origin">
-                    {he.decode(hit.origin_site)}
-                  </span>
-                </h3>
-
-                <p className="c-searchresult__content">
-                  <CustomSnippet attribute="content" hit={hit}></CustomSnippet>
-                </p>
-
-              </div>
-
-              {hit.thumbnail ? <img src={ hit.thumbnail } className="c-searchresult__thumbnail"/> : ''}
-
+            <div className="c-card__body u-width--100">
+              <h2 class="c-typography c-card__heading c-typography__variant--h3" data-uid="5fd08f17ab16b">
+                <CustomSnippet attribute="post_title" hit={hit}></CustomSnippet>
+              </h2>   
+              <h4 className="c-typography c-typography__variant--meta" data-uid="5fd08f17ab82e">
+                {he.decode(hit.origin_site)}
+              </h4>
+              <p className="c-typography c-typography__variant--p" data-uid="5fd08f17abc9f">
+                <CustomSnippet attribute="content" hit={hit}></CustomSnippet>
+              </p>
             </div>
 
-            <div className="c-searchresult__metainfo">
-              <a className="c-searchresult__permalink" href={hit.permalink}>
-                <CustomSnippet attribute="permalink" hit={hit}></CustomSnippet>
-              </a>
-            </div>
+            {hit.thumbnail ?  <img src={ hit.thumbnail } className="c-searchresult__thumbnail"/> : ''}
 
-          </div>
+          </a>
         ))}
       </section>
     );
@@ -86,7 +71,11 @@ class AlgoliaIndexJsSearchpage {
     //Search input
     const SearchBox = ({ currentRefinement, isSearchStalled, refine }) => (
       <form id="" class="c-form" noValidate="noValidate" action="/" role="search" itemProp="potentialAction" itemScope="" itemType="http://schema.org/SearchAction">
-        <div id="" class="c-field c-field__text">
+      
+        <div className="c-field u-flex-grow--1 c-field--icon c-field--lg c-field--radius-xs c-field--icon c-field--lg c-field--radius-md c-field__text">
+          <i id="" className="c-icon c-icon--size-md material-icons">
+            search
+          </i>
           <input
             id="searchkeyword"
             className="c-searchform__input"
@@ -98,61 +87,63 @@ class AlgoliaIndexJsSearchpage {
             placeholder={algoliaTranslations.placeholder}
             name="s"
           />
+          <label className="c-field__text--label">{algoliaTranslations.placeholder}</label>
         </div>
       </form>
     );
 
     //Pagination
     const Pagination = ({ currentRefinement, nbPages, refine, createURL }) => (
-      <ul className="c-searchpagination">
-        {new Array(nbPages).fill(null).map((_, index) => {
-          const page = index + 1;
-          const style = {
-            fontWeight: currentRefinement === page ? 'bold' : '',
-            color: currentRefinement === page ? '' : '#000',
-          };
-    
-          return (
-            <li className="c-searchpagination__item" key={index}>
-              <a
-                href={createURL(page)}
-                style={style}
-                onClick={event => {
-                  event.preventDefault();
-                  refine(page);
-                }}
-              >
-                {page}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
+      <nav class="c-pagination c-pagination u-margin__top--4 u-display--flex u-justify-content--center" role="navigation" aria-label="Pagination Navigation">
+        <ul class="c-pagination__list">
+          {new Array(nbPages).fill(null).map((_, index) => {
+            const page = index + 1;
+            const c = (currentRefinement === page) ? 'c-pagination__item c-pagination__item--is-active' : 'c-pagination__item';
+      
+            return (
+                <li className={c} js-pagination-index="1">
+                  <a
+                    className="c-pagination__link "
+                    href={createURL(page)}
+                    onClick={event => {
+                      event.preventDefault();
+                      refine(page);
+                    }}
+                  >
+                    <span class="c-pagination__label">{page}</span>
+                  </a>
+                </li>
+            );
+          })}
+        </ul>
+      </nav>
     );
 
     //Site menu
     const Menu = ({ items, isFromSearch, refine, searchForItems, createURL }) => (
-      <div className={`c-searchtabs ${items.length > 1 ? "c-searchtabs--visible" : "c-searchtabs--hidden"}`}>
-
-        <label className="c-searchtabs__label"><span className="c-searchtabs__icon"></span> <span className="c-searchtabs__text">{algoliaTranslations.filter}: </span></label>
-        <ul className="u-margin--0">
+      <div className={`c-searchtabs u-display--none@xs u-display--none@sm ${items.length > 1 ? "c-searchtabs--visible" : "c-searchtabs--hidden"}`}>
+        <div className="c-group u-justify-content--center@xs u-justify-content--center@sm u-justify-content--end u-box-shadow--1 u-rounded u-margin--auto c-group--horizontal">
+          
           {items.map(item => (
-            <li className="c-searchtabs__tab" key={item.value}>
-              <a
-                className="c-searchtabs__link"
-                href={createURL(item.value)}
-                style={{ fontWeight: item.isRefined ? 'bold' : '' }}
-                onClick={event => {
-                  event.preventDefault();
-                  refine(item.value);
-                }}
-              >
-                <span className="c-searchtabs_label">{item.label}</span>
-                <span className="c-searchtabs_count">{item.count}</span>
-              </a>
-            </li>
+            <a 
+            href={createURL(item.value)}
+            onClick={event => {
+              event.preventDefault();
+              refine(item.value);
+            }}
+            className={`c-button c-button--sm ripple ripple--before ${item.isRefined ? 'c-button__filled c-button__filled--primary' : 'c-button__basic c-button__basic--default'}`} type="button">   
+              <span className="c-button__label">
+                <span className="c-button__label-text">
+                  <i className="c-icon c-icon--size-inherit material-icons u-margin__right--1">
+                    filter_list
+                  </i>
+                  <span className="c-searchtabs_label">{item.label}</span>
+                  <span className="c-searchtabs_count">{item.count}</span>
+                </span>
+              </span>
+            </a>          
           ))}
-        </ul>
+        </div>
       </div>
     );
 
@@ -209,9 +200,13 @@ class AlgoliaIndexJsSearchpage {
 
             <div className="c-searchmeta">
 
-              <CustomStateResults />
+              <div className="search-result-count u-margin__top--1">
+                <span className="c-typography c-typography__variant--meta">
+                  <CustomStateResults />
+                </span>                    
+              </div>
 
-              {algoliaSettings.facettingApperanceMenu == 'false' ? <CustomMenu attribute="origin_site"/> : <MenuSelect translations={{ seeAllOption: algoliaTranslations.facetFilterString }} attribute="origin_site"/>}
+              {algoliaSettings.facettingApperanceMenu == 'false' ? <CustomMenu attribute="origin_site"/> : <MenuSelect translations={{ seeAllOption: algoliaTranslations.facetFilterString }} attribute="origin_site" className="u-margin__top--2"/>}
 
             </div>
 
