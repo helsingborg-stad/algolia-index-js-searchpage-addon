@@ -73,20 +73,20 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             importLoaders: 3, // 0 => no loaders (default); 1 => postcss-loader; 2 => sass-loader
-                            sourceMap: true,
+                            sourceMap: ifProduction(false, true),
                         },
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
                             plugins: [autoprefixer, require('postcss-object-fit-images')],
-                            sourceMap: true,
+                            sourceMap: ifProduction(false, true),
                         },
                     },
                     {
                         loader: 'sass-loader',
                         options: {
-                            sourceMap: true,
+                            sourceMap: ifProduction(false, true),
                         }
                     },
                     'import-glob-loader'
@@ -204,8 +204,11 @@ module.exports = {
 
         /**
          * Required to enable sourcemap from node_modules assets
+         * Only enable in dev. 
          */
-        new webpack.SourceMapDevToolPlugin(),
+        ifNotProduction(
+            new webpack.SourceMapDevToolPlugin()
+        ),
 
         /**
          * Enable build OS notifications (when using watch command)
