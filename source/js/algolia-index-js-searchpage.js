@@ -157,13 +157,26 @@ class AlgoliaIndexJsSearchpage {
       return (<div className="c-searchresusult__postcount c-searchresusult__postcount--hidden"></div>);
     };
 
+    function parseEntityNumber (str) {
+			return str.replace(/&#(\d+);/g, function(match, dec) {
+				return String.fromCharCode(dec);
+      });
+    }
+
     const Snippet = ({ highlight, attribute, hit }) => {
       const parsedHit = highlight({
         highlightProperty: '_snippetResult',
         attribute,
         hit,
       });
-    
+
+      for(const hit of parsedHit) {
+        //Parse HTML entities
+        const doc = new DOMParser().parseFromString(hit.value, "text/html");
+        hit.value = doc.documentElement.textContent;
+        hit.value = parseEntityNumber(hit.value);
+      }
+
       return (
         <span>
           {parsedHit.map(
