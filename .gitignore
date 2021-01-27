@@ -6,6 +6,7 @@
 node_modules/
 vendor/
 assets/dist/
+assets/manifest.json
 
 # ignore composer lock file
 composer.lock
