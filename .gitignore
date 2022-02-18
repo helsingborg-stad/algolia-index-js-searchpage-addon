@@ -8,9 +8,6 @@ vendor/
 assets/dist/
 assets/manifest.json
 
-# ignore composer lock file
-composer.lock
-
 # ignore jekyll build directory
 /_site
 

@@ -2,19 +2,18 @@ require('dotenv').config();
 
 const path = require('path');
 
-const webpack = require('webpack');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FixStyleOnlyEntriesPlugin = require('webpack-fix-style-only-entries');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const RemoveEmptyScripts = require('webpack-remove-empty-scripts')
+const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 const { getIfUtils, removeEmpty } = require('webpack-config-utils');
-const { ifProduction, ifNotProduction } = getIfUtils(process.env.NODE_ENV);
+const { ifProduction } = getIfUtils(process.env.NODE_ENV);
 
 
 module.exports = {
@@ -25,7 +24,6 @@ module.exports = {
     entry: {
         'js/app': './source/js/algolia-index-js-searchpage.js',
         'css/app': './source/sass/algolia-index-js-searchpage.scss',
-        //'css/admin': './source/sass/algolia-index-js-searchpage.scss'
     },
     /**
      * Output settings
@@ -33,6 +31,7 @@ module.exports = {
     output: {
         filename: ifProduction('[name].[contenthash].js', '[name].[contenthash].js'),
         path: path.resolve(__dirname, 'assets', 'dist'),
+        publicPath: '',
     },
     /**
      * Define external dependencies here
@@ -73,21 +72,19 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             importLoaders: 3, // 0 => no loaders (default); 1 => postcss-loader; 2 => sass-loader
-                            sourceMap: ifProduction(false, true),
                         },
                     },
                     {
                         loader: 'postcss-loader',
                         options: {
-                            plugins: [autoprefixer, require('postcss-object-fit-images')],
-                            sourceMap: ifProduction(false, true),
+                            postcssOptions: {
+                                plugins: [autoprefixer],
+                            }
                         },
                     },
                     {
                         loader: 'sass-loader',
-                        options: {
-                            sourceMap: ifProduction(false, true),
-                        }
+                        options: {}
                     },
                     'import-glob-loader'
                 ],
@@ -98,34 +95,11 @@ module.exports = {
              */
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: ifProduction('[name].[contenthash:8].[ext]', '[name].[contenthash:8].[ext]'),
-                            outputPath: 'images',
-                            publicPath: '../images',
-                        },
-                    },
-                ],
+                type: 'asset/resource',
+                generator: {
+                    filename: 'images/action_icons/[name][ext]',
+                },
             },
-
-            /**
-             * Fonts
-             */
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: ifProduction('[name].[contenthash:8].[ext]', '[name].[contenthash:8].[ext]'),
-                            outputPath: 'fonts',
-                            publicPath: '../fonts',
-                        },
-                    },
-                ],
-            }
         ],
     },
     plugins: removeEmpty([
@@ -156,7 +130,7 @@ module.exports = {
         /**
          * Fix CSS entry chunks generating js file
          */
-        new FixStyleOnlyEntriesPlugin(),
+        new RemoveEmptyScripts(),
 
         /**
          * Clean dist folder
@@ -167,13 +141,13 @@ module.exports = {
          * Output CSS files
          */
         new MiniCssExtractPlugin({
-            filename: ifProduction('[name].[contenthash:8].css', '[name].[contenthash:8].css')
+            filename: '[name].[contenthash:8].css'
         }),
 
         /**
          * Output manifest.json for cache busting
          */
-        new ManifestPlugin({
+        new WebpackManifestPlugin({
             // Filter manifest items
             filter: function(file) {
                 // Don't include source maps
@@ -203,14 +177,6 @@ module.exports = {
         }),
 
         /**
-         * Required to enable sourcemap from node_modules assets
-         * Only enable in dev. 
-         */
-        ifNotProduction(
-            new webpack.SourceMapDevToolPlugin()
-        ),
-
-        /**
          * Enable build OS notifications (when using watch command)
          */
         new WebpackNotifierPlugin({alwaysNotify: true, skipFirstNotification: true}),
@@ -218,12 +184,17 @@ module.exports = {
         /**
          * Minimize CSS assets
          */
-        ifProduction(new OptimizeCssAssetsPlugin({
-            cssProcessorPluginOptions: {
-                preset: ['default', { discardComments: { removeAll: true } }],
+        ifProduction(new CssMinimizerWebpackPlugin({
+            minimizerOptions: {
+                preset: [
+                    "default",
+                    {
+                        discardComments: { removeAll: true },
+                    },
+                ],
             },
         }))
     ]).filter(Boolean),
-    devtool: ifProduction('source-map', 'eval-source-map'),
-    stats: { children: false }
+    devtool: 'source-map',
+    stats: {children: false}
 };
