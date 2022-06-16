@@ -56,13 +56,16 @@ class AlgoliaIndexJsSearchpage {
               <h4 className="c-typography c-typography__variant--meta" data-uid="5fd08f17ab82e">
                 {he.decode(hit.origin_site)}
               </h4>
-              <p className="c-typography c-typography__variant--p" data-uid="5fd08f17abc9f">
-                <CustomSnippet attribute="content" hit={hit}></CustomSnippet>
-              </p>
+
+              <div className="u-display--flex">
+                {hit.thumbnail ?  <img src={ hit.thumbnail } className="c-searchresult__thumbnail"/> : ''}
+                <p className="c-typography c-typography__variant--p" data-uid="5fd08f17abc9f">
+                  <CustomSnippet attribute="content" hit={hit}></CustomSnippet>
+                </p>
+              </div>
+
             </div>
-
-            {hit.thumbnail ?  <img src={ hit.thumbnail } className="c-searchresult__thumbnail"/> : ''}
-
+            
           </a>
         ))}
       </section>
