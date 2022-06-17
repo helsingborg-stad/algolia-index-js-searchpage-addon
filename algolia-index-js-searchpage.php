@@ -21,6 +21,7 @@ if (! defined('WPINC')) {
 define('ALGOLIAINDEXJSSEARCHPAGE_PATH', plugin_dir_path(__FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_URL', plugins_url('', __FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_TEMPLATE_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'templates/');
+define('ALGOLIA_INDEX_MOUNT_POINT', 'custom_search_page');
 
 load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
