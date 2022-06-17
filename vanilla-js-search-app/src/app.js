@@ -1,8 +1,10 @@
-// import algoliasearch from 'algoliasearch/lite';
-// import instantsearch from 'instantsearch.js'; 
-import algoliasearch from 'algoliasearch/lite';
-import instantsearch from 'instantsearch.js/dist/instantsearch.production.min';
-// const { algoliasearch, instantsearch } = window;
+const { algoliasearch, instantsearch } = window;
+
+// const searchClient = algoliasearch('latency', '6be0576ff61c053d5f9a3225e2a90f76');
+// const searchClient = algoliasearch(
+//   'SCK6CDZ61C',
+//   '1fb3ea6877bd4592757aad6447316feb'
+// );
 
 const searchClient = algoliasearch(
   algoliaSearchData.applicationId,
@@ -28,6 +30,7 @@ search.addWidgets([
           <p>{{#helpers.highlight}}{ "attribute": "post_excerpt" }{{/helpers.highlight}}</p>
           <p>{{#helpers.highlight}}{ "attribute": "content" }{{/helpers.highlight}}</p>
           <p>{{#helpers.highlight}}{ "attribute": "post_type_name" }{{/helpers.highlight}}</p>
+          <img src="{{#helpers.highlight}}{ "attribute": "thumbnail" }{{/helpers.highlight}}">
         </article>
       </a>
       `,
