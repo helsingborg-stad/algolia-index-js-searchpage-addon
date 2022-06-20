@@ -2,9 +2,9 @@
 
     @card([
       "heading" => "_HIT_HEADING",
-      "subheading" => "Helsingborg.se",
+      "subheading" => "_HIT_EXCERPT",
     ])
-
+    
     @endcard
      
 </div>
