@@ -14,6 +14,7 @@
  */
 
  // Protect agains direct file access
+
 if (! defined('WPINC')) {
     die;
 }
@@ -22,6 +23,12 @@ define('ALGOLIAINDEXJSSEARCHPAGE_PATH', plugin_dir_path(__FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_URL', plugins_url('', __FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_TEMPLATE_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'templates/');
 define('ALGOLIA_INDEX_MOUNT_POINT', 'custom_search_page');
+
+
+define('ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'views/');
+define('ALGOLIAINDEXJSSEARCHPAGE_MODULE_VIEW_PATH', plugin_dir_path(__FILE__) . 'source/php/Modules');
+define('ALGOLIAINDEXJSSEARCHPAGE_MODULE_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'source/php/Modules/');
+
 
 load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
 

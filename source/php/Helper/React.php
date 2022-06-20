@@ -1,6 +1,6 @@
 <?php
 
-namespace AlgoliaIndexJsSearchpage\Helper;
+/* namespace AlgoliaIndexJsSearchpage\Helper;
 
 class React
 {
@@ -19,5 +19,5 @@ class React
         if (!wp_script_is('react-dom')) {
             wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@' . $version . '/umd/react-dom.' . $suffix . '.js', array('react'), null);
         }
-    }
-}
+    } 
+} */

@@ -4,8 +4,10 @@ namespace AlgoliaIndexJsSearchpage;
 
 class App
 {
+    
     public function __construct()
     {
+        new ComponentsJs();
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
 
@@ -43,23 +45,6 @@ class App
             return;
         }
 
-        //React
-        \AlgoliaIndexJsSearchpage\Helper\React::enqueue();
-
-        // //Register & enqueue script
-        // wp_enqueue_script(
-        //     'algolia',
-        //     'https://cdn.jsdelivr.net/npm/algoliasearch@4.10.5/dist/algoliasearch-lite.umd.js',
-        //     []
-        // );
-
-        // //Register & enqueue script
-        // wp_enqueue_script(
-        //     'instant-search',
-        //     'https://cdn.jsdelivr.net/npm/instantsearch.js@4.41.2',
-        //     []
-        // );
-
         //Register & enqueue script
         wp_enqueue_script(
             'algolia-index-js-searchpage-js',
@@ -82,6 +67,7 @@ class App
             'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
             'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
+            
         ]);
 
         //UI settings
@@ -134,7 +120,7 @@ class App
             }
         }
 
-        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "" && is_search()) {
+        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "wptest" && is_search()) {
             return true;
         }
 
