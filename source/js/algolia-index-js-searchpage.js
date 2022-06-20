@@ -17,6 +17,17 @@ const search = instantsearch({
   searchClient,
 });
 
+function inject(text, type) {
+  var content = document.createElement("div");
+  content.insertAdjacentHTML('beforeend', text);
+  //content.getElementById('content').innerHTML = "test";
+  //content.querySelector("#content").innerHTML = type;
+  content.innerHTML.replace("_HIT_HEADING", type);
+  console.log(content);
+  return content.innerHTML;
+}
+
+
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
@@ -24,16 +35,9 @@ search.addWidgets([
   instantsearch.widgets.hits({
     container: '#hits',
     templates: {
-      item: algoliaSearchComponents["algolia-search-results"].html + `
-      <a href="{{#helpers.highlight}}{ "attribute": "permalink" }{{/helpers.highlight}}">
-        <article>
-          <h1>{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}</h1>
-          <p>{{#helpers.highlight}}{ "attribute": "post_excerpt" }{{/helpers.highlight}}</p>
-          <p>{{#helpers.highlight}}{ "attribute": "content" }{{/helpers.highlight}}</p>
-          <p>{{#helpers.highlight}}{ "attribute": "post_type_name" }{{/helpers.highlight}}</p>
-        </article>
-      </a>
-      `,
+
+      item: 
+        inject(algoliaSearchComponents["algolia-search-results"].html, `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}`)
     },
   }),
   instantsearch.widgets.configure({
