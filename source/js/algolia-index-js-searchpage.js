@@ -18,11 +18,18 @@ const search = instantsearch({
 
 //text = blade type = content
 function inject(text, type) {
-  var content = document.createElement("span");
-  content.insertAdjacentHTML('beforeend', text);
-  //content.querySelector("#content").innerHTML = type;
-  var test = content.innerHTML.replace("_HIT_HEADING", type);
-  return test;
+
+  if (type.h.includes("post_title")) {
+    let heading = document.createElement("span");
+    heading.insertAdjacentHTML('beforeend', text);
+    console.log(type.h);
+    return heading.innerHTML.replace("_HIT_HEADING", type.h);
+  }
+
+  /*   var content = document.createElement("span");
+    content.insertAdjacentHTML('beforeend', text);
+    var test = content.innerHTML.replace("_HIT_HEADING", type);
+    return test; */
 }
 
 
@@ -34,8 +41,8 @@ search.addWidgets([
     container: '#hits',
     templates: {
 
-      item: 
-        inject(algoliaSearchComponents["algolia-search-results"].html, `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}`) + inject(algoliaSearchComponents["algolia-search-results"].html, `{{#helpers.highlight}}{ "attribute": "post_excerpt" }{{/helpers.highlight}}`)
+      item:
+        inject(algoliaSearchComponents["algolia-search-results"].html, { h: `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}` })
     },
   }),
   instantsearch.widgets.configure({
