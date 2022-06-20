@@ -5,7 +5,7 @@ import instantsearch from 'instantsearch.js/dist/instantsearch.production.min';
 
 // const { algoliasearch, instantsearch } = window;
 
-console.log(algoliaSearchComponents);
+console.log(algoliaSearchComponents["algolia-search-results"].html);
 
 const searchClient = algoliasearch(
   algoliaSearchData.applicationId,
@@ -24,7 +24,7 @@ search.addWidgets([
   instantsearch.widgets.hits({
     container: '#hits',
     templates: {
-      item: algoliaSearchComponents["authentication-bankid"].html + `
+      item: algoliaSearchComponents["algolia-search-results"].html + `
       <a href="{{#helpers.highlight}}{ "attribute": "permalink" }{{/helpers.highlight}}">
         <article>
           <h1>{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}</h1>

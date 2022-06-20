@@ -1,6 +1,10 @@
-<div class="u-margin__top--5 u-display--flex u-align-items--center u-flex-direction--column">
+<div>
+    @card 
 
-    <div data-mypages-login-qr></div>
+    <div data-inject-here>Content</div>
+    @endcard
+
+
     @button([
         'text' => 'Avbryt',
         'color' => 'default',
