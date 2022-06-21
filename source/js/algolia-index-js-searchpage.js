@@ -5,6 +5,7 @@ import instantsearch from 'instantsearch.js/dist/instantsearch.production.min';
 
 // const { algoliasearch, instantsearch } = window;
 console.log(algoliaSearchComponents["algolia-loader"].html);
+spinner(true);
 
 const searchClient = algoliasearch(
   algoliaSearchData.applicationId,
@@ -16,22 +17,28 @@ const search = instantsearch({
   searchClient,
 });
 
-spinner();
 
 
-function spinner() {
- const content = document.querySelector('#hits');
-  console.log(content);
-  console.log(content.hasChildNodes());
 
+
+function spinner (state) {
+  const content = document.querySelector("#hits");
+  if(state===true) {
+    return content.innerHTML = algoliaSearchComponents["algolia-loader"].html;
+  }
+  else {
+    return;
+  }
 }
+
+
 
 function inject(content, item) {
   if (item) {
     let element = document.createElement("span");
     element.insertAdjacentHTML('beforeend', content);
     let str = element.innerHTML.replace("_HIT_HEADING", item.heading).replace("_HIT_EXCERPT", item.excerpt).replace("_HIT_SUBHEADING", item.site).replace("_HIT_IMAGE", item.image).replace("_HIT_LINK", item.link);
- 
+    spinner(false);
     return str;
   }
 
