@@ -6,10 +6,19 @@
   a.c-card {
     display: flex;
     flex-direction: row;
+    border-radius: var(--c-card-border-radius, var(--radius-lg, calc(var(--base, 8px)*1.5)));
+
+    .c-card__image {
+      border-top-right-radius: 0;
+      border-bottom-left-radius: var(--c-card-border-radius, var(--radius-lg, calc(var(--base, 8px)*1.5)));
+      border-top-left-radius: var(--c-card-border-radius, var(--radius-lg, calc(var(--base, 8px)*1.5)));
+    }
 
     .c-card__image-background  {
       width: 160px;
       height: 100%;
+      border-bottom-left-radius: var(--c-card-border-radius, var(--radius-lg, calc(var(--base, 8px)*1.5)));
+      border-top-right-radius: 0;
     }
   }
 }
@@ -72,6 +81,5 @@
     padding-left:0;
     margin-top:var(--base, 8px);
     margin-bottom:16px;
-    
   }
 }
