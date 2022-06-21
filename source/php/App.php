@@ -98,7 +98,9 @@ class App
 
               <div class="search-panel__results">
                 <div id="searchbox"></div>
-                <div id="hits"></div>
+                <div class="o-grid">
+                    <div id="hits"></div>
+                </div>
                 <div id="pagination"></div>
               </div>
             </div>
@@ -120,7 +122,7 @@ class App
             }
         }
 
-        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "wptest" && is_search()) {
+        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "" && is_search()) {
             return true;
         }
 
