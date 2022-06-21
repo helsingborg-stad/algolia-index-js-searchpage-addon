@@ -75,7 +75,6 @@ search.addWidgets([
     container: '#pagination',
     showFirst: false,
     showLast:false,
-    totalPages: 5,
     cssClasses: {
       root: 'pagination',
       link: [
