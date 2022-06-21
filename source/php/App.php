@@ -120,7 +120,7 @@ class App
             }
         }
 
-        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "wptest" && is_search()) {
+        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "" && is_search()) {
             return true;
         }
 
