@@ -4,5 +4,6 @@
   "content" => "_HIT_EXCERPT",
   "image" => "_HIT_IMAGE",
   "link" => "_HIT_LINK",
+  "containerAware" => true,
 ])
 @endcard
