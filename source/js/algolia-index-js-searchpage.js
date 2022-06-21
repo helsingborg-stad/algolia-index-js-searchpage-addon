@@ -1,10 +1,6 @@
-// import algoliasearch from 'algoliasearch/lite';
-// import instantsearch from 'instantsearch.js'; 
 import algoliasearch from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js/dist/instantsearch.production.min';
 
-// const { algoliasearch, instantsearch } = window;
-console.log(algoliaSearchComponents["algolia-loader"].html);
 spinner(true);
 
 const searchClient = algoliasearch(
@@ -17,10 +13,6 @@ const search = instantsearch({
   searchClient,
 });
 
-
-
-
-
 function spinner (state) {
   const content = document.querySelector("#hits");
   if(state===true) {
@@ -31,24 +23,26 @@ function spinner (state) {
   }
 }
 
-
-
 function inject(content, item) {
   if (item) {
-    console.log(item.image);
     let element = document.createElement("span");
     element.insertAdjacentHTML('beforeend', content);
     let str = element.innerHTML.replace("_HIT_HEADING", item.heading).replace("_HIT_EXCERPT", item.excerpt).replace("_HIT_SUBHEADING", item.site).replace("_HIT_IMAGE", item.image).replace("_HIT_LINK", item.link);
     spinner(false);
     return str;
   }
-
 }
-
 
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
+    placeholder: 'Vad letar du efter?',
+    showReset: false,
+    showLoadingIndicator: false,
+    showSubmit: false,
+    cssClasses: {
+      input: "CustomInput"
+    }
   }),
   instantsearch.widgets.hits({
     container: '#hits',
@@ -59,8 +53,7 @@ search.addWidgets([
           excerpt: `{{#helpers.highlight}}{ "attribute": "post_excerpt" }{{/helpers.highlight}}`, 
           site: `{{origin_site}}`, 
           image: `{{thumbnail}}`, 
-          link: `{{permalink}}` }),
-            
+          link: `{{permalink}}` }),    
     },
   }),
   instantsearch.widgets.configure({
