@@ -14,15 +14,7 @@
     "> 1%",
     "not dead"
   ],
-  "dependencies": {
-    "@babel/preset-react": "^7.12.10",
-    "algoliasearch": "^4.12.1",
-    "he": "^1.2.0",
-    "instantsearch.js": "^4.41.2",
-    "qs": "^6.9.6",
-    "react": "^16.14.0",
-    "react-instantsearch-dom": "^6.8.3"
-  },
+
   "devDependencies": {
     "@babel/core": "^7.17.2",
     "@babel/plugin-proposal-class-properties": "^7.16.7",
