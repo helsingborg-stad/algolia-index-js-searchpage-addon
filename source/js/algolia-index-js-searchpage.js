@@ -4,7 +4,7 @@ import algoliasearch from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js/dist/instantsearch.production.min';
 
 // const { algoliasearch, instantsearch } = window;
-
+console.log(algoliaSearchComponents["algolia-loader"].html);
 
 const searchClient = algoliasearch(
   algoliaSearchData.applicationId,
@@ -16,21 +16,27 @@ const search = instantsearch({
   searchClient,
 });
 
-//text = blade type = content
-function inject(text, type) {
+spinner();
 
-  if (type.h.includes("post_title")) {
-    let heading = document.createElement("span");
-    heading.insertAdjacentHTML('beforeend', text);
-    console.log(type.h);
-    return heading.innerHTML.replace("_HIT_HEADING", type.h);
+
+function spinner() {
+ const content = document.querySelector('#hits');
+  console.log(content);
+  console.log(content.hasChildNodes());
+
+}
+
+function inject(content, item) {
+  if (item) {
+    let element = document.createElement("span");
+    element.insertAdjacentHTML('beforeend', content);
+    let str = element.innerHTML.replace("_HIT_HEADING", item.heading).replace("_HIT_EXCERPT", item.excerpt).replace("_HIT_SUBHEADING", item.site).replace("_HIT_IMAGE", item.image).replace("_HIT_LINK", item.link);
+ 
+    return str;
   }
 
-  /*   var content = document.createElement("span");
-    content.insertAdjacentHTML('beforeend', text);
-    var test = content.innerHTML.replace("_HIT_HEADING", type);
-    return test; */
 }
+
 
 
 search.addWidgets([
@@ -40,9 +46,14 @@ search.addWidgets([
   instantsearch.widgets.hits({
     container: '#hits',
     templates: {
-
-      item:
-        inject(algoliaSearchComponents["algolia-search-results"].html, { h: `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}` })
+      item: 
+        inject(algoliaSearchComponents["algolia-search-results"].html, { 
+          heading: `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}`, 
+          excerpt: `{{#helpers.highlight}}{ "attribute": "post_excerpt" }{{/helpers.highlight}}`, 
+          site: `{{#helpers.highlight}}{ "attribute": "origin_site" }{{/helpers.highlight}}`, 
+          image: `{{#helpers.highlight}}{ "attribute": "thumbnail" }{{/helpers.highlight}}`, 
+          link: `{{#helpers.highlight}}{ "attribute": "permalink" }{{/helpers.highlight}}` }),
+            
     },
   }),
   instantsearch.widgets.configure({
