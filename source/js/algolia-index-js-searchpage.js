@@ -35,6 +35,7 @@ function spinner (state) {
 
 function inject(content, item) {
   if (item) {
+    console.log(item.image);
     let element = document.createElement("span");
     element.insertAdjacentHTML('beforeend', content);
     let str = element.innerHTML.replace("_HIT_HEADING", item.heading).replace("_HIT_EXCERPT", item.excerpt).replace("_HIT_SUBHEADING", item.site).replace("_HIT_IMAGE", item.image).replace("_HIT_LINK", item.link);
@@ -43,7 +44,6 @@ function inject(content, item) {
   }
 
 }
-
 
 
 search.addWidgets([
@@ -57,9 +57,9 @@ search.addWidgets([
         inject(algoliaSearchComponents["algolia-search-results"].html, { 
           heading: `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}`, 
           excerpt: `{{#helpers.highlight}}{ "attribute": "post_excerpt" }{{/helpers.highlight}}`, 
-          site: `{{#helpers.highlight}}{ "attribute": "origin_site" }{{/helpers.highlight}}`, 
-          image: `{{#helpers.highlight}}{ "attribute": "thumbnail" }{{/helpers.highlight}}`, 
-          link: `{{#helpers.highlight}}{ "attribute": "permalink" }{{/helpers.highlight}}` }),
+          site: `{{origin_site}}`, 
+          image: `{{thumbnail}}`, 
+          link: `{{permalink}}` }),
             
     },
   }),
@@ -80,6 +80,25 @@ search.addWidgets([
   }),
   instantsearch.widgets.pagination({
     container: '#pagination',
+    showFirst: false,
+    showLast:false,
+    totalPages: 5,
+    cssClasses: {
+      root: 'pagination',
+      link: [
+      'c-button', 
+      'c-pagination__link',
+      'c-button--sm',
+      'c-button__transparent',
+    ],
+      selectedItem: [
+        'c-c-pagination__link',
+        'c-pagination__item--is-active',
+        'c-button__filled',
+        'c-button__filled--primary',
+        'c-button--sm'
+      ],
+    },
   }),
 ]);
 

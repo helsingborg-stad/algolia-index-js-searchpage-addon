@@ -1,120 +1,35 @@
-/* Searchresult */
+/* General */
+.ais-Hits-list {
+  list-style: none;
+  padding-left:0;
 
+  a.c-card {
+    display: flex;
+    flex-direction: row;
 
-
-$bp: 900px;
-
-.c-searchresult {
-  margin-top: 8px * 2;
-
-  .c-searchresult__thumbnail {
-    margin: auto 24px auto 16px; 
-    width: 96px; 
-    height: auto;
-    border-radius: 12.5px;
+    .c-card__image-background  {
+      width: 160px;
+      height: 100%;
+    }
   }
-
 }
 
-.c-searchmeta {
+
+/* Pagination */
+.ais-Pagination {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
-.c-searchtabs--hidden {
-  visibility: hidden;
-}
-
-.c-searchtabs {
-  margin-top: 16px;
-}
-
-.c-searchtabs_count:before { 
-  content: " ("; 
-}
-
-.c-searchtabs_count:after { 
-  content: ")"; 
-}
-
-/* Preloader animation */
-.c-algolia-instantsearch-ripple {
-  margin: 20vh auto;
-  display: block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-
-.c-algolia-instantsearch-ripple:after {
-  content: attr(data-label) "...";
-  top: 80px;
-  position: absolute;
-  opacity: .7;
-}
-
-.c-pagination {
-  margin: 16px auto; 
-  display: inline-block;
-}
-
-.header {
+.ais-Pagination-list {
+  list-style: none;
   display: flex;
-  align-items: center;
-  min-height: 50px;
-  padding: 0.5rem 1rem;
-  background-image: linear-gradient(284deg, #fedd4e, #fcb43a);
-  color: #fff;
-  margin-bottom: 1rem;
-}
+  padding-left:0;
 
-.header a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.header-title {
-  font-size: 1.2rem;
-  font-weight: normal;
-}
-
-.header-title::after {
-  content: ' ▸ ';
-  padding: 0 0.5rem;
-}
-
-.header-subtitle {
-  font-size: 1.2rem;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-.search-panel {
-  display: flex;
-}
-
-.search-panel__filters {
-  flex: 1;
-}
-
-.search-panel__results {
-  flex: 3;
-}
-
-.ais-Highlight-highlighted {
-  color: inherit;
-  font-size: inherit;
-}
-
-#searchbox {
-  margin-bottom: 2rem;
-}
-
-#pagination {
-  margin: 2rem auto;
-  text-align: center;
-}
+  .ais-Pagination-item {
+    padding-left:0;
+    margin-top:var(--base, 8px);
+    margin-bottom:16px;
+    
+  }
+  }
