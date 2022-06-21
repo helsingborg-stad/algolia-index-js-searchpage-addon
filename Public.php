@@ -10,7 +10,7 @@ if (!function_exists('algolia_search_page_render_blade_view')) {
     {
         $init = new ComponentLibraryInit([
             ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH,
-            ALGOLIAINDEXJSSEARCHPAGE_MODULE_VIEW_PATH
+          
         ]);
 
         $bladeEngine = $init->getEngine();
