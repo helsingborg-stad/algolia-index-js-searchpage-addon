@@ -13,14 +13,14 @@ class App
 
         add_filter('AlgoliaIndex/BackendSearchActive', '__return_false');
         add_filter('get_search_form', '__return_null');
-
+   
         //Mount point & render
-        add_action('plugins_loaded', function () {
+        add_action('init', function () {
             add_action(
-                defined('ALGOLIA_INDEX_MOUNT_POINT') ? ALGOLIA_INDEX_MOUNT_POINT : 'get_search_form',
+                defined('ALGOLIA_INDEX_MOUNT_POINT') ? ALGOLIA_INDEX_MOUNT_POINT : 'get_search_form', 
                 array($this, 'renderSearchpageMount')
             );
-        });
+        }, 10);
     }
 
     /**
@@ -122,7 +122,7 @@ class App
             }
         }
 
-        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "" && is_search()) {
+        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "wptest" && is_search()) {
             return true;
         }
 

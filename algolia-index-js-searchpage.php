@@ -27,6 +27,8 @@ define('ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'vi
 
 
 
+
+
 load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
 require_once ALGOLIAINDEXJSSEARCHPAGE_PATH . 'source/php/Vendor/Psr4ClassLoader.php';
