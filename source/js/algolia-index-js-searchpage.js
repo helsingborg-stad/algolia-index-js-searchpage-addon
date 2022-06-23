@@ -13,6 +13,7 @@ const search = instantsearch({
   searchClient,
 });
 
+
 function spinner (state) {
   const content = document.querySelector("#hits");
   if(state===true) {

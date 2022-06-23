@@ -81,3 +81,18 @@
   }
 }
 
+/* Queries */
+@media screen and (max-width: 720px) {
+ .ais-Hits-item  {
+ .c-card {
+  flex-direction: column;
+ } 
+ .c-card__image  {
+  overflow: hidden;
+  max-height: 200px;
+ }
+}
+
+
+}
+

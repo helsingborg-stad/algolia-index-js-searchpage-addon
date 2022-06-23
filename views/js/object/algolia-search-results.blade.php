@@ -5,5 +5,6 @@
   "image" => "_HIT_IMAGE",
   "link" => "_HIT_LINK",
   "containerAware" => true,
+  "classList" => ['c-card--size-md']
 ])
 @endcard
