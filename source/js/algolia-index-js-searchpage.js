@@ -13,7 +13,6 @@ const search = instantsearch({
   searchClient,
 });
 
-
 function spinner (state) {
   const content = document.querySelector("#hits");
   if(state===true) {
@@ -56,6 +55,8 @@ search.addWidgets([
           image: `{{thumbnail}}`, 
           link: `{{permalink}}` }),    
     },
+    escapeHTML: false,
+
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 8,
@@ -96,3 +97,4 @@ search.addWidgets([
 ]);
 
 search.start();
+
