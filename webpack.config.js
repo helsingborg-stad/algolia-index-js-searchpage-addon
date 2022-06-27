@@ -22,8 +22,8 @@ module.exports = {
      * Add your entry files here
      */
     entry: {
-        'js/app': './source/js/algolia-index-js-searchpage.js',
-        'css/app': './source/sass/algolia-index-js-searchpage.scss',
+        'js/instantsearch': './source/js/algolia-index-js-searchpage.js',
+        'css/instantsearch': './source/sass/algolia-index-js-searchpage.scss',
     },
     /**
      * Output settings

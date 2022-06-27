@@ -4,7 +4,8 @@ namespace AlgoliaIndexJsSearchpage;
 
 class App
 {
-    
+    private static $hasRenderedSearchPage = false;
+
     public function __construct()
     {
         new ComponentsJs();
@@ -14,7 +15,7 @@ class App
         add_filter('AlgoliaIndex/BackendSearchActive', '__return_false');
         add_filter('get_search_form', '__return_null');
    
-        //Mount point & render
+        //Mount point & render 
         add_action('init', function () {
             add_action(
                 defined('ALGOLIA_INDEX_MOUNT_POINT') ? ALGOLIA_INDEX_MOUNT_POINT : 'get_search_form', 
@@ -32,7 +33,12 @@ class App
         if (!self::isSearchPage()) {
             return;
         }
-        wp_enqueue_style('algolia-index-js-searchpage-css', ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('css/app.css'));
+        wp_enqueue_style(
+            'algolia-index-js-searchpage-css', 
+            ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
+                'css/instantsearch.css'
+            )
+        );
     }
 
     /**
@@ -48,7 +54,9 @@ class App
         //Register & enqueue script
         wp_enqueue_script(
             'algolia-index-js-searchpage-js',
-            ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name('js/app.js'),
+            ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
+                'js/instantsearch.js'
+            ),
             []
         );
 
@@ -67,7 +75,6 @@ class App
             'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
             'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
-            
         ]);
 
         //UI settings
@@ -87,24 +94,13 @@ class App
             return;
         }
 
-        global $renderedSearch;
-        if (!isset($renderedSearch)) {
-            $renderedSearch = true;
-            echo '<div class="container">
-            <div class="search-panel">
-               <div class="search-panel__filters">
-                <div id="dynamic-widgets"></div>
-              </div> 
-
-              <div class="search-panel__results">
-                <div id="searchbox"></div>
-                <div class="o-grid">
-                    <div id="hits"></div>
-                </div>
-                <div id="pagination"></div>
-              </div>
-            </div>
-          </div>';
+        if (!self::$hasRenderedSearchPage) {
+            echo algolia_search_page_render_blade_view(
+                'search-page',
+                [],
+                false
+            );
+            self::$hasRenderedSearchPage = true;
         }
     }
 
