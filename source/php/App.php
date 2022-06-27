@@ -34,7 +34,7 @@ class App
             return;
         }
         wp_enqueue_style(
-            'algolia-index-js-searchpage-css', 
+            'algolia-index-js-searchpage',
             ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
                 'css/instantsearch.css'
             )
