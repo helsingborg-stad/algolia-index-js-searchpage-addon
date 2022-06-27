@@ -1,5 +1,6 @@
 import algoliasearch from 'algoliasearch/lite';
-import instantsearch from 'instantsearch.js/dist/instantsearch.production.min';
+import instantsearch from 'instantsearch.js';
+import { searchBox, hits, configure, pagination } from 'instantsearch.js/es/widgets';
 
 spinner(true);
 
@@ -34,7 +35,7 @@ function inject(content, item) {
 }
 
 search.addWidgets([
-  instantsearch.widgets.searchBox({
+  searchBox({
     container: '#searchbox',
     placeholder: 'Vad letar du efter?',
     showReset: false,
@@ -44,7 +45,7 @@ search.addWidgets([
       input: "CustomInput"
     }
   }),
-  instantsearch.widgets.hits({
+  hits({
     container: '#hits',
     templates: {
       item: 
@@ -58,22 +59,11 @@ search.addWidgets([
     escapeHTML: false,
 
   }),
-  instantsearch.widgets.configure({
+  configure({
     hitsPerPage: 8,
   }),
-  instantsearch.widgets.dynamicWidgets({
-    container: '#dynamic-widgets',
-    fallbackWidget({ container, attribute }) {
-      return instantsearch.widgets.panel({ templates: { header: attribute } })(
-        instantsearch.widgets.refinementList
-      )({
-        container,
-        attribute,
-      });
-    },
-    widgets: [],
-  }),
-  instantsearch.widgets.pagination({
+
+  pagination({
     container: '#pagination',
     showFirst: false,
     showLast:false,
