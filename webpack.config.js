@@ -51,7 +51,7 @@ module.exports = {
                     loader: 'babel-loader',
                     options: {
                         // Babel config goes here
-                        presets: ['@babel/preset-env', '@babel/preset-react'],
+                        presets: ['@babel/preset-env'],
                         plugins: [
                             '@babel/plugin-syntax-dynamic-import',
                             '@babel/plugin-proposal-export-default-from',
