@@ -21,7 +21,7 @@ class ComponentsJs
     public function renderComponents() //:void
     {
         wp_localize_script(
-            'algolia-index-js-searchpage-js',
+            'algolia-index-js-searchpage',
             'algoliaSearchComponents',
             $this->components
         );
