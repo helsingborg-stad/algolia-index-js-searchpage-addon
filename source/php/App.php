@@ -53,7 +53,7 @@ class App
 
         //Register & enqueue script
         wp_enqueue_script(
-            'algolia-index-js-searchpage-js',
+            'algolia-index-js-searchpage',
             ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
                 'js/instantsearch.js'
             ),
@@ -61,7 +61,7 @@ class App
         );
 
         //Localize script
-        wp_localize_script('algolia-index-js-searchpage-js', 'algoliaTranslations', [
+        wp_localize_script('algolia-index-js-searchpage', 'algoliaTranslations', [
             'noresult' => __("No matches where found on the query", 'algolia-index-js-searchpage'),
             'filter' => __("Filter results from", 'algolia-index-js-searchpage'),
             'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
@@ -71,14 +71,14 @@ class App
         ]);
 
         //Get keys & indexname
-        wp_localize_script('algolia-index-js-searchpage-js', 'algoliaSearchData', [
+        wp_localize_script('algolia-index-js-searchpage', 'algoliaSearchData', [
             'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
             'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
         ]);
 
         //UI settings
-        wp_localize_script('algolia-index-js-searchpage-js', 'algoliaSettings', [
+        wp_localize_script('algolia-index-js-searchpage', 'algoliaSettings', [
             'facettingApperanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU') ? "true" : "false",
         ]);
     }
