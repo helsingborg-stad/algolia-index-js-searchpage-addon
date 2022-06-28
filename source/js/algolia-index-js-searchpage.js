@@ -21,9 +21,8 @@ const search = instantsearch({
 function spinner (state) {
   const content = document.querySelector("#hits");
   if(state===true) {
-    return content.innerHTML = algoliaSearchComponents["algolia-loader"].html;
-  }
-  else {
+    return content.innerHTML = algoliaSearchComponents["loader"].html;
+  } else {
     return;
   }
 }
