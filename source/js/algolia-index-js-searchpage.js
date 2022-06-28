@@ -51,11 +51,19 @@ search.addWidgets([
       item: 
         inject(algoliaSearchComponents["algolia-search-results"].html, { 
           heading: `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}`, 
-          excerpt: `{{#helpers.highlight}}{ "attribute": "post_excerpt" }{{/helpers.highlight}}`, 
+          excerpt: `{{{post_excerpt}}}`, 
           site: `{{origin_site}}`, 
           image: `{{thumbnail}}`, 
           link: `{{permalink}}` }),    
     },
+    
+    transformItems: function (items) {
+      return items.map(item => ({
+        ...item,
+        post_excerpt: item._highlightResult['post_excerpt'].value.replace("[&amp;hellip;]", "..."),
+      }));
+    },
+
     escapeHTML: false,
 
   }),
