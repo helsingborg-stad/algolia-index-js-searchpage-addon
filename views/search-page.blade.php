@@ -16,7 +16,7 @@
         @endfield
       </div>
       <div id="hits">
-        @include('js.object.loader'); 
+        @include('js.object.loader')
       </div>
       <div id="pagination"></div>
     </div>
