@@ -25,11 +25,31 @@ function spinner (state) {
 }
 
 function inject(content, item) {
+
   if (item) {
     let element = document.createElement("span");
+    
     element.insertAdjacentHTML('beforeend', content);
-    let str = element.innerHTML.replace("_HIT_HEADING", item.heading).replace("_HIT_EXCERPT", item.excerpt).replace("_HIT_SUBHEADING", item.site).replace("_HIT_IMAGE", item.image).replace("_HIT_LINK", item.link);
+   
+    let str = element.innerHTML.replace(
+      "_HIT_HEADING",
+      item.heading
+    ).replace(
+      "_HIT_EXCERPT",
+      item.excerpt
+    ).replace(
+      "_HIT_SUBHEADING",
+      item.site
+    ).replace(
+      "_HIT_IMAGE",
+      item.image
+    ).replace(
+      "_HIT_LINK",
+      item.link
+    );
+
     spinner(false);
+
     return str;
   }
 }
@@ -48,13 +68,18 @@ search.addWidgets([
   hits({
     container: '#hits',
     templates: {
+      empty: algoliaSearchComponents["noresult"].html,
       item: 
-        inject(algoliaSearchComponents["algolia-search-results"].html, { 
-          heading: `{{{post_title}}}`, 
-          excerpt: `{{{post_excerpt}}}`, 
-          site: `{{origin_site}}`, 
-          image: `{{thumbnail}}`, 
-          link: `{{permalink}}` }),    
+        inject(
+          algoliaSearchComponents["result"].html,
+          {
+            heading: `{{{post_title}}}`, 
+            excerpt: `{{{post_excerpt}}}`, 
+            site: `{{origin_site}}`, 
+            image: `{{thumbnail}}`, 
+            link: `{{permalink}}` 
+          }
+        ),    
     },
 
     transformItems: function (items) {
@@ -71,7 +96,6 @@ search.addWidgets([
   configure({
     hitsPerPage: 8,
   }),
-
   pagination({
     container: '#pagination',
     showFirst: false,
