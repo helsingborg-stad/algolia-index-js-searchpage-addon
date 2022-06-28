@@ -73,8 +73,6 @@ search.addWidgets([
           algoliaSearchComponents["hit"].html : algoliaSearchComponents["hit-noimg"].html
         ); 
 
-        console.log(hit);
-
         return htmlString
         .replace("{ALGOLIA_JS_HIT_ID}", hit.uuid)
         .replace("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit._highlightResult['post_title'].value))
