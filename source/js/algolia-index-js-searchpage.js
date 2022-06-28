@@ -68,10 +68,15 @@ search.addWidgets([
   hits({
     container: '#hits',
     templates: {
-      empty: algoliaSearchComponents["noresult"].html,
+      empty(results) {
+        return algoliaSearchComponents["noresult"].html.replace(
+          "{ALGOLIA_JS_SEARCH_QUERY}",
+          results.query
+        );
+      },
       item: 
         inject(
-          algoliaSearchComponents["result"].html,
+          algoliaSearchComponents["hit"].html,
           {
             heading: `{{{post_title}}}`, 
             excerpt: `{{{post_excerpt}}}`, 
