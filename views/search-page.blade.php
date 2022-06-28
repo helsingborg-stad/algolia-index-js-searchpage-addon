@@ -1,8 +1,7 @@
 <div class="container">
   <div class="search-panel">
-    <div class="search-panel__results">
+    <div class="search-panel__results u-display--flex u-flex--gridgap u-flex-direction--column">
       <div id="searchbox">
-
         @field([
             'id' => 'searchBoxField',
             'type' => 'text',
@@ -15,12 +14,8 @@
             'icon' => ['icon' => 'search']
         ])
         @endfield
-
-
       </div>
-      <div class="o-grid">
-          <div id="hits"></div>
-      </div>
+      <div id="hits"></div>
       <div id="pagination"></div>
     </div>
   </div>
