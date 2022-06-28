@@ -4,6 +4,8 @@ import { searchBox, hits, configure, pagination } from 'instantsearch.js/es/widg
 
 spinner(true);
 
+
+
 const searchClient = algoliasearch(
   algoliaSearchData.applicationId,
   algoliaSearchData.publicApiKey,
@@ -22,6 +24,12 @@ function spinner (state) {
   else {
     return;
   }
+}
+
+function decodeHtml(html) {
+  var txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
 }
 
 function inject(content, item) {
@@ -81,24 +89,12 @@ search.addWidgets([
 
         return htmlString
         .replace("{ALGOLIA_JS_HIT_ID}", hit.uuid)
-        .replace("{ALGOLIA_JS_HIT_HEADING}", hit.post_title)
+        .replace("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit.post_title))
         .replace("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
-        .replace("{ALGOLIA_JS_HIT_EXCERPT}", hit.post_excerpt)
+        .replace("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit.post_excerpt))
         .replace("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail)
         .replace("{ALGOLIA_JS_HIT_LINK}", hit.link);
-      },
-      /*item: 
-        inject(
-          algoliaSearchComponents["hit"].html,
-          {
-            heading: `{{{post_title}}}`, 
-            excerpt: `{{{post_excerpt}}}`, 
-            site: `{{origin_site}}`, 
-            image: `{{thumbnail}}`, 
-            link: `{{permalink}}` 
-          }
-        ),    
-      */
+      }
     },
 
     transformItems: function (items) {
