@@ -71,7 +71,22 @@ search.addWidgets([
     showSubmit: false,
     cssClasses: {
       input: "CustomInput"
-    }
+    },
+    queryHook(query, search) {
+      //Update url
+      var url = new URL(window.location);
+      url.searchParams.has('s') ? url.searchParams.set(
+        's', query
+      ) : url.searchParams.append(
+        's', query
+      );
+      url.search = url.searchParams;
+      url        = url.toString();
+      history.pushState({}, null, url);
+
+      //Do search
+      search(query);
+    },
   }),
   hits({
     container: '#hits',
