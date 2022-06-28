@@ -58,7 +58,7 @@ function inject(content, item) {
       item.link
     );
 
-    spinner(false);
+    //spinner(false);
 
     return str;
   }
@@ -139,13 +139,15 @@ search.addWidgets([
           algoliaSearchComponents["hit"].html : algoliaSearchComponents["hit-noimg"].html
         ); 
 
+        console.log(hit);
+
         return htmlString
         .replace("{ALGOLIA_JS_HIT_ID}", hit.uuid)
         .replace("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit.post_title))
         .replace("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
         .replace("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit.post_excerpt))
         .replace("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail)
-        .replace("{ALGOLIA_JS_HIT_LINK}", hit.link);
+        .replace("{ALGOLIA_JS_HIT_LINK}", hit.permalink);
       }
     },
 
