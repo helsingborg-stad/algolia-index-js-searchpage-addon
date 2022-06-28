@@ -14,8 +14,8 @@ class App
 
         add_filter('AlgoliaIndex/BackendSearchActive', '__return_false');
         add_filter('get_search_form', '__return_null');
-   
-        //Mount point & render 
+
+        //Mount point & render
         add_action('init', function () {
             add_action(
                 defined('ALGOLIA_INDEX_MOUNT_POINT') ? ALGOLIA_INDEX_MOUNT_POINT : 'get_search_form', 
