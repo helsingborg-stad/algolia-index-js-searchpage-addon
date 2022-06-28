@@ -75,6 +75,15 @@ search.addWidgets([
   }),
   hits({
     container: '#hits',
+    cssClasses: {
+      root: '',
+      list: [
+        'unlist',
+        'u-display--flex',
+        'u-flex--gridgap',
+        'u-flex-direction--column'
+      ],
+    },
     templates: {
       empty(results) {
         return algoliaSearchComponents["noresult"].html.replace(

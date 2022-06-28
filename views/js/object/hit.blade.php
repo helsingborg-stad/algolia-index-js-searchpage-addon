@@ -1,7 +1,7 @@
 @card([
   "ID" => "{ALGOLIA_JS_HIT_ID}",
   "heading" => "{ALGOLIA_JS_HIT_HEADING}",
-  "subHeading" => "{ALGOLIA_JS_HIT_SUBHEADING}",
+  "meta" => "{ALGOLIA_JS_HIT_SUBHEADING}",
   "content" => "{ALGOLIA_JS_HIT_EXCERPT}",
   "image" => "{ALGOLIA_JS_HIT_IMAGE}",
   "link" => "{ALGOLIA_JS_HIT_LINK}",
