@@ -3,7 +3,6 @@
   "heading" => "{ALGOLIA_JS_HIT_HEADING}",
   "subHeading" => "{ALGOLIA_JS_HIT_SUBHEADING}",
   "content" => "{ALGOLIA_JS_HIT_EXCERPT}",
-  "image" => "{ALGOLIA_JS_HIT_IMAGE}",
   "link" => "{ALGOLIA_JS_HIT_LINK}",
   "classList" => ['c-card--size-md'],
   "imageFirst" => true

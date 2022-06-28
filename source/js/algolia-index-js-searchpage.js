@@ -74,7 +74,20 @@ search.addWidgets([
           results.query
         );
       },
-      item: 
+      item(hit) {
+        let htmlString = (hit.thumbnail ? 
+          algoliaSearchComponents["hit"].html : algoliaSearchComponents["hit-noimg"].html
+        ); 
+
+        return htmlString
+        .replace("{ALGOLIA_JS_HIT_ID}", hit.uuid)
+        .replace("{ALGOLIA_JS_HIT_HEADING}", hit.post_title)
+        .replace("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
+        .replace("{ALGOLIA_JS_HIT_EXCERPT}", hit.post_excerpt)
+        .replace("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail)
+        .replace("{ALGOLIA_JS_HIT_LINK}", hit.link);
+      },
+      /*item: 
         inject(
           algoliaSearchComponents["hit"].html,
           {
@@ -85,6 +98,7 @@ search.addWidgets([
             link: `{{permalink}}` 
           }
         ),    
+      */
     },
 
     transformItems: function (items) {
