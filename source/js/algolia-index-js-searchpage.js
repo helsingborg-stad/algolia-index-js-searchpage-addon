@@ -1,6 +1,8 @@
 import algoliasearch from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js';
+import { connectSearchBox } from 'instantsearch.js/es/connectors'; 
 import { searchBox, hits, configure, pagination } from 'instantsearch.js/es/widgets';
+
 
 spinner(true);
 
@@ -62,7 +64,32 @@ function inject(content, item) {
   }
 }
 
+
+/* Searchbox */
+const renderSearchBox = (renderOptions, isFirstRender) => {
+  const { query, refine, clear, isSearchStalled, widgetParams } = renderOptions;
+  if (isFirstRender) {
+    document.getElementById('input_searchboxfield').addEventListener('input', event => {
+      refine(event.target.value);
+    });
+  }
+};
+const customSearchBox = connectSearchBox(
+  renderSearchBox
+);
+
 search.addWidgets([
+  customSearchBox({
+    container: document.querySelector('#searchbox'),
+  })
+]);
+
+/* End searchbox */ 
+
+
+search.addWidgets([
+
+  /*
   searchBox({
     container: '#searchbox',
     placeholder: 'Vad letar du efter?',
@@ -88,6 +115,7 @@ search.addWidgets([
       search(query);
     },
   }),
+  */
   hits({
     container: '#hits',
     cssClasses: {
