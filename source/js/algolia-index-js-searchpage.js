@@ -56,11 +56,11 @@ search.addWidgets([
           image: `{{thumbnail}}`, 
           link: `{{permalink}}` }),    
     },
-    
+
     transformItems: function (items) {
       return items.map(item => ({
         ...item,
-        post_excerpt: item._highlightResult['post_excerpt'].value.replace("[&amp;hellip;]", "..."),
+        post_excerpt: item._highlightResult['post_excerpt'].value.replace("[&amp;hellip;]", "...").replace('&amp;#038;', "&"),
       }));
     },
 
