@@ -50,7 +50,7 @@ search.addWidgets([
     templates: {
       item: 
         inject(algoliaSearchComponents["algolia-search-results"].html, { 
-          heading: `{{#helpers.highlight}}{ "attribute": "post_title" }{{/helpers.highlight}}`, 
+          heading: `{{{post_title}}}`, 
           excerpt: `{{{post_excerpt}}}`, 
           site: `{{origin_site}}`, 
           image: `{{thumbnail}}`, 
@@ -61,6 +61,7 @@ search.addWidgets([
       return items.map(item => ({
         ...item,
         post_excerpt: item._highlightResult['post_excerpt'].value.replace("[&amp;hellip;]", "...").replace('&amp;#038;', "&"),
+        post_title: item._highlightResult['post_title'].value.replace('&amp;#038;', "&"),
       }));
     },
 
