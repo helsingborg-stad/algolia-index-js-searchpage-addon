@@ -75,6 +75,7 @@ class App
             'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
             'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
+            'searchQuery' => get_search_query(),
         ]);
 
         //UI settings
