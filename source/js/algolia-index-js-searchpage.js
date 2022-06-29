@@ -22,9 +22,8 @@ const search = instantsearch({
 function spinner (state) {
   const content = document.querySelector("#hits");
   if(state===true) {
-    return content.innerHTML = algoliaSearchComponents["algolia-loader"].html;
-  }
-  else {
+    return content.innerHTML = algoliaSearchComponents["loader"].html;
+  } else {
     return;
   }
 }
@@ -34,37 +33,6 @@ function decodeHtml(html) {
   txt.innerHTML = html;
   return txt.value;
 }
-
-function inject(content, item) {
-
-  if (item) {
-    let element = document.createElement("span");
-    
-    element.insertAdjacentHTML('beforeend', content);
-   
-    let str = element.innerHTML.replace(
-      "_HIT_HEADING",
-      item.heading
-    ).replace(
-      "_HIT_EXCERPT",
-      item.excerpt
-    ).replace(
-      "_HIT_SUBHEADING",
-      item.site
-    ).replace(
-      "_HIT_IMAGE",
-      item.image
-    ).replace(
-      "_HIT_LINK",
-      item.link
-    );
-
-    spinner(false);
-
-    return str;
-  }
-}
-
 
 /* Searchbox */
 const renderSearchBox = (renderOptions, isFirstRender) => {
@@ -87,7 +55,6 @@ search.addWidgets([
 
   })
 ]);
-
 /* End searchbox */ 
 
 /* Pagination */
@@ -185,34 +152,6 @@ search.addWidgets([
 
 
 search.addWidgets([
-
-  /*
-  searchBox({
-    container: '#searchbox',
-    placeholder: 'Vad letar du efter?',
-    showReset: false,
-    showLoadingIndicator: false,
-    showSubmit: false,
-    cssClasses: {
-      input: "CustomInput"
-    },
-    queryHook(query, search) {
-      //Update url
-      var url = new URL(window.location);
-      url.searchParams.has('s') ? url.searchParams.set(
-        's', query
-      ) : url.searchParams.append(
-        's', query
-      );
-      url.search = url.searchParams;
-      url        = url.toString();
-      history.pushState({}, null, url);
-
-      //Do search
-      search(query);
-    },
-  }),
-  */
   hits({
     container: '#hits',
     cssClasses: {
@@ -238,25 +177,14 @@ search.addWidgets([
 
         return htmlString
         .replace("{ALGOLIA_JS_HIT_ID}", hit.uuid)
-        .replace("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit.post_title))
+        .replace("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit._highlightResult['post_title'].value))
         .replace("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
-        .replace("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit.post_excerpt))
+        .replace("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit._highlightResult['post_excerpt'].value))
         .replace("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail)
-        .replace("{ALGOLIA_JS_HIT_LINK}", hit.link);
+        .replace("{ALGOLIA_JS_HIT_LINK}", hit.permalink);
       }
     },
-
-    transformItems: function (items) {
-      return items.map(item => ({
-        ...item,
-        post_excerpt: item._highlightResult['post_excerpt'].value.replace("[&amp;hellip;]", "...").replace('&amp;#038;', "&"),
-        post_title: item._highlightResult['post_title'].value.replace('&amp;#038;', "&"),
-      }));
-      
-    },
-
-    escapeHTML: false,
-
+    escapeHTML: false
   }),
   configure({
     hitsPerPage: 8,
