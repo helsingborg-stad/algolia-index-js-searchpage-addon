@@ -10,7 +10,7 @@
                 'name' => 'search',
                 'required' => true,
             ],
-            'label' => "Vad letar du efter?",
+            'label' => $lang->searchLabel,
             'icon' => ['icon' => 'search']
         ])
         @endfield
