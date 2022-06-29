@@ -89,22 +89,21 @@ const renderPagination = (renderOptions, isFirstRender) => {
 
   const container = document.querySelector('#pagination');
   let paginationHtml = algoliaSearchComponents["pagination-item"].html;
+  let paginationIcon = algoliaSearchComponents["pagination-item-icon"].html;
 
     container.innerHTML = `
       ${!isFirstPage
       ? 
-      paginationHtml
-        .replace("{ALGOLIA_JS_PAGINATION_TEXT}", "First")
+      paginationIcon
+        .replace("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_double_arrow_left")
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(0))
         .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", 0)
-        .replace("{ALGOLIA_JS_PAGINATION_COLOR}", 'default')
          +
-        paginationHtml
-        .replace("{ALGOLIA_JS_PAGINATION_TEXT}", "Previous")
+      paginationIcon
+        .replace("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_arrow_left")
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement - 1))
         .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement - 1)
-        .replace("{ALGOLIA_JS_PAGINATION_COLOR}", 'default')
-      
+
       : ''
     }  
       ${pages
@@ -119,18 +118,16 @@ const renderPagination = (renderOptions, isFirstRender) => {
       .join('')}
         ${!isLastPage
       ? 
-      paginationHtml
-        .replace("{ALGOLIA_JS_PAGINATION_TEXT}", "Next")
+      paginationIcon
+        .replace("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_arrow_right')
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement + 1))
-        .replace("{ALGOLIA_JS_PAGINATION_COLOR}", 'default')
-        .replace("{ALGOLIA_JS_PAGINATION_CLASS}", '')
-        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement + 1) +
-      paginationHtml
-        .replace("{ALGOLIA_JS_PAGINATION_TEXT}", "Last")
+        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement + 1) 
+        +
+      paginationIcon
+        .replace("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_double_arrow_right')
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(nbPages - 1))
-        .replace("{ALGOLIA_JS_PAGINATION_COLOR}", 'default')
-        .replace("{ALGOLIA_JS_PAGINATION_CLASS}", '')
         .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", nbPages - 1)
+
       : ''
     }
   ` ; 
@@ -153,6 +150,7 @@ const customPagination = connectPagination(
 search.addWidgets([
   customPagination({
     container: document.querySelector('#pagination'),
+    totalPages: 5,
   }),
 ]);
 

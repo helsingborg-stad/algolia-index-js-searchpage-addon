@@ -18,7 +18,7 @@
       <div id="hits">
         @include('js.object.loader')
       </div>
-      <ul class="c-pagination" id="pagination"></ul>
+      <ul class="c-pagination u-margin__x--auto u-margin__bottom--4" id="pagination"></ul>
     </div>
   </div>
 </div>
