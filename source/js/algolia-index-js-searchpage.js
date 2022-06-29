@@ -1,7 +1,7 @@
 import algoliasearch from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js';
 import { connectSearchBox, connectPagination } from 'instantsearch.js/es/connectors'; 
-import { searchBox, hits, configure, pagination } from 'instantsearch.js/es/widgets';
+import { searchBox, hits, configure } from 'instantsearch.js/es/widgets';
 
 
 spinner(true);
@@ -13,10 +13,10 @@ const searchClient = algoliasearch(
   algoliaSearchData.publicApiKey,
 );
 
+console.log(algoliaSearchData.indexName);
 const search = instantsearch({
   indexName: algoliaSearchData.indexName,
   searchClient,
-
 });
 
 function spinner (state) {
@@ -38,7 +38,10 @@ function decodeHtml(html) {
 const renderSearchBox = (renderOptions, isFirstRender) => {
   const { query, refine, clear, isSearchStalled, widgetParams } = renderOptions;
   if (isFirstRender) {
-    document.getElementById('input_searchboxfield').addEventListener('input', event => {
+    const searchInput = document.getElementById('input_searchboxfield');
+    searchInput.value = algoliaSearchData.searchQuery;
+    refine(algoliaSearchData.searchQuery);
+    searchInput.addEventListener('input', event => {
       refine(event.target.value);
     });
   }
@@ -50,10 +53,24 @@ const customSearchBox = connectSearchBox(
 search.addWidgets([
   customSearchBox({
     container: document.querySelector('#searchbox'),
-    queryHook(query, search) { search("sommar"); },
+    queryHook(query, search) {
+      //Update url
+      var url = new URL(window.location);
+      url.searchParams.has('s') ? url.searchParams.set(
+        's', query
+      ) : url.searchParams.append(
+        's', query
+      );
+      url.search = url.searchParams;
+      url = url.toString();
+      history.pushState({}, null, url);
 
+      //Do search
+      search(query);
+    },
 
-  })
+  }),
+
 ]);
 /* End searchbox */ 
 
@@ -71,32 +88,25 @@ const renderPagination = (renderOptions, isFirstRender) => {
   } = renderOptions;
 
   const container = document.querySelector('#pagination');
-  let paginationHtml =algoliaSearchComponents["pagination-item"].html;
+  let paginationHtml = algoliaSearchComponents["pagination-item"].html;
 
     container.innerHTML = `
-    <ul class="c-pagination">
       ${!isFirstPage
-      ? `
-            <li>
-              <a
-                href="${createURL(0)}"
-                data-value="${0}"
-              >
-                First
-              </a>
-            </li>
-            <li>
-              <a
-                href="${createURL(currentRefinement - 1)}"
-                data-value="${currentRefinement - 1}"
-              >
-                Previous
-              </a>
-            </li>
-            `
+      ? 
+      paginationHtml
+        .replace("{ALGOLIA_JS_PAGINATION_TEXT}", "First")
+        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(0))
+        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", 0)
+        .replace("{ALGOLIA_JS_PAGINATION_COLOR}", 'default')
+         +
+        paginationHtml
+        .replace("{ALGOLIA_JS_PAGINATION_TEXT}", "Previous")
+        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement - 1))
+        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement - 1)
+        .replace("{ALGOLIA_JS_PAGINATION_COLOR}", 'default')
+      
       : ''
-    }
-    
+    }  
       ${pages
       .map(
         page => paginationHtml
@@ -121,16 +131,15 @@ const renderPagination = (renderOptions, isFirstRender) => {
         .replace("{ALGOLIA_JS_PAGINATION_COLOR}", 'default')
         .replace("{ALGOLIA_JS_PAGINATION_CLASS}", '')
         .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", nbPages - 1)
-
       : ''
     }
-    </ul>
   ` ; 
 
   [...container.querySelectorAll('a')].forEach(element => {
     element.addEventListener('click', event => {
       event.preventDefault();
       refine(event.currentTarget.dataset.value);
+      window.scrollTo(0,0);
     });
   });
 };
@@ -144,13 +153,10 @@ const customPagination = connectPagination(
 search.addWidgets([
   customPagination({
     container: document.querySelector('#pagination'),
-  })
+  }),
 ]);
 
 /* end pagination */
-
-
-
 search.addWidgets([
   hits({
     container: '#hits',
