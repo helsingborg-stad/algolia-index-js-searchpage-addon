@@ -1,57 +1,12 @@
-/* Searchresult */
 
-$bp: 900px;
-
-.c-searchresult {
-  margin-top: 8px * 2;
-
-  .c-searchresult__thumbnail {
-    margin: auto 24px auto 16px; 
-    width: 96px; 
-    height: auto;
-    border-radius: 12.5px;
+@media screen and (max-width: 720px) {
+  .ais-Hits-item  {
+    .c-card {
+      flex-direction: column;
+    } 
+    .c-card__image  {
+      overflow: hidden;
+      max-height: 200px;
+    }
   }
-
-}
-
-.c-searchmeta {
-  display: flex;
-  justify-content: space-between;
-}
-
-.c-searchtabs--hidden {
-  visibility: hidden;
-}
-
-.c-searchtabs {
-  margin-top: 16px;
-}
-
-.c-searchtabs_count:before { 
-  content: " ("; 
-}
-
-.c-searchtabs_count:after { 
-  content: ")"; 
-}
-
-/* Preloader animation */
-.c-algolia-instantsearch-ripple {
-  margin: 20vh auto;
-  display: block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-
-.c-algolia-instantsearch-ripple:after {
-  content: attr(data-label) "...";
-  top: 80px;
-  position: absolute;
-  opacity: .7;
-}
-
-.c-pagination {
-  margin: 16px auto; 
-  display: inline-block;
 }
