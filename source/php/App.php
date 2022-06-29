@@ -98,7 +98,9 @@ class App
         if (!self::$hasRenderedSearchPage) {
             echo algolia_search_page_render_blade_view(
                 'search-page',
-                [],
+                ['lang' => (object) [
+                    'searchLabel' => __("What are you looking for?", 'algolia-index-js-searchpage')
+                ]],
                 false
             );
             self::$hasRenderedSearchPage = true;

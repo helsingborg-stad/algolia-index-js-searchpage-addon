@@ -1,7 +1,7 @@
 @notice([
     'type' => 'info',
     'message' => [
-        'text' => 'No search results found on your query "{ALGOLIA_JS_SEARCH_QUERY}".',
+        'text' => $lang->noresults . ' "{ALGOLIA_JS_SEARCH_QUERY}".',
         'size' => 'sm'
     ],
     'icon' => [

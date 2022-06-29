@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Algolia Index Js Search Page\n"
-"POT-Creation-Date: 2022-06-27 13:01+0200\n"
-"PO-Revision-Date: 2022-06-27 13:02+0200\n"
+"POT-Creation-Date: 2022-06-29 14:54+0200\n"
+"PO-Revision-Date: 2022-06-29 14:55+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -20,29 +20,33 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: source/php/App.php:57
+#: source/php/App.php:65
 msgid "No matches where found on the query"
 msgstr "Inga resultat på sökfrågan"
 
-#: source/php/App.php:58
+#: source/php/App.php:66
 msgid "Filter results from"
 msgstr "Filtrera på"
 
-#: source/php/App.php:59
+#: source/php/App.php:67
 msgid "posts found on your query."
 msgstr "träffar på din sökfråga."
 
-#: source/php/App.php:60
+#: source/php/App.php:68 source/php/App.php:102
 msgid "What are you looking for?"
 msgstr "Vad letar du efter?"
 
-#: source/php/App.php:61
+#: source/php/App.php:69
 msgid "Search"
 msgstr "Sök"
 
-#: source/php/App.php:62
+#: source/php/App.php:70
 msgid "Select origin"
 msgstr "Filtrera på ursprung"
+
+#: source/php/ComponentsJs.php:14
+msgid "No search results found on your query"
+msgstr "Inga träffar på din sökfråga"
 
 #. Plugin Name of the plugin/theme
 msgid "Algolia Index Js Search Page"
