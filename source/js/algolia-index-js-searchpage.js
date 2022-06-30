@@ -95,11 +95,6 @@ const renderPagination = (renderOptions, isFirstRender) => {
       ${!isFirstPage
       ? 
       paginationIcon
-        .replace("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_double_arrow_left")
-        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(0))
-        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", 0)
-         +
-      paginationIcon
         .replace("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_arrow_left")
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement - 1))
         .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement - 1)
@@ -122,12 +117,6 @@ const renderPagination = (renderOptions, isFirstRender) => {
         .replace("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_arrow_right')
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement + 1))
         .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement + 1) 
-        +
-      paginationIcon
-        .replace("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_double_arrow_right')
-        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(nbPages - 1))
-        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", nbPages - 1)
-
       : ''
     }
   ` ; 
@@ -150,7 +139,7 @@ const customPagination = connectPagination(
 search.addWidgets([
   customPagination({
     container: document.querySelector('#pagination'),
-    totalPages: 5,
+    totalPages: 4,
   }),
 ]);
 
