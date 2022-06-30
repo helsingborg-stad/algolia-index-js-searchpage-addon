@@ -182,8 +182,7 @@ search.addWidgets([
   configure({
     hitsPerPage: 8,
     
-  }),
-
+  })
 ]);
 
 search.start();
