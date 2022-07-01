@@ -1,7 +1,8 @@
 import algoliasearch from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js';
 import { connectSearchBox, connectPagination, connectStats } from 'instantsearch.js/es/connectors'; 
-import { searchBox, hits, configure, stats } from 'instantsearch.js/es/widgets';
+import { highlight } from 'instantsearch.js/es/helpers';
+import { searchBox, hits, configure} from 'instantsearch.js/es/widgets';
 
 
 spinner(true);
@@ -74,6 +75,7 @@ search.addWidgets([
 ]);
 /* End searchbox */ 
 
+
 /* Stats */
 // Create the render function
 const renderStats = (renderOptions, isFirstRender) => {
@@ -90,34 +92,18 @@ const renderStats = (renderOptions, isFirstRender) => {
     return;
   }
 
-  let count = '';
-
-  if (areHitsSorted) {
-    if (nbSortedHits > 1) {
-      count = `${nbSortedHits} relevanta resultat`;
-    } else if (nbSortedHits === 1) {
-      count = '1 relevant resultat';
-    } else {
-      count = 'Inga relevanta resultat';
-    }
-    count += ` sorterades ut från ${nbHits}`;
-  } else {
-    if (nbHits > 1) {
-      count += `${nbHits} resultat`;
-    } else if (nbHits === 1) {
-      count += '1 resultat';
-    } else {
-      count += 'Inga resultat';
-    }
-  }
-
   let queryContent = "";
   if (query) {
     queryContent = 'för ' + '<q>' + query + '</q>';
   }
+  if (nbHits !== 0) {
+    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('ALGOLIA_JS_STATS_COUNT', nbHits).replace('ALGOLIA_JS_STATS_QUERY', queryContent).replace('ALGOLIA_JS_STATS_TIME', processingTimeMS);
 
-  widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('ALGOLIA_JS_STATS_COUNT', count).replace('ALGOLIA_JS_STATS_TIME', processingTimeMS).replace('ALGOLIA_JS_STATS_QUERY', queryContent) +`
-  `;
+  } else {
+    widgetParams.container.innerHTML = "";
+  }
+
+
 };
 
 // Create the custom widget
@@ -239,7 +225,8 @@ search.addWidgets([
   }),
   configure({
     hitsPerPage: 20,
-  })
+  }), 
+
 ]);
 
 search.start();
