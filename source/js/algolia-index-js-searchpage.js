@@ -96,7 +96,7 @@ const renderStats = (renderOptions, isFirstRender) => {
     queryContent = '<q>' + query + '</q>';
   } 
   if (nbHits !== 0) {
-    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('{ALGOLIA_JS_STATS_COUNT}', nbHits).replace('{ALGOLIA_JS_STATS_QUERY}', queryContent).replace('{ALGOLIA_JS_STATS_TIME}', processingTimeMS);
+    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('{ALGOLIA_JS_STATS_COUNT}', '<b>' + nbHits + '</b>').replace('{ALGOLIA_JS_STATS_QUERY}', queryContent).replace('{ALGOLIA_JS_STATS_TIME}', processingTimeMS);
 
   } else {
     widgetParams.container.innerHTML = "";
@@ -133,7 +133,8 @@ const renderPagination = (renderOptions, isFirstRender) => {
   const container = document.querySelector('#pagination');
   let paginationHtml = algoliaSearchComponents["pagination-item"].html;
   let paginationIcon = algoliaSearchComponents["pagination-item-icon"].html;
-
+  let from = currentRefinement - 2 < 0 ? 0 : currentRefinement - 2;
+  
     container.innerHTML = `
       ${!isFirstPage
       ? 
@@ -144,7 +145,7 @@ const renderPagination = (renderOptions, isFirstRender) => {
 
       : ''
     }  
-      ${pages
+      ${pages.splice(from, 4)
       .map(
         page => paginationHtml
           .replace("{ALGOLIA_JS_PAGINATION_TEXT}", page + 1)
@@ -182,7 +183,7 @@ const customPagination = connectPagination(
 search.addWidgets([
   customPagination({
     container: document.querySelector('#pagination'),
-    totalPages: 4,
+    //totalPages: 4,
   }),
 ]);
 

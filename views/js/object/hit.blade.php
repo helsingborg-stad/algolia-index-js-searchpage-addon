@@ -6,6 +6,6 @@
   "image" => "{ALGOLIA_JS_HIT_IMAGE}",
   "link" => "{ALGOLIA_JS_HIT_LINK}",
   "classList" => ['c-card--size-md'],
-  "imageFirst" => true
+  "imageFirst" => false
 ])
 @endcard
