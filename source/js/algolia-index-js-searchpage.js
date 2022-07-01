@@ -1,7 +1,7 @@
 import algoliasearch from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js';
-import { connectSearchBox, connectPagination } from 'instantsearch.js/es/connectors'; 
-import { searchBox, hits, configure } from 'instantsearch.js/es/widgets';
+import { connectSearchBox, connectPagination, connectStats } from 'instantsearch.js/es/connectors'; 
+import { searchBox, hits, configure, stats } from 'instantsearch.js/es/widgets';
 
 
 spinner(true);
@@ -73,6 +73,64 @@ search.addWidgets([
 
 ]);
 /* End searchbox */ 
+
+/* Stats */
+// Create the render function
+const renderStats = (renderOptions, isFirstRender) => {
+  const {
+    nbHits,
+    areHitsSorted,
+    nbSortedHits,
+    processingTimeMS,
+    query,
+    widgetParams,
+  } = renderOptions;
+
+  if (isFirstRender) {
+    return;
+  }
+
+  let count = '';
+
+  if (areHitsSorted) {
+    if (nbSortedHits > 1) {
+      count = `${nbSortedHits} relevanta resultat`;
+    } else if (nbSortedHits === 1) {
+      count = '1 relevant resultat';
+    } else {
+      count = 'Inga relevanta resultat';
+    }
+    count += ` sorterades ut från ${nbHits}`;
+  } else {
+    if (nbHits > 1) {
+      count += `${nbHits} resultat`;
+    } else if (nbHits === 1) {
+      count += '1 resultat';
+    } else {
+      count += 'Inga resultat';
+    }
+  }
+
+  let queryContent = "";
+  if (query) {
+    queryContent = 'för ' + '<q>' + query + '</q>';
+  }
+
+  widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('ALGOLIA_JS_STATS_COUNT', count).replace('ALGOLIA_JS_STATS_TIME', processingTimeMS).replace('ALGOLIA_JS_STATS_QUERY', queryContent) +`
+  `;
+};
+
+// Create the custom widget
+const customStats = connectStats(renderStats);
+
+// Instantiate the custom widget
+search.addWidgets([
+  customStats({
+    container: document.querySelector('#stats'),
+  })
+]);
+
+/* End Stats */
 
 /* Pagination */
 // Create the render function
@@ -180,8 +238,7 @@ search.addWidgets([
     escapeHTML: false
   }),
   configure({
-    hitsPerPage: 8,
-    
+    hitsPerPage: 20,
   })
 ]);
 
