@@ -11,7 +11,8 @@ class ComponentsJs
     public function __construct()
     {
         $this->lang = [
-            'noresults' => __('No search results found on your query', 'algolia-index-js-searchpage')
+            'noresults' => __('No search results found on your query', 'algolia-index-js-searchpage'),
+            'algoliaStats' => __('search results found in', 'algolia-index-js-searchpage')
         ];
 
         add_action('init', array($this, 'createComponents'));
