@@ -96,7 +96,7 @@ const renderStats = (renderOptions, isFirstRender) => {
     queryContent = '<q>' + query + '</q>';
   } 
   if (nbHits !== 0) {
-    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('ALGOLIA_JS_STATS_COUNT', nbHits).replace('ALGOLIA_JS_STATS_QUERY', queryContent).replace('ALGOLIA_JS_STATS_TIME', processingTimeMS);
+    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('{ALGOLIA_JS_STATS_COUNT}', nbHits).replace('{ALGOLIA_JS_STATS_QUERY}', queryContent).replace('{ALGOLIA_JS_STATS_TIME}', processingTimeMS);
 
   } else {
     widgetParams.container.innerHTML = "";
