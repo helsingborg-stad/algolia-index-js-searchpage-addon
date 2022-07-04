@@ -133,7 +133,8 @@ const renderPagination = (renderOptions, isFirstRender) => {
   const container = document.querySelector('#pagination');
   let paginationHtml = algoliaSearchComponents["pagination-item"].html;
   let paginationIcon = algoliaSearchComponents["pagination-item-icon"].html;
-  let from = currentRefinement - 2 < 0 ? 0 : currentRefinement - 2;
+  let from = currentRefinement < 2 ? 0 : 1;
+  console.log(currentRefinement);
   
     container.innerHTML = `
       ${!isFirstPage
@@ -183,6 +184,7 @@ const customPagination = connectPagination(
 search.addWidgets([
   customPagination({
     container: document.querySelector('#pagination'),
+    padding: 2,
     //totalPages: 4,
   }),
 ]);
@@ -224,7 +226,7 @@ search.addWidgets([
     escapeHTML: false
   }),
   configure({
-    hitsPerPage: 20,
+    hitsPerPage: 2,
   }), 
 
 ]);
