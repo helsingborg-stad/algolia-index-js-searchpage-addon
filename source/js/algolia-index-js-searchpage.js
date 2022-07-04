@@ -226,7 +226,7 @@ search.addWidgets([
     escapeHTML: false
   }),
   configure({
-    hitsPerPage: 2,
+    hitsPerPage: 20,
   }), 
 
 ]);
