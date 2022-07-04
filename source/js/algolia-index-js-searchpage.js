@@ -1,7 +1,7 @@
 import algoliasearch from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js';
-import { connectSearchBox, connectPagination } from 'instantsearch.js/es/connectors'; 
-import { searchBox, hits, configure } from 'instantsearch.js/es/widgets';
+import { connectSearchBox, connectPagination, connectStats } from 'instantsearch.js/es/connectors'; 
+import { hits, configure} from 'instantsearch.js/es/widgets';
 
 
 spinner(true);
@@ -74,6 +74,49 @@ search.addWidgets([
 ]);
 /* End searchbox */ 
 
+
+/* Stats */
+// Create the render function
+const renderStats = (renderOptions, isFirstRender) => {
+  const {
+    nbHits,
+    areHitsSorted,
+    nbSortedHits,
+    processingTimeMS,
+    query,
+    widgetParams,
+  } = renderOptions;
+
+  if (isFirstRender) {
+    return;
+  }
+
+  let queryContent = "";
+  if (query) {
+    queryContent = '<q>' + query + '</q>';
+  } 
+  if (nbHits !== 0) {
+    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('{ALGOLIA_JS_STATS_COUNT}', '<b>' + nbHits + '</b>').replace('{ALGOLIA_JS_STATS_QUERY}', queryContent).replace('{ALGOLIA_JS_STATS_TIME}', processingTimeMS);
+
+  } else {
+    widgetParams.container.innerHTML = "";
+  }
+
+
+};
+
+// Create the custom widget
+const customStats = connectStats(renderStats);
+
+// Instantiate the custom widget
+search.addWidgets([
+  customStats({
+    container: document.querySelector('#stats'),
+  })
+]);
+
+/* End Stats */
+
 /* Pagination */
 // Create the render function
 const renderPagination = (renderOptions, isFirstRender) => {
@@ -90,15 +133,12 @@ const renderPagination = (renderOptions, isFirstRender) => {
   const container = document.querySelector('#pagination');
   let paginationHtml = algoliaSearchComponents["pagination-item"].html;
   let paginationIcon = algoliaSearchComponents["pagination-item-icon"].html;
-
+  let from = currentRefinement < 2 ? 0 : 1;
+  console.log(currentRefinement);
+  
     container.innerHTML = `
       ${!isFirstPage
       ? 
-      paginationIcon
-        .replace("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_double_arrow_left")
-        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(0))
-        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", 0)
-         +
       paginationIcon
         .replace("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_arrow_left")
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement - 1))
@@ -106,7 +146,7 @@ const renderPagination = (renderOptions, isFirstRender) => {
 
       : ''
     }  
-      ${pages
+      ${pages.splice(from, 4)
       .map(
         page => paginationHtml
           .replace("{ALGOLIA_JS_PAGINATION_TEXT}", page + 1)
@@ -122,12 +162,6 @@ const renderPagination = (renderOptions, isFirstRender) => {
         .replace("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_arrow_right')
         .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement + 1))
         .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement + 1) 
-        +
-      paginationIcon
-        .replace("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_double_arrow_right')
-        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(nbPages - 1))
-        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", nbPages - 1)
-
       : ''
     }
   ` ; 
@@ -150,7 +184,8 @@ const customPagination = connectPagination(
 search.addWidgets([
   customPagination({
     container: document.querySelector('#pagination'),
-    totalPages: 5,
+    padding: 2,
+    //totalPages: 4,
   }),
 ]);
 
@@ -191,9 +226,9 @@ search.addWidgets([
     escapeHTML: false
   }),
   configure({
-    hitsPerPage: 8,
-    
-  })
+    hitsPerPage: 20,
+  }), 
+
 ]);
 
 search.start();
