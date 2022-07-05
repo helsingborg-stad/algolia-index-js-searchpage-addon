@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Algolia Index Js Search Page\n"
-"POT-Creation-Date: 2022-07-01 16:47+0200\n"
-"PO-Revision-Date: 2022-07-01 16:48+0200\n"
+"POT-Creation-Date: 2022-07-05 09:35+0200\n"
+"PO-Revision-Date: 2022-07-05 09:36+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv_SE\n"
@@ -51,8 +51,8 @@ msgstr "Inga träffar på din sökfråga %s"
 
 #: source/php/ComponentsJs.php:16
 #, php-format
-msgid "%s search results found in %s (%sms)"
-msgstr "%s sökresultat hittades för %s (%sms)"
+msgid "%s search results found in %s"
+msgstr "%s sökresultat hittades för %s"
 
 #. Plugin Name of the plugin/theme
 msgid "Algolia Index Js Search Page"
