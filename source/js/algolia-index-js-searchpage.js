@@ -219,7 +219,7 @@ search.addWidgets([
         .replace("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit._highlightResult['post_title'].value))
         .replace("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
         .replace("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit._highlightResult['post_excerpt'].value))
-        .replace("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail)
+        .replace("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail.replace("/wp/", "/"))
         .replace("{ALGOLIA_JS_HIT_LINK}", hit.permalink);
       }
     },
