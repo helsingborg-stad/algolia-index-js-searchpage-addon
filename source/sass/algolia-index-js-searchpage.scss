@@ -3,7 +3,7 @@ em {
   font-style: normal;
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 56rem) {
   .ais-Hits-item  {
     .c-card {
       flex-direction: column;
@@ -13,4 +13,4 @@ em {
       max-height: 200px;
     }
   }
-}
+} 
