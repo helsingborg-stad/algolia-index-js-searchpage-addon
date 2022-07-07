@@ -13,7 +13,6 @@ const searchClient = algoliasearch(
   algoliaSearchData.publicApiKey,
 );
 
-console.log(algoliaSearchData.indexName);
 const search = instantsearch({
   indexName: algoliaSearchData.indexName,
   searchClient,
@@ -134,7 +133,6 @@ const renderPagination = (renderOptions, isFirstRender) => {
   let paginationHtml = algoliaSearchComponents["pagination-item"].html;
   let paginationIcon = algoliaSearchComponents["pagination-item-icon"].html;
   let from = currentRefinement < 2 ? 0 : 1;
-  console.log(currentRefinement);
   
     container.innerHTML = `
       ${!isFirstPage
