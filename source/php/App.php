@@ -114,11 +114,7 @@ class App
      */
     private static function isSearchPage()
     {
-        if(
-            !\AlgoliaIndex\Helper\Options::publicApiKey() ||
-            !\AlgoliaIndex\Helper\Options::applicationId() ||
-            !\AlgoliaIndex\Helper\Options::indexName()
-        ) {
+        if(!\AlgoliaIndex\Helper\Options::isConfigured()) {
             return false;
         }
 
