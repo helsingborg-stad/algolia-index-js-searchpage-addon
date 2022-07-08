@@ -36,12 +36,5 @@ $loader->addPrefix('AlgoliaIndexJsSearchpage', ALGOLIAINDEXJSSEARCHPAGE_PATH);
 $loader->addPrefix('AlgoliaIndexJsSearchpage', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'source/php/');
 $loader->register();
 
-// Only start if Algolia credentials are set
-if(class_exists('\AlgoliaIndex\Helper\Options') &&
-    \AlgoliaIndex\Helper\Options::publicApiKey() &&
-    \AlgoliaIndex\Helper\Options::applicationId() &&
-    \AlgoliaIndex\Helper\Options::indexName()
-) {
-    // Start application
-    new AlgoliaIndexJsSearchpage\App();
-}
+// Start application
+new AlgoliaIndexJsSearchpage\App();

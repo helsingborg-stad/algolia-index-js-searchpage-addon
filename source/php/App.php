@@ -114,6 +114,13 @@ class App
      */
     private static function isSearchPage()
     {
+        if(
+            !\AlgoliaIndex\Helper\Options::publicApiKey() ||
+            !\AlgoliaIndex\Helper\Options::applicationId() ||
+            !\AlgoliaIndex\Helper\Options::indexName()
+        ) {
+            return false;
+        }
 
         if (is_multisite() && (defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL === false)) {
             if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == trim(get_blog_details()->path, "/") && is_search()) {
