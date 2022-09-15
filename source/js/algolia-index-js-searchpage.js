@@ -132,7 +132,7 @@ const renderPagination = (renderOptions, isFirstRender) => {
   const container = document.querySelector('#pagination');
   let paginationHtml = algoliaSearchComponents["pagination-item"].html;
   let paginationIcon = algoliaSearchComponents["pagination-item-icon"].html;
-  let from = currentRefinement < 2 ? 0 : 1;
+  let from = currentRefinement < 2 || pages.length < 5 ? 0 : 1;
   
     container.innerHTML = `
       ${!isFirstPage
