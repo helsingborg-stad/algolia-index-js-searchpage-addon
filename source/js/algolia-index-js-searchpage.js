@@ -95,7 +95,7 @@ const renderStats = (renderOptions, isFirstRender) => {
     queryContent = '<q>' + query + '</q>';
   } 
   if (nbHits !== 0) {
-    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replace('{ALGOLIA_JS_STATS_COUNT}', '<b>' + nbHits + '</b>').replace('{ALGOLIA_JS_STATS_QUERY}', queryContent).replace('{ALGOLIA_JS_STATS_TIME}', processingTimeMS);
+    widgetParams.container.innerHTML = algoliaSearchComponents['stats-count'].html.replaceAll('{ALGOLIA_JS_STATS_COUNT}', '<b>' + nbHits + '</b>').replaceAll('{ALGOLIA_JS_STATS_QUERY}', queryContent).replaceAll('{ALGOLIA_JS_STATS_TIME}', processingTimeMS);
 
   } else {
     widgetParams.container.innerHTML = "";
@@ -138,28 +138,28 @@ const renderPagination = (renderOptions, isFirstRender) => {
       ${!isFirstPage
       ? 
       paginationIcon
-        .replace("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_arrow_left")
-        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement - 1))
-        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement - 1)
+        .replaceAll("{ALGOLIA_JS_PAGINATION_ICON}", "keyboard_arrow_left")
+        .replaceAll("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement - 1))
+        .replaceAll("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement - 1)
 
       : ''
     }  
       ${pages.splice(from, 4)
       .map(
         page => paginationHtml
-          .replace("{ALGOLIA_JS_PAGINATION_TEXT}", page + 1)
-          .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(page))
-          .replace("{ALGOLIA_JS_PAGINATION_COLOR}", currentRefinement === page ? 'primary' : 'default')
-          .replace("{ALGOLIA_JS_PAGINATION_CLASS}", currentRefinement === page ? 'c-pagination--is-active' : '')
-          .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", page)
+          .replaceAll("{ALGOLIA_JS_PAGINATION_TEXT}", page + 1)
+          .replaceAll("{ALGOLIA_JS_PAGINATION_HREF}", createURL(page))
+          .replaceAll("{ALGOLIA_JS_PAGINATION_COLOR}", currentRefinement === page ? 'primary' : 'default')
+          .replaceAll("{ALGOLIA_JS_PAGINATION_CLASS}", currentRefinement === page ? 'c-pagination--is-active' : '')
+          .replaceAll("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", page)
       )
       .join('')}
         ${!isLastPage
       ? 
       paginationIcon
-        .replace("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_arrow_right')
-        .replace("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement + 1))
-        .replace("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement + 1) 
+        .replaceAll("{ALGOLIA_JS_PAGINATION_ICON}", 'keyboard_arrow_right')
+        .replaceAll("{ALGOLIA_JS_PAGINATION_HREF}", createURL(currentRefinement + 1))
+        .replaceAll("{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}", currentRefinement + 1) 
       : ''
     }
   ` ; 
@@ -202,7 +202,7 @@ search.addWidgets([
     },
     templates: {
       empty(results) {
-        return algoliaSearchComponents["noresult"].html.replace(
+        return algoliaSearchComponents["noresult"].html.replaceAll(
           "{ALGOLIA_JS_SEARCH_QUERY}",
           results.query
         );
@@ -213,12 +213,12 @@ search.addWidgets([
         ); 
 
         return htmlString
-        .replace("{ALGOLIA_JS_HIT_ID}", hit.uuid)
-        .replace("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit._highlightResult['post_title'].value))
-        .replace("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
-        .replace("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit._highlightResult['post_excerpt'].value))
-        .replace("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail.replace("/wp/", "/"))
-        .replace("{ALGOLIA_JS_HIT_LINK}", hit.permalink);
+        .replaceAll("{ALGOLIA_JS_HIT_ID}", hit.uuid)
+        .replaceAll("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit._highlightResult['post_title'].value))
+        .replaceAll("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
+        .replaceAll("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit._highlightResult['post_excerpt'].value))
+        .replaceAll("{ALGOLIA_JS_HIT_IMAGE}", hit.thumbnail.replaceAll("/wp/", "/"))
+        .replaceAll("{ALGOLIA_JS_HIT_LINK}", hit.permalink);
       }
     },
     escapeHTML: false
