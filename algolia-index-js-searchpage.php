@@ -22,19 +22,15 @@ if (! defined('WPINC')) {
 define('ALGOLIAINDEXJSSEARCHPAGE_PATH', plugin_dir_path(__FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_URL', plugins_url('', __FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_TEMPLATE_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'templates/');
-
 define('ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'views/');
 
 load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
-require_once ALGOLIAINDEXJSSEARCHPAGE_PATH . 'source/php/Vendor/Psr4ClassLoader.php';
+// Autoload from plugin
+if (file_exists(ALGOLIAINDEXJSSEARCHPAGE_PATH . 'vendor/autoload.php')) {
+    require_once ALGOLIAINDEXJSSEARCHPAGE_PATH . 'vendor/autoload.php';
+}
 require_once ALGOLIAINDEXJSSEARCHPAGE_PATH . 'Public.php';
-
-// Instantiate and register the autoloader
-$loader = new AlgoliaIndexJsSearchpage\Vendor\Psr4ClassLoader();
-$loader->addPrefix('AlgoliaIndexJsSearchpage', ALGOLIAINDEXJSSEARCHPAGE_PATH);
-$loader->addPrefix('AlgoliaIndexJsSearchpage', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'source/php/');
-$loader->register();
 
 // Start application
 new AlgoliaIndexJsSearchpage\App();

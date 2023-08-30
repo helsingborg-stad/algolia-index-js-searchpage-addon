@@ -21,5 +21,10 @@
       }
   ],
   "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "AlgoliaIndexJsSearchpage\\": "source/php/"
+    }
   }
 }
