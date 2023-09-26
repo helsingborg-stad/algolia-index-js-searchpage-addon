@@ -1,30 +1,30 @@
 {
-  "name": "helsingborg-stad/algolia-index-js-searchpage-addon",
-  "description": "https://github.com/helsingborg-stad/algolia-index-js-searchpage-addon",
-  "type": "wordpress-plugin",
-  "license": "MIT",
-  "authors": [
-      {
-          "name": "Sebastian Thulin",
-          "email": "sebastian.thulin@helsingborg.se"
-      }
-  ],
-  "minimum-stability" : "stable",
-  "repositories": [
-      {
-          "type":"composer",
-          "url":"https://packagist.org"
-      },
-      {
-          "type":"composer",
-          "url":"https://wpackagist.org"
-      }
-  ],
-  "require": {
-  },
-  "autoload": {
-    "psr-4": {
-      "AlgoliaIndexJsSearchpage\\": "source/php/"
-    }
-  }
+    "name": "helsingborg-stad/algolia-index-js-searchpage-addon",
+    "description": "https://github.com/helsingborg-stad/algolia-index-js-searchpage-addon",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sebastian Thulin",
+            "email": "sebastian.thulin@helsingborg.se"
+        }
+    ],
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packagist.org"
+        },
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        }
+    ],
+    "require": [],
+    "autoload": {
+        "psr-4": {
+            "AlgoliaIndexJsSearchpage\\": "source/php/"
+        }
+    },
+    "version": "2.0.0"
 }
