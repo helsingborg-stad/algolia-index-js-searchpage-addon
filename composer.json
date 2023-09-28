@@ -20,11 +20,11 @@
             "url": "https://wpackagist.org"
         }
     ],
-    "require": [],
+    "require": {},
     "autoload": {
         "psr-4": {
             "AlgoliaIndexJsSearchpage\\": "source/php/"
         }
     },
-    "version": "2.0.0"
+    "version": "2.0.1"
 }
