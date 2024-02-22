@@ -8,9 +8,10 @@ use HelsingborgStad\GlobalBladeService\GlobalBladeService;
 if (!function_exists('algolia_search_page_render_blade_view')) {
     function algolia_search_page_render_blade_view($view, $data = [], $compress = true)
     {
+        $markup = "";
+
         $bladeEngine = GlobalBladeService::getInstance([
-            ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH,
-          
+            ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH
         ]);
 
         try {
