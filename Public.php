@@ -2,26 +2,19 @@
 
 // Public functions
 
-
-use HelsingborgStad\GlobalBladeService\GlobalBladeService;
+use ComponentLibrary\Init as ComponentLibraryInit;
 
 if (!function_exists('algolia_search_page_render_blade_view')) {
     function algolia_search_page_render_blade_view($view, $data = [], $compress = true)
     {
         $markup = "";
-
-        $bladeEngine = GlobalBladeService::getInstance([
-            ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH
-        ]);
+        $viewPath = ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH;
+        $data = array_merge( $data, array('errorMessage' => false) );
+        $componentLibrary = new ComponentLibraryInit([]);
+        $bladeEngine = $componentLibrary->getEngine();
 
         try {
-            $markup = $bladeEngine->makeView(
-                $view,
-                array_merge(
-                    $data,
-                    array('errorMessage' => false)
-                )
-            )->render();
+            $markup = $bladeEngine ->makeView( $view, $data, [], $viewPath )->render();
         } catch (\Throwable $e) {
             $markup .= '<pre style="border: 3px solid #f00; padding: 10px;">';
             $markup .= '<strong>' . $e->getMessage() . '</strong>';
