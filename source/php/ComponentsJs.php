@@ -18,7 +18,6 @@ class ComponentsJs
 
         ];
 
-        add_action('init', array($this, 'createComponents'));
         add_action('wp_enqueue_scripts', array($this, 'renderComponents'), 50);
     }
 
@@ -29,6 +28,8 @@ class ComponentsJs
      */
     public function renderComponents() //:void
     {
+        $this->createComponents();
+
         wp_localize_script(
             'algolia-index-js-searchpage',
             'algoliaSearchComponents',
