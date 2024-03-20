@@ -5,11 +5,9 @@
         @field([
             'id' => 'searchBoxField',
             'type' => 'text',
-            'attributeList' => [
-                'type' => 'search',
-                'name' => 'search',
-                'required' => true,
-            ],
+            'type' => 'search',
+            'name' => 'search',
+            'required' => true,
             'label' => $lang->searchLabel,
             'icon' => ['icon' => 'search']
         ])
