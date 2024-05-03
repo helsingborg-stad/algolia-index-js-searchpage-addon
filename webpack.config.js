@@ -22,7 +22,7 @@ module.exports = {
      * Add your entry files here
      */
     entry: {
-        'js/instantsearch': './source/js/algolia-index-js-searchpage.js',
+        'js/instantsearch': './source/js/algolia-index-js-searchpage.ts',
         'css/instantsearch': './source/sass/algolia-index-js-searchpage.scss',
     },
     /**
@@ -60,7 +60,6 @@ module.exports = {
                     }
                 }
             },
-
             /**
              * Styles
              */
@@ -100,7 +99,18 @@ module.exports = {
                     filename: 'images/action_icons/[name][ext]',
                 },
             },
+            /**
+             * TypeScript
+             */
+            {
+                test: /\.ts?$/,
+                loader: 'ts-loader',
+                options: { allowTsInNodeModules: true }
+            },
         ],
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
     },
     plugins: removeEmpty([
 

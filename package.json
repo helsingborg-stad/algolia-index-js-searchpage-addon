@@ -1,6 +1,6 @@
 {
     "name": "algolia-index-js-searchpage-addon",
-    "version": "3.0.0",
+    "version": "3.0.5",
     "description": "Childtheme for Municipio theme",
     "author": "Sebastian Thulin",
     "license": "MIT",
@@ -34,6 +34,8 @@
         "postcss-loader": "^6.2.1",
         "sass": "^1.49.7",
         "sass-loader": "^12.4.0",
+        "ts-loader": "^9.5.1",
+        "typescript": "^5.4.5",
         "webpack": "^5.68.0",
         "webpack-cli": "^4.9.2",
         "webpack-config-utils": "^2.3.1",
