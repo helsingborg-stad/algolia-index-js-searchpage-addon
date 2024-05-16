@@ -32,14 +32,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* Searchbox */
   const renderSearchBox = (renderOptions, isFirstRender) => {
-    const { query, refine, clear, isSearchStalled, widgetParams } = renderOptions;
+    const { query, refine, clear, isSearchStalled, widgetParams: { searchAsYouType = true } = {} } = renderOptions;
     if (isFirstRender) {
       const searchInput = document.getElementById('input_searchboxfield');
       searchInput.value = algoliaSearchData.searchQuery;
       refine(algoliaSearchData.searchQuery);
-      searchInput.addEventListener('input', event => {
-        refine(event.target.value);
-      });
+      if (searchAsYouType) {
+        searchInput.addEventListener('input', event => {
+          refine(event.target.value);
+        });
+      } else {
+        // Detect Enter key press
+        searchInput.addEventListener('keypress', (event) =>  {
+          if (event.key === 'Enter') {
+            refine(event.target.value);
+          }
+        });
+        // Detect clear action (when input value changes to empty)
+        searchInput.addEventListener('input', (event) => {
+          if (event.target.value === '') {
+            refine(event.target.value);
+          }
+        });
+      }
     }
   };
   const customSearchBox = connectSearchBox(
@@ -64,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //Do search
         search(query);
       },
+      searchAsYouType: Boolean(algoliaSearchData.searchAsYouType),
 
     }),
 
