@@ -76,6 +76,7 @@ class App
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
             'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
             'searchQuery' => get_search_query(),
+            'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
         ]);
 
         //UI settings
