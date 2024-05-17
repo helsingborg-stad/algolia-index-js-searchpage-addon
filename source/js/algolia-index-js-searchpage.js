@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchClient = algoliasearch(
     algoliaSearchData.applicationId,
     algoliaSearchData.publicApiKey,
+    {...algoliaSearchData.clientConfig}
   );
 
   const search = instantsearch({
