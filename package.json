@@ -1,5 +1,5 @@
 {
-    "name": "algolia-index-js-searchpage-addon",
+    "name": "@helsingborg-stad/algolia-index-js-searchpage-addon",
     "version": "3.2.0",
     "description": "Childtheme for Municipio theme",
     "author": "Sebastian Thulin",
@@ -13,6 +13,9 @@
     "browserslist": [
         "> 1%",
         "not dead"
+    ],
+    "files": [
+        "assets/"
     ],
     "devDependencies": {
         "@babel/core": "^7.17.2",
