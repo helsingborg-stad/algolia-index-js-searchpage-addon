@@ -45,6 +45,7 @@
         "webpack-remove-empty-scripts": "^0.7.3"
     },
     "dependencies": {
-        "instantsearch.js": "^4.7.0"
+        "algoliasearch": "^5.4.1",
+        "instantsearch.js": "^4.74.1"
     }
 }

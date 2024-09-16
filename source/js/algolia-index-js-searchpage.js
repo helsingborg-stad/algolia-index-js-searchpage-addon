@@ -1,11 +1,10 @@
-import algoliasearch from 'algoliasearch/lite';
+import { liteClient } from 'algoliasearch/lite';
 import instantsearch from 'instantsearch.js';
 import { connectSearchBox, connectPagination, connectStats } from 'instantsearch.js/es/connectors'; 
 import { hits, configure} from 'instantsearch.js/es/widgets';
 
 document.addEventListener('DOMContentLoaded', function() {
-
-  const searchClient = algoliasearch(
+  const searchClient = liteClient(
     algoliaSearchData.applicationId,
     algoliaSearchData.publicApiKey,
     {...algoliaSearchData.clientConfig}
