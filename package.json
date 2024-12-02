@@ -46,6 +46,6 @@
     },
     "dependencies": {
         "algoliasearch": "^5.4.1",
-        "instantsearch.js": "^4.74.1"
+        "instantsearch.js": "^4.75.4"
     }
 }
