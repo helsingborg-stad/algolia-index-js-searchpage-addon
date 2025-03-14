@@ -24,7 +24,9 @@ define('ALGOLIAINDEXJSSEARCHPAGE_URL', plugins_url('', __FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_TEMPLATE_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'templates/');
 define('ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'views/');
 
-load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
+add_action('init', function () {
+    load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
+});
 
 // Autoload from plugin
 if (file_exists(ALGOLIAINDEXJSSEARCHPAGE_PATH . 'vendor/autoload.php')) {
