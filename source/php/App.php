@@ -2,13 +2,15 @@
 
 namespace AlgoliaIndexJsSearchpage;
 
+use AlgoliaIndexJsSearchpage\UI\RenderInterface;
+use AlgoliaIndexJsSearchpage\Helper\IsSearchPage;
+
 class App
 {
     private static $hasRenderedSearchPage = false;
 
-    public function __construct()
+    public function __construct(RenderInterface $renderer)
     {
-        new ComponentsJs();
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
 
@@ -16,10 +18,12 @@ class App
         add_filter('get_search_form', '__return_null');
 
         //Mount point & render
-        add_action('init', function () {
+        add_action('init', function () use ($renderer) {
             add_action(
-                defined('ALGOLIA_INDEX_MOUNT_POINT') ? ALGOLIA_INDEX_MOUNT_POINT : 'get_search_form', 
-                array($this, 'renderSearchpageMount')
+                defined('ALGOLIA_INDEX_MOUNT_POINT') ? ALGOLIA_INDEX_MOUNT_POINT : 'get_search_form',
+                function () use ($renderer) {
+                    $renderer->renderSearchPage();
+                }
             );
         }, 10);
     }
@@ -30,7 +34,7 @@ class App
      */
     public function enqueueStyles()
     {
-        if (!self::isSearchPage()) {
+        if (!IsSearchPage::isSearchPage()) {
             return;
         }
         wp_enqueue_style(
@@ -47,7 +51,7 @@ class App
      */
     public function enqueueScripts()
     {
-        if (!self::isSearchPage()) {
+        if (!IsSearchPage::isSearchPage()) {
             return;
         }
 
@@ -85,52 +89,4 @@ class App
             'facettingApperanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU') ? "true" : "false",
         ]);
     }
-
-    /**
-     * Print the search page mount
-     *
-     * @return boolean
-     */
-    public function renderSearchpageMount($query)
-    {
-        if (!self::isSearchPage()) {
-            return;
-        }
-
-        if (!self::$hasRenderedSearchPage) {
-            echo algolia_search_page_render_blade_view(
-                'search-page',
-                ['lang' => (object) [
-                    'searchLabel' => __("What are you looking for?", 'algolia-index-js-searchpage')
-                ]],
-                false
-            );
-            self::$hasRenderedSearchPage = true;
-        }
-    }
-
-    /**
-     * Check if search page is active page
-     *
-     * @return boolean
-     */
-    private static function isSearchPage()
-    {
-        if(!\AlgoliaIndex\Helper\Options::isConfigured()) {
-            return false;
-        }
-
-        if (is_multisite() && (defined('SUBDOMAIN_INSTALL') && SUBDOMAIN_INSTALL === false)) {
-            if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == trim(get_blog_details()->path, "/") && is_search()) {
-                return true;
-            }
-        }
-
-        if (trim(strtok($_SERVER["REQUEST_URI"], '?'), "/") == "" && is_search()) {
-            return true;
-        }
-
-        return false;
-    }
-
 }
