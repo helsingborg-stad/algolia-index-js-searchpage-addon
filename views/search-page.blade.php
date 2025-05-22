@@ -16,10 +16,12 @@
                 'search-panel__results',
                 'u-display--flex',
                 'u-flex--gridgap',
-                'u-flex-direction--column'
+                'u-flex-direction--column',
+                'unlist',
             ]
         ])
             @include('partials.searchField')
+            @include('partials.noresult')
             @include('partials.stats')
             @include('partials.hits')
             @include('partials.pagination')

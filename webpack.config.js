@@ -21,7 +21,8 @@ module.exports = {
    * Add your entry files here
    */
   entry: {
-    "js/search-factory": "./source/js/search-factory.ts",
+    "js/search": "./source/js/search.ts",
+    'css/instantsearch': './source/sass/algolia-index-js-searchpage.scss',
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],

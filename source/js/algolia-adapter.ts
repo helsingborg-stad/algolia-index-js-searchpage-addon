@@ -1,62 +1,80 @@
-import { liteClient } from "algoliasearch/lite";
+import { liteClient } from 'algoliasearch/lite'
 
 import type {
-  SearchService,
   SearchConfig,
   SearchParams,
   SearchResult,
+  SearchOperations,
   SearchResultItem,
-  WordpressPost,
-} from "./types";
+  WPPost,
+} from './types'
 
-export interface AlgoliaParams {
-  hitsPerPage?: number;
-  page?: number;
-  query?: string;
+export interface AlgoliaNativeParams {
+  hitsPerPage?: number
+  page?: number
+  query?: string
 }
 
 export const algoliaDataTransform = (
-  response: WordpressPost[]
+  response: WPPost[]
 ): SearchResultItem[] => {
-  return response.map(
-    (item) =>
-      ({
-        title: item.post_title || "",
-        summary: item.post_excerpt || "",
-        subtitle: item.origin_site || "",
-        image: item.thumbnail || "",
-        url: item.permalink || "",
-      } as SearchResultItem)
-  );
-};
+  const decodeHtml = (html: string): string => {
+    const txt = document.createElement('textarea')
+    txt.innerHTML = html
+    return txt.value
+  }
 
-export const algoliaParamTransform = (params: SearchParams): AlgoliaParams => {
+  const getWPValue = (
+    item: WPPost,
+    name: 'post_title' | 'post_excerpt'
+  ): string => {
+    if (item._highlightResult && item._highlightResult[name]) {
+      return decodeHtml(item._highlightResult[name].value)
+    }
+    return item[name] || ''
+  }
+  return response.map(
+    item =>
+      ({
+        title: getWPValue(item, 'post_title'),
+        summary: getWPValue(item, 'post_excerpt'),
+        subtitle: item.origin_site || '',
+        image: item.thumbnail?.replaceAll('/wp/', '/') ?? '',
+        altText: item.thumbnail_alt || '',
+        url: item.permalink || '',
+      }) as SearchResultItem
+  )
+}
+
+export const algoliaParamTransform = (
+  params: SearchParams
+): AlgoliaNativeParams => {
   return {
-    hitsPerPage: params.page_size,
+    hitsPerPage: params?.page_size ?? 20,
     page: params.page ? params.page - 1 : undefined,
     query: params.query,
-  };
-};
+  }
+}
 
-export const AlgoliaAdapter = (config: SearchConfig): SearchService => {
-  const searchClient = liteClient(config.applicationId, config.apiKey);
+export const AlgoliaAdapter = (config: SearchConfig): SearchOperations => {
+  const searchClient = liteClient(config.applicationId, config.apiKey)
 
   return {
     search: async (params: SearchParams): Promise<SearchResult> => {
-      const { results } = await searchClient.searchForHits<WordpressPost>({
+      const { results } = await searchClient.searchForHits<WPPost>({
         requests: [
           {
             indexName: config.collectionName,
             ...algoliaParamTransform(params),
           },
         ],
-      });
-
+      })
       return {
-        total: results[0].nbHits ?? 0,
-        page: results[0].page ?? 0,
+        query: params.query || '',
+        total: results[0]?.nbHits ?? 0,
+        page: results[0]?.page ?? 0,
         hits: algoliaDataTransform(results[0].hits ?? []),
-      };
+      }
     },
-  };
-};
+  }
+}

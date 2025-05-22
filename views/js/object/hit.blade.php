@@ -4,7 +4,6 @@
   "content" => "{ALGOLIA_JS_HIT_EXCERPT}",
   "image" => ['src' => '{ALGOLIA_JS_HIT_IMAGE_URL}', 'alt' => '{ALGOLIA_JS_HIT_IMAGE_ALT}'],
   "link" => "{ALGOLIA_JS_HIT_LINK}",
-  "classList" => ['c-card--size-md'],
-  "imageFirst" => false
+  "classList" => ['c-card--size-md']
 ])
 @endcard

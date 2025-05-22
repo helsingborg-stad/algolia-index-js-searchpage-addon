@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     // Use for browser
-    "target": "ES5",
+    "target": "ES2021",
     "module": "ES6",
     "moduleResolution": "node",
 
     // Uncomment for Nodejs
-    // "target": "ESNext",
-    // "module": "NodeNext",
+    //"target": "ESNext",
+    //"module": "NodeNext",
     //"moduleResolution": "nodenext",
     "isolatedModules": true,
     "outDir": "assets/dist/js",

@@ -7,8 +7,6 @@ use AlgoliaIndexJsSearchpage\Helper\IsSearchPage;
 
 class App
 {
-    private static $hasRenderedSearchPage = false;
-
     public function __construct(RenderInterface $renderer)
     {
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
@@ -59,7 +57,7 @@ class App
         wp_enqueue_script(
             'algolia-index-js-searchpage',
             ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
-                'js/instantsearch.js'
+                'js/search.js'
             ),
             []
         );
@@ -75,10 +73,14 @@ class App
         ]);
 
         //Get keys & indexname
-        wp_localize_script('algolia-index-js-searchpage', 'algoliaSearchData', [
-            'publicApiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
+        wp_localize_script('algolia-index-js-searchpage', 'searchConfig', [
+            'type' => 'algolia',
+            'host' => '',
+            'port' => 0,
+            'protocol' => '',
+            'apiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
-            'indexName' => \AlgoliaIndex\Helper\Options::indexName(),
+            'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
             'searchQuery' => get_search_query(),
             'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
             'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
