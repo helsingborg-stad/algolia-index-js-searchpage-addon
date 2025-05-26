@@ -72,6 +72,9 @@ class App
             'facetFilterString' => __("Select origin", 'algolia-index-js-searchpage'),
         ]);
 
+        wp_localize_script('algolia-index-js-searchpage', 'searchParams', [
+            'query' => get_search_query()
+        ]);
         //Get keys & indexname
         wp_localize_script('algolia-index-js-searchpage', 'searchConfig', [
             'type' => 'algolia',
@@ -81,7 +84,6 @@ class App
             'apiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
             'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
             'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
-            'searchQuery' => get_search_query(),
             'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
             'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
         ]);

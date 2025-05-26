@@ -1,7 +1,8 @@
 export interface SearchResult {
   query: string
-  total: number
-  page: number
+  totalHits: number
+  currentPage: number
+  totalPages: number
   hits: SearchResultItem[]
 }
 
@@ -73,12 +74,19 @@ export interface SearchOperations {
 }
 export interface HtmlOperations {
   getInputField: () => HTMLInputElement
-  append: (result: SearchResult) => void
-  clear: () => void
+  getPaginationContainer: () => HTMLElement
+  setStats: (result: SearchResult) => void
+  setItems: (result: SearchResult) => void
+  setPagination: (result: SearchResult) => void
+  reset: () => void
 }
 export interface EventOperations {
-  register: (
+  registerSearchBox: (
     element: HTMLInputElement,
-    callback: (query?: string) => void
+    callback: (params: SearchParams) => void
+  ) => void
+  registerPagination: (
+    element: HTMLElement,
+    callback: (page: number) => void
   ) => void
 }

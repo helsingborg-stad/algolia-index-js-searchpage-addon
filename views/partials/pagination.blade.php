@@ -8,4 +8,6 @@
         'u-margin__bottom--4'
     ]
 ])
+    @include('partials.pagination-item')
+    @include('partials.pagination-icon')
 @endelement

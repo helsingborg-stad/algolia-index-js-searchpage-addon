@@ -12,7 +12,7 @@ type TypesenseItem = {
   document: WPPost
 }
 
-export interface TypesenseParams {
+export interface TypesenseNativeParams {
   per_page?: number
   filter_by?: string
   sort_by?: string
@@ -40,9 +40,9 @@ export const typesenseDataTransform = (
 
 export const typesenseParamTransform = (
   params: SearchParams
-): TypesenseParams => {
+): TypesenseNativeParams => {
   return {
-    per_page: params.page_size,
+    per_page: params.page_size || 20,
     query_by: params.query_by,
     page: params.page,
     q: params.query,
@@ -65,8 +65,9 @@ export const TypesenseAdapter = (config: SearchConfig): SearchOperations => {
 
       return {
         query: params.query || '',
-        total: result.found,
-        page: result.page,
+        totalHits: result.found,
+        totalPages: Math.ceil(result.found / (params.page_size ?? 20)),
+        currentPage: result.page,
         hits: typesenseDataTransform(result.hits ?? []),
       }
     },
