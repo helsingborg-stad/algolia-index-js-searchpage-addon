@@ -215,10 +215,7 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       templates: {
         empty(results) {
-          return algoliaSearchComponents["noresult"].html.replaceAll(
-            "{ALGOLIA_JS_SEARCH_QUERY}",
-            results.query
-          );
+          return algoliaSearchComponents["noresult"].html;
         },
         item(hit) {
           let htmlString = (hit.thumbnail ? 
