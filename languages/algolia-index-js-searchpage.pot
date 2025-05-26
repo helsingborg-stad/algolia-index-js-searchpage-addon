@@ -1,0 +1,46 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-05-26T12:15:01+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: algolia-index-js-searchpage\n"
+
+#: App.php:65
+msgid "No matches where found on the query"
+msgstr ""
+
+#: App.php:66
+msgid "Filter results from"
+msgstr ""
+
+#: App.php:67
+msgid "posts found on your query."
+msgstr ""
+
+#: App.php:68
+#: App.php:104
+msgid "What are you looking for?"
+msgstr ""
+
+#: App.php:69
+msgid "Search"
+msgstr ""
+
+#: App.php:70
+msgid "Select origin"
+msgstr ""
+
+#: ComponentsJs.php:14
+msgid "No search results found on your query."
+msgstr ""
+
+#: ComponentsJs.php:15
+msgid "%s search results found."
+msgstr ""
