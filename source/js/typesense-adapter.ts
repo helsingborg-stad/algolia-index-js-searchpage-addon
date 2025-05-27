@@ -8,8 +8,17 @@ import type {
 } from './types'
 import { SearchResultItem } from './types.js'
 
-type TypesenseItem = {
+type TypesenseHighlight<T> = T extends string | number
+  ? TypeSenseHighlightObject
+  : {
+      [K in keyof T]?: TypesenseHighlight<T[K]>
+    }
+interface TypeSenseHighlightObject {
+  value?: string
+}
+interface TypesenseItem {
   document: WPPost
+  highlight?: TypesenseHighlight<WPPost>
 }
 
 export interface TypesenseNativeParams {
@@ -20,6 +29,7 @@ export interface TypesenseNativeParams {
   query?: string
   page?: number
   q?: string
+  highlight_full_fields?: string
 }
 
 export const typesenseDataTransform = (
@@ -28,8 +38,12 @@ export const typesenseDataTransform = (
   return response.map(
     item =>
       ({
-        title: item.document.post_title || '',
-        summary: item.document.post_excerpt || '',
+        title:
+          item.highlight?.post_title?.value ?? item.document.post_title ?? '',
+        summary:
+          item.highlight?.post_excerpt?.value ??
+          item.document.post_excerpt ??
+          '',
         subtitle: item.document.origin_site || '',
         image: item.document.thumbnail || '',
         altText: item.document.thumbnail_alt || '',
@@ -46,6 +60,7 @@ export const typesenseParamTransform = (
     query_by: params.query_by || 'post_title,post_excerpt',
     page: params.page,
     q: params.query,
+    highlight_full_fields: 'post_title,post_excerpt',
   }
 }
 
