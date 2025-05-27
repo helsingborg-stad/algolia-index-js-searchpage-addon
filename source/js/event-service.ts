@@ -28,15 +28,17 @@ export const EventService = ({
       })
     },
     registerPagination: (element, callback) => {
-      ;[...element.querySelectorAll<a>('a')].forEach(element => {
-        element.addEventListener('click', (event: PointerEvent) => {
-          event.preventDefault()
-          const target = event.currentTarget as HTMLElement
+      ;[...element.querySelectorAll<HTMLAnchorElement>('a')].forEach(
+        element => {
+          element.addEventListener('click', (event: MouseEvent) => {
+            event.preventDefault()
+            const target = event.currentTarget as HTMLElement
 
-          callback(Number(target?.dataset?.value ?? '0'))
-          window.scrollTo(0, 0)
-        })
-      })
+            callback(Number(target?.dataset?.value ?? '0'))
+            window.scrollTo(0, 0)
+          })
+        }
+      )
     },
   }
 }

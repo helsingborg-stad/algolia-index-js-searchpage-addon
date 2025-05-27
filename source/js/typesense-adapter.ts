@@ -35,21 +35,15 @@ export interface TypesenseNativeParams {
 export const typesenseDataTransform = (
   response: TypesenseItem[]
 ): SearchResultItem[] => {
-  return response.map(
-    item =>
-      ({
-        title:
-          item.highlight?.post_title?.value ?? item.document.post_title ?? '',
-        summary:
-          item.highlight?.post_excerpt?.value ??
-          item.document.post_excerpt ??
-          '',
-        subtitle: item.document.origin_site || '',
-        image: item.document.thumbnail || '',
-        altText: item.document.thumbnail_alt || '',
-        url: item.document.permalink || '',
-      }) as SearchResultItem
-  )
+  return response.map(item => ({
+    title: item.highlight?.post_title?.value ?? item.document.post_title ?? '',
+    summary:
+      item.highlight?.post_excerpt?.value ?? item.document.post_excerpt ?? '',
+    subtitle: item.document.origin_site || '',
+    image: item.document.thumbnail || '',
+    altText: item.document.thumbnail_alt || '',
+    url: item.document.permalink || '',
+  }))
 }
 
 export const typesenseParamTransform = (
@@ -82,7 +76,7 @@ export const TypesenseAdapter = (config: SearchConfig): SearchOperations => {
         query: params.query || '',
         totalHits: result.found,
         totalPages: Math.ceil(result.found / (params.page_size ?? 20)),
-        currentPage: result.page,
+        currentPage: result.page || 1,
         hits: typesenseDataTransform(result.hits ?? []),
       }
     },

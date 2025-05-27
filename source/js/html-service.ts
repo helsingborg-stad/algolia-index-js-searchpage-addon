@@ -29,7 +29,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
   ].map(
     selector =>
       document.querySelector(selector) || document.createElement('div')
-  ) as [HTMLInputElement, Element, Element]
+  ) as [HTMLInputElement, HTMLElement, HTMLElement]
 
   const [
     translateHit,
@@ -59,10 +59,11 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
         .replaceAll('{ALGOLIA_JS_PAGINATION_COLOR}', color)
         .replaceAll('{ALGOLIA_JS_PAGINATION_CLASS}', className)
         .replaceAll('{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}', text),
-    (): string =>
+    (page: string, icon: string): string =>
       templatePaginationIcon
-        .replaceAll('{ALGOLIA_JS_PAGINATION_TEXT}', '')
-        .replaceAll('{ALGOLIA_JS_PAGINATION_HREF}', ''),
+        .replaceAll('{ALGOLIA_JS_PAGINATION_ICON}', icon)
+        .replaceAll('{ALGOLIA_JS_PAGINATION_HREF}', '#')
+        .replaceAll('{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}', page),
   ]
   // Set initial value
   searchInput.value = params.query || ''
@@ -91,17 +92,46 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
       }
     },
     setPagination: (result: SearchResult): void => {
-      new Array(result.totalPages).fill(0).forEach((_, index) => {
+      if (result.currentPage > 1) {
+        append(
+          searchPagination,
+          translatePaginationIcon(
+            String(result.currentPage - 1),
+            'keyboard_arrow_left'
+          )
+        )
+      }
+      // Complete row
+      const pages = new Array(result.totalPages)
+        .fill(0)
+        .map((_, index) => index + 1)
+
+      const from = Math.max(
+        Math.min(result.currentPage - 2, pages.length - 4),
+        0
+      )
+
+      pages.splice(from, 4).forEach(id => {
         const [color, className] =
-          index === result.currentPage
+          id === result.currentPage
             ? ['primary', 'c-pagination--is-active']
             : ['default', '']
 
         append(
           searchPagination,
-          translatePaginationItem(String(index + 1), color, className)
+          translatePaginationItem(String(id), color, className)
         )
       })
+
+      if (result.currentPage < result.totalPages) {
+        append(
+          searchPagination,
+          translatePaginationIcon(
+            String(result.currentPage + 1),
+            'keyboard_arrow_right'
+          )
+        )
+      }
     },
   }
 }

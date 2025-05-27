@@ -72,8 +72,8 @@ export const AlgoliaAdapter = (config: SearchConfig): SearchOperations => {
       return {
         query: params.query ?? '',
         totalHits: results[0]?.nbHits ?? 0,
-        currentPage: results[0]?.page ?? 0,
-        totalPages: results[0]?.nbPages ?? 0,
+        currentPage: results[0]?.page ? results[0]?.page + 1 : 1,
+        totalPages: results[0]?.nbPages ?? 1,
         hits: algoliaDataTransform(results[0]?.hits ?? []),
       }
     },
