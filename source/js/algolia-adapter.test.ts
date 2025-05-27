@@ -61,7 +61,7 @@ describe('Algolia', () => {
     expect(data[0].title).toEqual('')
     expect(data[0].subtitle).toEqual('')
     expect(data[0].summary).toEqual('')
-    expect(data[0].image).toEqual('')
+    expect(data[0].image).toEqual(undefined)
     expect(data[0].url).toEqual('')
   })
 })

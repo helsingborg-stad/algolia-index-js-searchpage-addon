@@ -7,20 +7,11 @@ import type {
   WPPost,
 } from './types'
 import { SearchResultItem } from './types.js'
+import { decodeHtml } from './mappers'
 
-type TypesenseHighlight<T> = T extends string | number
-  ? TypeSenseHighlightObject
-  : {
-      [K in keyof T]?: TypesenseHighlight<T[K]>
-    }
-interface TypeSenseHighlightObject {
-  value?: string
-}
-interface TypesenseItem {
-  document: WPPost
-  highlight?: TypesenseHighlight<WPPost>
-}
-
+/**
+ * Native Queryparameters for Typesense (Partial)
+ */
 export interface TypesenseNativeParams {
   per_page?: number
   filter_by?: string
@@ -32,20 +23,56 @@ export interface TypesenseNativeParams {
   highlight_full_fields?: string
 }
 
+/**
+ * Native document structure for Typesense (Partial)
+ */
+interface TypesenseItem {
+  document: WPPost
+  highlight?: TypesenseHighlight<WPPost>
+}
+
+type TypesenseHighlight<T> = T extends string | number
+  ? TypeSenseHighlightObject
+  : {
+      [K in keyof T]?: TypesenseHighlight<T[K]>
+    }
+interface TypeSenseHighlightObject {
+  value?: string
+}
+
+/**
+ * Typesense response to generic format conversion
+ * @param response The response from Typesense search
+ * @returns A generic search result item array
+ */
 export const typesenseDataTransform = (
   response: TypesenseItem[]
 ): SearchResultItem[] => {
+  // Extract highlighted values from Typesense response
+  const getHighlightValue = (
+    item: TypesenseItem,
+    name: 'post_title' | 'post_excerpt'
+  ): string => {
+    if (item.highlight && item.highlight[name]) {
+      return decodeHtml(item.highlight[name]?.value ?? '')
+    }
+    return item.document[name] || ''
+  }
+
   return response.map(item => ({
-    title: item.highlight?.post_title?.value ?? item.document.post_title ?? '',
-    summary:
-      item.highlight?.post_excerpt?.value ?? item.document.post_excerpt ?? '',
+    title: getHighlightValue(item, 'post_title'),
+    summary: getHighlightValue(item, 'post_excerpt'),
     subtitle: item.document.origin_site || '',
-    image: item.document.thumbnail || '',
+    image: item.document.thumbnail?.replaceAll('/wp/', '/'),
     altText: item.document.thumbnail_alt || '',
     url: item.document.permalink || '',
   }))
 }
-
+/**
+ * Converts generic search parameters to Typesense native query parameters
+ * @param params The search query parameters to transform
+ * @returns The native Typesense query parameters
+ */
 export const typesenseParamTransform = (
   params: SearchParams
 ): TypesenseNativeParams => {
@@ -58,6 +85,11 @@ export const typesenseParamTransform = (
   }
 }
 
+/**
+ * The Adapter used to query Typesense
+ * @param config The configuration of the Typesense connection
+ * @returns A search operations object with a search method
+ */
 export const TypesenseAdapter = (config: SearchConfig): SearchOperations => {
   const client = new Typesense.Client({
     nodes: [config],

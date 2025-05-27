@@ -1,7 +1,7 @@
 import { WPPost } from './types'
 import { typesenseDataTransform } from './typesense-adapter'
 
-describe('A', () => {
+describe('Typesense', () => {
   const document: WPPost = {
     ID: '49727',
     algolia_timestamp: 1740492832,
@@ -67,7 +67,7 @@ describe('A', () => {
     expect(data[0].title).toEqual('')
     expect(data[0].subtitle).toEqual('')
     expect(data[0].summary).toEqual('')
-    expect(data[0].image).toEqual('')
+    expect(data[0].image).toEqual(undefined)
     expect(data[0].url).toEqual('')
   })
 })

@@ -5,15 +5,8 @@ import {
   SearchParams,
 } from './types'
 
-export const HtmlService = (params: SearchParams): HtmlOperations => {
-  const [
-    templateHitHtml = '',
-    templateNoImgHtml = '',
-    templateNoResults = '',
-    templateStats = '',
-    templatePaginationItem = '',
-    templatePaginationIcon = '',
-  ] = [
+const getHtmlTemplates = (): string[] =>
+  [
     'template[data-js-search-hit-template]',
     'template[data-js-search-hit-noimage-template]',
     'template[data-js-search-page-no-results]',
@@ -22,14 +15,28 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
     'template[data-js-search-page-pagination-icon]',
   ].map(selector => document.querySelector(selector)?.innerHTML ?? '')
 
-  const [searchInput, searchContainer, searchPagination] = [
+const getHtmlElements = (): HTMLElement[] =>
+  [
     '[data-js-search-page-search-input]',
     '[data-js-search-page-hits]',
     '[data-js-search-page-pagination]',
   ].map(
     selector =>
       document.querySelector(selector) || document.createElement('div')
-  ) as [HTMLInputElement, HTMLElement, HTMLElement]
+  )
+
+export const HtmlService = (params: SearchParams): HtmlOperations => {
+  const [
+    templateHitHtml = '',
+    templateNoImgHtml = '',
+    templateNoResults = '',
+    templateStats = '',
+    templatePaginationItem = '',
+    templatePaginationIcon = '',
+  ] = getHtmlTemplates()
+
+  const [searchInput, searchContainer, searchPagination] =
+    getHtmlElements() as [HTMLInputElement, HTMLElement, HTMLElement]
 
   const [
     translateHit,
@@ -43,7 +50,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
         .replaceAll('{SEARCH_JS_HIT_HEADING}', item.title)
         .replaceAll('{SEARCH_JS_HIT_SUBHEADING}', item.subtitle)
         .replaceAll('{SEARCH_JS_HIT_EXCERPT}', item.summary)
-        .replaceAll('{SEARCH_JS_HIT_IMAGE_URL}', item.image)
+        .replaceAll('{SEARCH_JS_HIT_IMAGE_URL}', item.image ?? '')
         .replaceAll('{SEARCH_JS_HIT_IMAGE_ALT}', item.altText)
         .replaceAll('{SEARCH_JS_HIT_LINK}', item.url),
     (query: string): string =>
@@ -83,8 +90,8 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
       append(searchContainer, translateStats(result))
     },
     setItems: (result: SearchResult): void => {
-      // Has results
       if (result.hits.length > 0) {
+        // Has results
         result.hits.forEach(hit => append(searchContainer, translateHit(hit)))
       } else {
         // No results
@@ -92,6 +99,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
       }
     },
     setPagination: (result: SearchResult): void => {
+      // Back button
       if (result.currentPage > 1) {
         append(
           searchPagination,
@@ -122,7 +130,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
           translatePaginationItem(String(id), color, className)
         )
       })
-
+      // Forward button
       if (result.currentPage < result.totalPages) {
         append(
           searchPagination,

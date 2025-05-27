@@ -8,24 +8,41 @@ import type {
   SearchResultItem,
   WPPost,
 } from './types'
+import { decodeHtml } from './mappers'
 
+/**
+ * Native Queryparameters for Algolia (Partial)
+ */
 export interface AlgoliaNativeParams {
   hitsPerPage?: number
   page?: number
   query?: string
 }
 
-export const algoliaDataTransform = (
-  response: WPPost[]
-): SearchResultItem[] => {
-  const decodeHtml = (html: string): string => {
-    const txt = document.createElement('textarea')
-    txt.innerHTML = html
-    return txt.value
+/**
+ * Native document structure for Algolia (Partial)
+ */
+interface AlgoliaItem extends WPPost {
+  _highlightResult?: {
+    post_title?: {
+      value: string
+    }
+    post_excerpt?: {
+      value: string
+    }
   }
+}
 
-  const getWPValue = (
-    item: WPPost,
+/**
+ * Algolia response to generic format conversion
+ * @param response The response from Algolia search
+ * @returns A generic search result item array
+ */
+export const algoliaDataTransform = (
+  response: AlgoliaItem[]
+): SearchResultItem[] => {
+  const getHighlightValue = (
+    item: AlgoliaItem,
     name: 'post_title' | 'post_excerpt'
   ): string => {
     if (item._highlightResult && item._highlightResult[name]) {
@@ -33,19 +50,21 @@ export const algoliaDataTransform = (
     }
     return item[name] || ''
   }
-  return response.map(
-    item =>
-      ({
-        title: getWPValue(item, 'post_title'),
-        summary: getWPValue(item, 'post_excerpt'),
-        subtitle: item.origin_site || '',
-        image: item.thumbnail?.replaceAll('/wp/', '/') ?? '',
-        altText: item.thumbnail_alt || '',
-        url: item.permalink || '',
-      }) as SearchResultItem
-  )
+  return response.map(item => ({
+    title: getHighlightValue(item, 'post_title'),
+    summary: getHighlightValue(item, 'post_excerpt'),
+    subtitle: item.origin_site || '',
+    image: item.thumbnail?.replaceAll('/wp/', '/'),
+    altText: item.thumbnail_alt || '',
+    url: item.permalink || '',
+  }))
 }
 
+/**
+ * Converts generic search parameters to Algolia native query parameters
+ * @param params The search query parameters to transform
+ * @returns The native Algolia query parameters
+ */
 export const algoliaParamTransform = (
   params: SearchParams
 ): AlgoliaNativeParams => {
@@ -56,12 +75,17 @@ export const algoliaParamTransform = (
   }
 }
 
+/**
+ * The Adapter used to query Algolia
+ * @param config The configuration of the Algolia connection
+ * @returns A search operations object with a search method
+ */
 export const AlgoliaAdapter = (config: SearchConfig): SearchOperations => {
   const searchClient = liteClient(config.applicationId, config.apiKey)
 
   return {
     search: async (params: SearchParams): Promise<SearchResult> => {
-      const { results } = await searchClient.searchForHits<WPPost>({
+      const { results } = await searchClient.searchForHits<AlgoliaItem>({
         requests: [
           {
             indexName: config.collectionName,

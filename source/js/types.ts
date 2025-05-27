@@ -10,7 +10,7 @@ export interface SearchResultItem {
   title: string
   subtitle: string
   summary: string
-  image: string
+  image?: string
   altText: string
   url: string
 }
@@ -59,14 +59,6 @@ export interface WPPost {
   uuid?: string
   embedding?: number[]
   id?: string
-  _highlightResult?: {
-    post_title?: {
-      value: string
-    }
-    post_excerpt?: {
-      value: string
-    }
-  }
 }
 
 export interface SearchOperations {

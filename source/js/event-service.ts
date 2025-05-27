@@ -34,7 +34,7 @@ export const EventService = ({
             event.preventDefault()
             const target = event.currentTarget as HTMLElement
 
-            callback(Number(target?.dataset?.value ?? '0'))
+            callback(Number(target?.dataset?.value ?? '1'))
             window.scrollTo(0, 0)
           })
         }
