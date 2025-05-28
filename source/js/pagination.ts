@@ -1,9 +1,9 @@
-import { PaginationOperations, SearchResult } from './types'
+import { PaginationService, GenericSearchResult } from './types'
 
-export const PaginationService = ({
+export const PaginationFactory = ({
   totalPages,
   currentPage,
-}: SearchResult): PaginationOperations => {
+}: GenericSearchResult): PaginationService => {
   return {
     isLastPage: () => currentPage === totalPages,
     isFirstPage: () => currentPage === 1,

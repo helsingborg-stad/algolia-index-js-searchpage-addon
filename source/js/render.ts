@@ -1,18 +1,19 @@
 import {
-  EventOperations,
-  HtmlOperations,
-  SearchOperations,
-  SearchParams,
+  HtmlEventService,
+  HtmlService,
+  SearchService,
+  GenericSearchQueryParams,
+  HtmlRenderService,
 } from './types'
 import { setUrlSearchParam } from './url-param'
 
-export const RenderService = (
-  binder: EventOperations,
-  adapter: SearchOperations,
-  html: HtmlOperations
-) => {
+export const RenderFactory = (
+  binder: HtmlEventService,
+  adapter: SearchService,
+  html: HtmlService
+): HtmlRenderService => {
   // Perfom search with the provided query
-  const run = (params: SearchParams) => {
+  const run = (params: GenericSearchQueryParams) => {
     adapter.search(params).then(result => {
       setUrlSearchParam(params.query)
       html.reset()

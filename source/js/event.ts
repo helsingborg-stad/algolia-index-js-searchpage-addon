@@ -1,8 +1,8 @@
-import type { EventOperations, SearchConfig } from './types'
+import type { HtmlEventService, SearchConfig } from './types'
 
-export const EventService = ({
+export const HtmlEventFactory = ({
   searchAsYouType,
-}: SearchConfig): EventOperations => {
+}: SearchConfig): HtmlEventService => {
   return {
     registerSearchBox: (element, callback) => {
       // Callback on input

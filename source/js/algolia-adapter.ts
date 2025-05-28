@@ -2,27 +2,26 @@ import { liteClient } from 'algoliasearch/lite'
 
 import type {
   SearchConfig,
-  SearchParams,
-  SearchResult,
-  SearchOperations,
-  SearchResultItem,
+  GenericSearchQueryParams,
+  GenericSearchResult,
+  SearchService,
+  GenericSearchResultItem,
   WPPost,
 } from './types'
 import { decodeHtml } from './mappers'
 
 /**
- * Native Queryparameters for Algolia (Partial)
+ * Partial native Queryparameters
  */
-export interface AlgoliaNativeParams {
+export interface AlgoliaNativeQueryParams {
   hitsPerPage?: number
   page?: number
   query?: string
 }
-
 /**
- * Native document structure for Algolia (Partial)
+ * Partial document structure
  */
-interface AlgoliaItem extends WPPost {
+interface AlgoliaSearchResultItem extends WPPost {
   _highlightResult?: {
     post_title?: {
       value: string
@@ -32,18 +31,22 @@ interface AlgoliaItem extends WPPost {
     }
   }
 }
+/**
+ * Supported highlight fields
+ */
+type AlgoliaHighlightField = 'post_title' | 'post_excerpt'
 
 /**
- * Algolia response to generic format conversion
- * @param response The response from Algolia search
+ * Native response to generic format conversion
+ * @param response The response from the search adapter
  * @returns A generic search result item array
  */
 export const algoliaDataTransform = (
-  response: AlgoliaItem[]
-): SearchResultItem[] => {
+  response: AlgoliaSearchResultItem[]
+): GenericSearchResultItem[] => {
   const getHighlightValue = (
-    item: AlgoliaItem,
-    name: 'post_title' | 'post_excerpt'
+    item: AlgoliaSearchResultItem,
+    name: AlgoliaHighlightField
   ): string => {
     if (item._highlightResult && item._highlightResult[name]) {
       return decodeHtml(item._highlightResult[name].value)
@@ -66,8 +69,8 @@ export const algoliaDataTransform = (
  * @returns The native Algolia query parameters
  */
 export const algoliaParamTransform = (
-  params: SearchParams
-): AlgoliaNativeParams => {
+  params: GenericSearchQueryParams
+): AlgoliaNativeQueryParams => {
   return {
     hitsPerPage: params?.page_size ?? 20,
     page: params.page ? params.page - 1 : undefined,
@@ -80,19 +83,22 @@ export const algoliaParamTransform = (
  * @param config The configuration of the Algolia connection
  * @returns A search operations object with a search method
  */
-export const AlgoliaAdapter = (config: SearchConfig): SearchOperations => {
+export const AlgoliaAdapter = (config: SearchConfig): SearchService => {
   const searchClient = liteClient(config.applicationId, config.apiKey)
 
   return {
-    search: async (params: SearchParams): Promise<SearchResult> => {
-      const { results } = await searchClient.searchForHits<AlgoliaItem>({
-        requests: [
-          {
-            indexName: config.collectionName,
-            ...algoliaParamTransform(params),
-          },
-        ],
-      })
+    search: async (
+      params: GenericSearchQueryParams
+    ): Promise<GenericSearchResult> => {
+      const { results } =
+        await searchClient.searchForHits<AlgoliaSearchResultItem>({
+          requests: [
+            {
+              indexName: config.collectionName,
+              ...algoliaParamTransform(params),
+            },
+          ],
+        })
       return {
         query: params.query ?? '',
         totalHits: results[0]?.nbHits ?? 0,

@@ -1,12 +1,12 @@
-export interface SearchResult {
+export interface GenericSearchResult {
   query: string
   totalHits: number
   currentPage: number
   totalPages: number
-  hits: SearchResultItem[]
+  hits: GenericSearchResultItem[]
 }
 
-export interface SearchResultItem {
+export interface GenericSearchResultItem {
   title: string
   subtitle: string
   summary: string
@@ -27,7 +27,7 @@ export interface SearchConfig {
   searchQuery: string
 }
 
-export interface SearchParams {
+export interface GenericSearchQueryParams {
   query?: string
   query_by?: string
   page?: number
@@ -61,27 +61,29 @@ export interface WPPost {
   id?: string
 }
 
-export interface SearchOperations {
-  search(params: SearchParams): Promise<SearchResult>
+export interface SearchService {
+  search(params: GenericSearchQueryParams): Promise<GenericSearchResult>
 }
-export interface HtmlOperations {
+export interface HtmlService {
   getInputField: () => HTMLInputElement
   getPaginationContainer: () => HTMLElement
-  setStats: (result: SearchResult) => void
-  setItems: (result: SearchResult) => void
-  setPagination: (result: SearchResult) => void
+  setStats: (result: GenericSearchResult) => void
+  setItems: (result: GenericSearchResult) => void
+  setPagination: (result: GenericSearchResult) => void
   reset: () => void
 }
-export interface PaginationOperations {
+export interface PaginationService {
   isLastPage: () => boolean
   isFirstPage: () => boolean
   getVisibleItems: (maxItems?: number) => number[]
 }
-
-export interface EventOperations {
+export interface HtmlRenderService {
+  run: (params: GenericSearchQueryParams) => void
+}
+export interface HtmlEventService {
   registerSearchBox: (
     element: HTMLInputElement,
-    callback: (params: SearchParams) => void
+    callback: (params: GenericSearchQueryParams) => void
   ) => void
   registerPagination: (
     element: HTMLElement,

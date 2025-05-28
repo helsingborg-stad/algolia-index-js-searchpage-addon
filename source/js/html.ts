@@ -1,9 +1,9 @@
-import { PaginationService } from './pagination-service'
+import { PaginationFactory } from './pagination'
 import {
-  HtmlOperations,
-  SearchResultItem,
-  SearchResult,
-  SearchParams,
+  HtmlService,
+  GenericSearchResultItem,
+  GenericSearchResult,
+  GenericSearchQueryParams,
 } from './types'
 
 const getHtmlTemplates = (): string[] =>
@@ -26,7 +26,7 @@ const getHtmlElements = (): HTMLElement[] =>
       document.querySelector(selector) || document.createElement('div')
   )
 
-export const HtmlService = (params: SearchParams): HtmlOperations => {
+export const HtmlFactory = (params: GenericSearchQueryParams): HtmlService => {
   const [
     templateHitHtml = '',
     templateNoImgHtml = '',
@@ -46,7 +46,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
     translatePaginationItem,
     translatePaginationIcon,
   ] = [
-    (item: SearchResultItem): string =>
+    (item: GenericSearchResultItem): string =>
       (item.image ? templateHitHtml : templateNoImgHtml)
         .replaceAll('{SEARCH_JS_HIT_HEADING}', item.title)
         .replaceAll('{SEARCH_JS_HIT_SUBHEADING}', item.subtitle)
@@ -55,7 +55,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
         .replaceAll('{SEARCH_JS_HIT_IMAGE_ALT}', item.altText)
         .replaceAll('{SEARCH_JS_HIT_LINK}', item.url),
     (): string => templateNoResults,
-    ({ totalHits, query }: SearchResult): string =>
+    ({ totalHits, query }: GenericSearchResult): string =>
       templateStats
         .replaceAll('{ALGOLIA_JS_STATS_COUNT}', String(totalHits))
         .replaceAll('{ALGOLIA_JS_STATS_QUERY}', query),
@@ -86,10 +86,10 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
       searchContainer.innerHTML = ''
       searchPagination.innerHTML = ''
     },
-    setStats: (result: SearchResult): void => {
+    setStats: (result: GenericSearchResult): void => {
       append(searchContainer, translateStats(result))
     },
-    setItems: (result: SearchResult): void => {
+    setItems: (result: GenericSearchResult): void => {
       if (result.hits.length > 0) {
         // Has results
         result.hits.forEach(hit => append(searchContainer, translateHit(hit)))
@@ -98,8 +98,8 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
         append(searchContainer, translateNoResults())
       }
     },
-    setPagination: (result: SearchResult): void => {
-      const service = PaginationService(result)
+    setPagination: (result: GenericSearchResult): void => {
+      const service = PaginationFactory(result)
 
       // Back button
       if (!service.isFirstPage()) {

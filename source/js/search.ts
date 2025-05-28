@@ -1,17 +1,14 @@
-import { EventService } from './event-service'
-import { HtmlService } from './html-service'
-import { RenderService } from './render-service'
-import { SearchService } from './search-service'
-import { SearchConfig, SearchParams } from './types'
+import { AlgoliaAdapter } from './algolia-adapter'
+import { SearchConfig, SearchService } from './types'
+import { TypesenseAdapter } from './typesense-adapter'
 
-// PHP Provided configuration
-declare const searchConfig: SearchConfig
-declare const searchParams: SearchParams
-
-document.addEventListener('DOMContentLoaded', function () {
-  RenderService(
-    EventService(searchConfig),
-    SearchService(searchConfig),
-    HtmlService(searchParams)
-  ).run(searchParams)
-})
+export const SearchFactory = (config: SearchConfig): SearchService => {
+  switch (config.type) {
+    case 'algolia':
+      return AlgoliaAdapter(config)
+    case 'typesense':
+      return TypesenseAdapter(config)
+    default:
+      throw new Error(`Unsupported search type: ${config.type}`)
+  }
+}

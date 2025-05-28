@@ -57,7 +57,7 @@ class App
         wp_enqueue_script(
             'algolia-index-js-searchpage',
             ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
-                'js/search.js'
+                'js/main.js'
             ),
             []
         );

@@ -1,18 +1,18 @@
 import * as Typesense from 'typesense'
 import type {
   SearchConfig,
-  SearchParams,
-  SearchResult,
-  SearchOperations,
+  GenericSearchQueryParams,
+  GenericSearchResult,
+  SearchService,
   WPPost,
 } from './types'
-import { SearchResultItem } from './types.js'
+import { GenericSearchResultItem } from './types.js'
 import { decodeHtml } from './mappers'
 
 /**
- * Native Queryparameters for Typesense (Partial)
+ * Partial native Queryparameters
  */
-export interface TypesenseNativeParams {
+export interface TypesenseNativeQueryParams {
   per_page?: number
   filter_by?: string
   sort_by?: string
@@ -24,34 +24,38 @@ export interface TypesenseNativeParams {
 }
 
 /**
- * Native document structure for Typesense (Partial)
+ * Partial document structure
  */
-interface TypesenseItem {
+interface TypesenseSearchResultItem {
   document: WPPost
   highlight?: TypesenseHighlight<WPPost>
 }
 
 type TypesenseHighlight<T> = T extends string | number
-  ? TypeSenseHighlightObject
+  ? TypesenseHighlightObject
   : {
       [K in keyof T]?: TypesenseHighlight<T[K]>
     }
-interface TypeSenseHighlightObject {
+interface TypesenseHighlightObject {
   value?: string
 }
 
 /**
- * Typesense response to generic format conversion
- * @param response The response from Typesense search
+ * Supported highlight fields
+ */
+type TypesenseHighlightField = 'post_title' | 'post_excerpt'
+/**
+ * Native response to generic format conversion
+ * @param response The response from the search adapter
  * @returns A generic search result item array
  */
 export const typesenseDataTransform = (
-  response: TypesenseItem[]
-): SearchResultItem[] => {
+  response: TypesenseSearchResultItem[]
+): GenericSearchResultItem[] => {
   // Extract highlighted values from Typesense response
   const getHighlightValue = (
-    item: TypesenseItem,
-    name: 'post_title' | 'post_excerpt'
+    item: TypesenseSearchResultItem,
+    name: TypesenseHighlightField
   ): string => {
     if (item.highlight && item.highlight[name]) {
       return decodeHtml(item.highlight[name]?.value ?? '')
@@ -74,8 +78,8 @@ export const typesenseDataTransform = (
  * @returns The native Typesense query parameters
  */
 export const typesenseParamTransform = (
-  params: SearchParams
-): TypesenseNativeParams => {
+  params: GenericSearchQueryParams
+): TypesenseNativeQueryParams => {
   return {
     per_page: params.page_size || 20,
     query_by: params.query_by || 'post_title,post_excerpt',
@@ -90,7 +94,7 @@ export const typesenseParamTransform = (
  * @param config The configuration of the Typesense connection
  * @returns A search operations object with a search method
  */
-export const TypesenseAdapter = (config: SearchConfig): SearchOperations => {
+export const TypesenseAdapter = (config: SearchConfig): SearchService => {
   const client = new Typesense.Client({
     nodes: [config],
     apiKey: config.apiKey,
@@ -98,7 +102,9 @@ export const TypesenseAdapter = (config: SearchConfig): SearchOperations => {
   })
 
   return {
-    search: async (params: SearchParams): Promise<SearchResult> => {
+    search: async (
+      params: GenericSearchQueryParams
+    ): Promise<GenericSearchResult> => {
       const result = await client
         .collections<WPPost>(config.collectionName)
         .documents()

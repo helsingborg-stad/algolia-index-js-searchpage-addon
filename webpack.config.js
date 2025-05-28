@@ -1,31 +1,31 @@
-require("dotenv").config();
+require('dotenv').config()
 
-const path = require("path");
+const path = require('path')
 
-const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
-const WebpackNotifierPlugin = require("webpack-notifier");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
+const WebpackNotifierPlugin = require('webpack-notifier')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const RemoveEmptyScripts = require("webpack-remove-empty-scripts");
-const CssMinimizerWebpackPlugin = require("css-minimizer-webpack-plugin");
-const autoprefixer = require("autoprefixer");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const RemoveEmptyScripts = require('webpack-remove-empty-scripts')
+const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
+const autoprefixer = require('autoprefixer')
 
-const { getIfUtils, removeEmpty } = require("webpack-config-utils");
-const { ifProduction } = getIfUtils(process.env.NODE_ENV);
+const { getIfUtils, removeEmpty } = require('webpack-config-utils')
+const { ifProduction } = getIfUtils(process.env.NODE_ENV)
 
 module.exports = {
-  mode: ifProduction("production", "development"),
+  mode: ifProduction('production', 'development'),
   /**
    * Add your entry files here
    */
   entry: {
-    "js/search": "./source/js/search.ts",
+    'js/main': './source/js/main.ts',
     'css/instantsearch': './source/sass/algolia-index-js-searchpage.scss',
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: ['.tsx', '.ts', '.js'],
   },
 
   /**
@@ -33,17 +33,11 @@ module.exports = {
    */
   output: {
     filename: ifProduction(
-      "[name].[contenthash].js",
-      "[name].[contenthash].js"
+      '[name].[contenthash].js',
+      '[name].[contenthash].js'
     ),
-    path: path.resolve(__dirname, "assets", "dist"),
-    publicPath: "",
-  },
-  /**
-   * Define external dependencies here
-   */
-  externals: {
-    jquery: "jQuery",
+    path: path.resolve(__dirname, 'assets', 'dist'),
+    publicPath: '',
   },
   module: {
     rules: [
@@ -54,14 +48,14 @@ module.exports = {
         test: /\.ts$/,
         exclude: /(node_modules)/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             // Babel config goes here
-            presets: ["@babel/preset-env", "@babel/preset-typescript"],
+            presets: ['@babel/preset-env', '@babel/preset-typescript'],
             plugins: [
-              "@babel/plugin-syntax-dynamic-import",
-              "@babel/plugin-proposal-export-default-from",
-              "@babel/plugin-proposal-class-properties",
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/plugin-proposal-export-default-from',
+              '@babel/plugin-proposal-class-properties',
             ],
           },
         },
@@ -75,13 +69,13 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               importLoaders: 3, // 0 => no loaders (default); 1 => postcss-loader; 2 => sass-loader
             },
           },
           {
-            loader: "postcss-loader",
+            loader: 'postcss-loader',
             options: {
               postcssOptions: {
                 plugins: [autoprefixer],
@@ -89,10 +83,10 @@ module.exports = {
             },
           },
           {
-            loader: "sass-loader",
+            loader: 'sass-loader',
             options: {},
           },
-          "import-glob-loader",
+          'import-glob-loader',
         ],
       },
 
@@ -101,9 +95,9 @@ module.exports = {
        */
       {
         test: /\.(png|svg|jpg|gif)$/,
-        type: "asset/resource",
+        type: 'asset/resource',
         generator: {
-          filename: "images/action_icons/[name][ext]",
+          filename: 'images/action_icons/[name][ext]',
         },
       },
     ],
@@ -112,12 +106,12 @@ module.exports = {
     /**
      * BrowserSync
      */
-    typeof process.env.BROWSER_SYNC_PROXY_URL !== "undefined"
+    typeof process.env.BROWSER_SYNC_PROXY_URL !== 'undefined'
       ? new BrowserSyncPlugin(
           // BrowserSync options
           {
             // browse to http://localhost:3000/ during development
-            host: "localhost",
+            host: 'localhost',
             port: process.env.BROWSER_SYNC_PORT
               ? process.env.BROWSER_SYNC_PORT
               : 3000,
@@ -148,7 +142,7 @@ module.exports = {
      * Output CSS files
      */
     new MiniCssExtractPlugin({
-      filename: "[name].[contenthash:8].css",
+      filename: '[name].[contenthash:8].css',
     }),
 
     /**
@@ -159,9 +153,9 @@ module.exports = {
       filter: function (file) {
         // Don't include source maps
         if (file.path.match(/\.(map)$/)) {
-          return false;
+          return false
         }
-        return true;
+        return true
       },
       // Custom mapping of manifest item goes here
       map: function (file) {
@@ -171,20 +165,20 @@ module.exports = {
           file.isModuleAsset &&
           file.path.match(/\.(woff|woff2|eot|ttf|otf)$/)
         ) {
-          const pathParts = file.path.split(".");
-          const nameParts = file.name.split(".");
+          const pathParts = file.path.split('.')
+          const nameParts = file.name.split('.')
 
           // Compare extensions
           if (
             pathParts[pathParts.length - 1] !== nameParts[nameParts.length - 1]
           ) {
             file.name = pathParts[0].concat(
-              ".",
+              '.',
               pathParts[pathParts.length - 1]
-            );
+            )
           }
         }
-        return file;
+        return file
       },
     }),
 
@@ -203,7 +197,7 @@ module.exports = {
       new CssMinimizerWebpackPlugin({
         minimizerOptions: {
           preset: [
-            "default",
+            'default',
             {
               discardComments: { removeAll: true },
             },
@@ -212,6 +206,6 @@ module.exports = {
       })
     ),
   ]).filter(Boolean),
-  devtool: "source-map",
+  devtool: 'source-map',
   stats: { children: false },
-};
+}
