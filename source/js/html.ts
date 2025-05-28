@@ -1,11 +1,15 @@
 import { PaginationFactory } from './pagination'
 import {
-  HtmlService,
+  HtmlRenderService,
   GenericSearchResultItem,
   GenericSearchResult,
   GenericSearchQueryParams,
 } from './types'
 
+/**
+ * Queries template content from the HTML document
+ * @returns A string array of HTML templates
+ */
 const getHtmlTemplates = (): string[] =>
   [
     'template[data-js-search-hit-template]',
@@ -16,6 +20,10 @@ const getHtmlTemplates = (): string[] =>
     'template[data-js-search-page-pagination-icon]',
   ].map(selector => document.querySelector(selector)?.innerHTML ?? '')
 
+/**
+ * Queries elements from the HTML document
+ * @returns An array of HTML elements
+ */
 const getHtmlElements = (): HTMLElement[] =>
   [
     '[data-js-search-page-search-input]',
@@ -26,7 +34,14 @@ const getHtmlElements = (): HTMLElement[] =>
       document.querySelector(selector) || document.createElement('div')
   )
 
-export const HtmlFactory = (params: GenericSearchQueryParams): HtmlService => {
+/**
+ * Creates a service for manipulating HTML related to search results
+ * @param params Generic search query parameters
+ * @returns A service that provides methods to manipulate HTML for search results
+ */
+export const HtmlRenderFactory = (
+  params: GenericSearchQueryParams
+): HtmlRenderService => {
   const [
     templateHitHtml = '',
     templateNoImgHtml = '',
@@ -79,17 +94,35 @@ export const HtmlFactory = (params: GenericSearchQueryParams): HtmlService => {
     parent.insertAdjacentHTML('beforeend', content)
 
   return {
+    /**
+     * Returns the input field for search queries
+     * @returns The search input field element
+     */
     getInputField: () => searchInput,
+    /**
+     * Returns the pagination container for search results
+     * @returns The pagination container element
+     */
     getPaginationContainer: () => searchPagination,
-
+    /**
+     * Resets the search results and pagination
+     */
     reset: () => {
       searchContainer.innerHTML = ''
       searchPagination.innerHTML = ''
     },
-    setStats: (result: GenericSearchResult): void => {
+    /**
+     * Render stats for the search results
+     * @param result The search result to translate into HTML
+     */
+    renderStats: (result: GenericSearchResult): void => {
       append(searchContainer, translateStats(result))
     },
-    setItems: (result: GenericSearchResult): void => {
+    /**
+     * Render search result items
+     * @param result The search result to translate into HTML
+     */
+    renderItems: (result: GenericSearchResult): void => {
       if (result.hits.length > 0) {
         // Has results
         result.hits.forEach(hit => append(searchContainer, translateHit(hit)))
@@ -98,7 +131,11 @@ export const HtmlFactory = (params: GenericSearchQueryParams): HtmlService => {
         append(searchContainer, translateNoResults())
       }
     },
-    setPagination: (result: GenericSearchResult): void => {
+    /**
+     * Render pagination for the search results
+     * @param result The search result to translate into HTML pagination
+     */
+    renderPagination: (result: GenericSearchResult): void => {
       const service = PaginationFactory(result)
 
       // Back button

@@ -24,7 +24,6 @@ export interface SearchConfig {
   applicationId: string
   collectionName: string
   searchAsYouType: boolean
-  searchQuery: string
 }
 
 export interface GenericSearchQueryParams {
@@ -64,12 +63,12 @@ export interface WPPost {
 export interface SearchService {
   search(params: GenericSearchQueryParams): Promise<GenericSearchResult>
 }
-export interface HtmlService {
+export interface HtmlRenderService {
   getInputField: () => HTMLInputElement
   getPaginationContainer: () => HTMLElement
-  setStats: (result: GenericSearchResult) => void
-  setItems: (result: GenericSearchResult) => void
-  setPagination: (result: GenericSearchResult) => void
+  renderStats: (result: GenericSearchResult) => void
+  renderItems: (result: GenericSearchResult) => void
+  renderPagination: (result: GenericSearchResult) => void
   reset: () => void
 }
 export interface PaginationService {
@@ -77,8 +76,8 @@ export interface PaginationService {
   isFirstPage: () => boolean
   getVisibleItems: (maxItems?: number) => number[]
 }
-export interface HtmlRenderService {
-  run: (params: GenericSearchQueryParams) => void
+export interface HtmlRunnerService {
+  exec: (params: GenericSearchQueryParams) => void
 }
 export interface HtmlEventService {
   registerSearchBox: (

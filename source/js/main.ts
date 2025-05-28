@@ -1,6 +1,6 @@
 import { HtmlEventFactory } from './event'
-import { HtmlFactory } from './html'
-import { RenderFactory } from './render'
+import { HtmlRenderFactory } from './html'
+import { Runner } from './runner'
 import { SearchFactory } from './search'
 import { SearchConfig, GenericSearchQueryParams } from './types'
 
@@ -9,9 +9,9 @@ declare const searchConfig: SearchConfig
 declare const searchParams: GenericSearchQueryParams
 
 document.addEventListener('DOMContentLoaded', function () {
-  RenderFactory(
+  Runner(
     HtmlEventFactory(searchConfig),
     SearchFactory(searchConfig),
-    HtmlFactory(searchParams)
-  ).run(searchParams)
+    HtmlRenderFactory(searchParams)
+  ).exec(searchParams)
 })
