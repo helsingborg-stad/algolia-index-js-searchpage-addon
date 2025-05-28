@@ -1,3 +1,4 @@
+import { PaginationService } from './pagination-service'
 import {
   HtmlOperations,
   SearchResultItem,
@@ -53,8 +54,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
         .replaceAll('{SEARCH_JS_HIT_IMAGE_URL}', item.image ?? '')
         .replaceAll('{SEARCH_JS_HIT_IMAGE_ALT}', item.altText)
         .replaceAll('{SEARCH_JS_HIT_LINK}', item.url),
-    (query: string): string =>
-      templateNoResults.replaceAll('{ALGOLIA_JS_SEARCH_QUERY}', query),
+    (): string => templateNoResults,
     ({ totalHits, query }: SearchResult): string =>
       templateStats
         .replaceAll('{ALGOLIA_JS_STATS_COUNT}', String(totalHits))
@@ -95,12 +95,14 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
         result.hits.forEach(hit => append(searchContainer, translateHit(hit)))
       } else {
         // No results
-        append(searchContainer, translateNoResults(result.query))
+        append(searchContainer, translateNoResults())
       }
     },
     setPagination: (result: SearchResult): void => {
+      const service = PaginationService(result)
+
       // Back button
-      if (result.currentPage > 1) {
+      if (!service.isFirstPage()) {
         append(
           searchPagination,
           translatePaginationIcon(
@@ -109,17 +111,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
           )
         )
       }
-      // Complete row
-      const pages = new Array(result.totalPages)
-        .fill(0)
-        .map((_, index) => index + 1)
-
-      const from = Math.max(
-        Math.min(result.currentPage - 2, pages.length - 4),
-        0
-      )
-
-      pages.splice(from, 4).forEach(id => {
+      service.getVisibleItems().forEach(id => {
         const [color, className] =
           id === result.currentPage
             ? ['primary', 'c-pagination--is-active']
@@ -131,7 +123,7 @@ export const HtmlService = (params: SearchParams): HtmlOperations => {
         )
       })
       // Forward button
-      if (result.currentPage < result.totalPages) {
+      if (!service.isLastPage()) {
         append(
           searchPagination,
           translatePaginationIcon(

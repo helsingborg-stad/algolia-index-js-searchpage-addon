@@ -72,6 +72,12 @@ export interface HtmlOperations {
   setPagination: (result: SearchResult) => void
   reset: () => void
 }
+export interface PaginationOperations {
+  isLastPage: () => boolean
+  isFirstPage: () => boolean
+  getVisibleItems: (maxItems?: number) => number[]
+}
+
 export interface EventOperations {
   registerSearchBox: (
     element: HTMLInputElement,
