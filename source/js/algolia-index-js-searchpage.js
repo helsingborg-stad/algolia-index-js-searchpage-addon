@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
           return htmlString
           .replaceAll("{ALGOLIA_JS_HIT_HEADING}", decodeHtml(hit._highlightResult['post_title'].value))
-          .replaceAll("{ALGOLIA_JS_HIT_SUBHEADING}", hit.origin_site)
+          .replaceAll("{ALGOLIA_JS_HIT_SUBHEADING}", algoliaSearchData.showHitSubheading ? hit.origin_site : '')
           .replaceAll("{ALGOLIA_JS_HIT_EXCERPT}", decodeHtml(hit._highlightResult['post_excerpt'].value))
           .replaceAll("{ALGOLIA_JS_HIT_IMAGE_URL}", hit.thumbnail.replaceAll("/wp/", "/"))
           .replaceAll("{ALGOLIA_JS_HIT_IMAGE_ALT}", hit.thumbnail_alt ?? '')

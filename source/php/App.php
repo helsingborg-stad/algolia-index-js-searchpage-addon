@@ -78,6 +78,7 @@ class App
             'searchQuery' => get_search_query(),
             'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
             'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
+            'showHitSubheading' => apply_filters('AlgoliaIndex/ShowHitSubheading', true),
         ]);
 
         //UI settings
