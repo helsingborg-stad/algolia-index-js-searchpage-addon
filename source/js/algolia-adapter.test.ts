@@ -1,5 +1,5 @@
 import { WPPost } from './types'
-import { algoliaDataTransform } from './algolia-adapter'
+import { algoliaDataTransform, algoliaParamTransform } from './algolia-adapter'
 
 describe('Algolia', () => {
   const document: WPPost = {
@@ -36,32 +36,52 @@ describe('Algolia', () => {
   }
 
   it('Transform full Algolia document to generic format', async () => {
-    const data = algoliaDataTransform([document])
-    expect(data[0].title).toEqual(
+    const [data] = algoliaDataTransform([document])
+    expect(data.title).toEqual(
       'Intervju med Alejandro Bustos &ndash; fr&aring;n Colombia till Helsingborg'
     )
-    expect(data[0].subtitle).toEqual('Företagare Helsingborg')
-    expect(data[0].summary).toEqual(
+    expect(data.subtitle).toEqual('Företagare Helsingborg')
+    expect(data.summary).toEqual(
       'Alejandro Bustos, en colombiansk entrepren&ouml;r, kom till Helsingborg 2021 och har inga planer p&aring; att l&auml;mna och &aring;ka tillbaka till Colombia. - Helsingborg &auml;r en mycket s&auml;ker stad med en v&auml;lkomnande atmosf&auml;r, s&auml;ger Alejandro. Alejandro Bustos trivs i Helsingborg Alejandro Bustos, en colombiansk entrepren&ouml;r, kom till Helsingborg 2021 f&ouml;r att &aring;terf&ouml;renas med sin d&aring;varande partner,...'
     )
-    expect(data[0].image).toEqual(
+    expect(data.image).toEqual(
       'https://media.helsingborg.se/uploads/networks/1/sites/2/2024/05/img_3906-scaled-480x270.webp'
     )
-    expect(data[0].url).toEqual(
+    expect(data.url).toEqual(
       'https://foretagare.helsingborg.se/nyheter/intervju-med-alejandro-bustos/'
     )
   })
   it('Transform minimal Algolia document to generic format', async () => {
-    const data = algoliaDataTransform([
+    const [data] = algoliaDataTransform([
       {
         ID: '49727',
         objectID: 'foretagare-helsingborg-se-2-49727',
       },
     ])
-    expect(data[0].title).toEqual('')
-    expect(data[0].subtitle).toEqual('')
-    expect(data[0].summary).toEqual('')
-    expect(data[0].image).toEqual(undefined)
-    expect(data[0].url).toEqual('')
+    expect(data.title).toEqual('')
+    expect(data.subtitle).toEqual('')
+    expect(data.summary).toEqual('')
+    expect(data.image).toEqual(undefined)
+    expect(data.url).toEqual('')
+  })
+  it('should apply defaults to query parameters', async () => {
+    const params = algoliaParamTransform({})
+
+    expect(params).toEqual({
+      hitsPerPage: 20,
+    })
+  })
+  it('should transform query parameters', async () => {
+    const params = algoliaParamTransform({
+      query: 'query',
+      page: 10,
+      page_size: 2,
+    })
+
+    expect(params).toEqual({
+      hitsPerPage: 2,
+      page: 9, // Converted to zero-based index
+      query: 'query',
+    })
   })
 })
