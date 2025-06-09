@@ -31,6 +31,7 @@ export interface GenericSearchQueryParams {
   query_by?: string
   page?: number
   page_size?: number
+  highlight_full_fields?: string
 }
 
 export interface WPPost {
