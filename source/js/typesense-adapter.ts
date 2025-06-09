@@ -85,7 +85,7 @@ export const typesenseParamTransform = (
     query_by: params.query_by || 'post_title,post_excerpt',
     page: params.page,
     q: params.query,
-    highlight_full_fields: 'post_title,post_excerpt',
+    highlight_full_fields: params.highlight_full_fields || 'post_title,post_excerpt',
   }
 }
 
