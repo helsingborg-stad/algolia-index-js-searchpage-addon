@@ -72,9 +72,17 @@ class App
             'facetFilterString' => __("Select origin", 'algolia-index-js-searchpage'),
         ]);
 
-        wp_localize_script('algolia-index-js-searchpage', 'searchParams', [
-            'query' => get_search_query()
-        ]);
+        wp_localize_script('algolia-index-js-searchpage', 'searchParams', apply_filters(
+            'AlgoliaIndex/SearchParams',
+            [
+                'query' => get_search_query(),
+                'query_by' => 'post_title,post_excerpt',
+                'page' => get_query_var('paged') ? get_query_var('paged') : 1,
+                'page_size' => 20,
+                'highlight_full_fields' => 'post_title,post_excerpt',
+            ])
+        );
+        
         //Get keys & indexname
         wp_localize_script('algolia-index-js-searchpage', 'searchConfig', apply_filters(
             'AlgoliaIndex/SearchConfig',
