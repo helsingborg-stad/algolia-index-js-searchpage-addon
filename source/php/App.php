@@ -76,17 +76,20 @@ class App
             'query' => get_search_query()
         ]);
         //Get keys & indexname
-        wp_localize_script('algolia-index-js-searchpage', 'searchConfig', [
-            'type' => 'algolia',
-            'host' => '',
-            'port' => 0,
-            'protocol' => '',
-            'apiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
-            'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
-            'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
-            'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
-            'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
-        ]);
+        wp_localize_script('algolia-index-js-searchpage', 'searchConfig', apply_filters(
+            'AlgoliaIndex/SearchConfig',
+            [
+                'type' => 'algolia',
+                'host' => '',
+                'port' => 0,
+                'protocol' => '',
+                'apiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
+                'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
+                'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
+                'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
+                'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
+            ])
+        );
 
         //UI settings
         wp_localize_script('algolia-index-js-searchpage', 'algoliaSettings', [
