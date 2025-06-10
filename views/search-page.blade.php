@@ -1,23 +1,31 @@
-<div class="container">
-  <div class="search-panel">
-    <div class="search-panel__results u-display--flex u-flex--gridgap u-flex-direction--column">
-      <div id="searchbox">
-        @field([
-            'id' => 'searchBoxField',
-            'type' => 'text',
-            'type' => 'search',
-            'name' => 'search',
-            'required' => true,
-            'label' => $lang->searchLabel,
-            'icon' => ['icon' => 'search']
+@element([
+    'classList' => [
+        'container'
+    ],
+    'attributeList' => [
+        'data-js-search-page-container' => true
+    ]
+])  
+    @element([
+        'classList' => [
+            'search-panel'
+        ],
+    ])
+        @element([
+            'classList' => [
+                'search-panel__results',
+                'u-display--flex',
+                'u-flex--gridgap',
+                'u-flex-direction--column',
+                'unlist',
+            ]
         ])
-        @endfield
-      </div>
-      <div id="stats"></div>
-      <div id="hits">
-        @include('js.object.loader')
-      </div>
-      <ul class="c-pagination u-margin__x--auto u-margin__bottom--4" id="pagination"></ul>
-    </div>
-  </div>
-</div>
+            @include('partials.searchField')
+            @include('partials.noresult')
+            @include('partials.stats')
+            @include('partials.hits')
+            @include('partials.pagination')
+        @endelement
+    @endelement
+    @include('post.card')
+@endelement

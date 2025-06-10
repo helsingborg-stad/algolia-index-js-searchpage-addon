@@ -19,35 +19,36 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: App.php:65
+#: App.php:67
 msgid "No matches where found on the query"
 msgstr "Inga resultat på sökfrågan"
 
-#: App.php:66
+#: App.php:68
 msgid "Filter results from"
 msgstr "Filtrera på"
 
-#: App.php:67
+#: App.php:69
 msgid "posts found on your query."
 msgstr "träffar på din sökfråga."
 
-#: App.php:68
-#: App.php:104
+#: App.php:70
+#: Helper/Lang.php:10
 msgid "What are you looking for?"
 msgstr "Vad letar du efter?"
 
-#: App.php:69
+#: App.php:71
 msgid "Search"
 msgstr "Sök"
 
-#: App.php:70
+#: App.php:72
 msgid "Select origin"
 msgstr "Filtrera på ursprung"
 
-#: ComponentsJs.php:14
-msgid "No search results found on your query."
-msgstr "Inga sökresultat hittades på din sökfråga."
-
-#: ComponentsJs.php:15
+#: Helper/Lang.php:12
+#, php-format
 msgid "%s search results found."
 msgstr "%s träffar på din sökfråga."
+
+#: Helper/Lang.php:11
+msgid "No search results found on your query."
+msgstr ""

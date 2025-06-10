@@ -1,3 +1,9 @@
+@element([
+    'componentElement' => 'template',
+    'attributeList' => [
+        'data-js-search-page-pagination-item' => true
+    ]
+])
 <li class="c-pagination__item">
     @button([
         'style' => 'filled',
@@ -15,3 +21,4 @@
     ])
     @endbutton
 </li>
+@endelement

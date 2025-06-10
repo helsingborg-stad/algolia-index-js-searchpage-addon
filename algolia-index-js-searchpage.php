@@ -15,24 +15,28 @@
 
  // Protect agains direct file access
 
+ use ComponentLibrary\Init as ComponentLibraryInit;
+ use AlgoliaIndexJsSearchpage\Blade\Blade;
+use AlgoliaIndexJsSearchpage\UI\Render;
+
 if (! defined('WPINC')) {
     die;
 }
 
 define('ALGOLIAINDEXJSSEARCHPAGE_PATH', plugin_dir_path(__FILE__));
 define('ALGOLIAINDEXJSSEARCHPAGE_URL', plugins_url('', __FILE__));
-define('ALGOLIAINDEXJSSEARCHPAGE_TEMPLATE_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'templates/');
 define('ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH', ALGOLIAINDEXJSSEARCHPAGE_PATH . 'views/');
-
-add_action('init', function () {
-    load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
-});
 
 // Autoload from plugin
 if (file_exists(ALGOLIAINDEXJSSEARCHPAGE_PATH . 'vendor/autoload.php')) {
     require_once ALGOLIAINDEXJSSEARCHPAGE_PATH . 'vendor/autoload.php';
 }
+
 require_once ALGOLIAINDEXJSSEARCHPAGE_PATH . 'Public.php';
 
+add_action('init', function () {
+    load_plugin_textdomain('algolia-index-js-searchpage', false, plugin_basename(dirname(__FILE__)) . '/languages');
+});
+
 // Start application
-new AlgoliaIndexJsSearchpage\App();
+new AlgoliaIndexJsSearchpage\App(new Render(new Blade(new ComponentLibraryInit([]))));
