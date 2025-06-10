@@ -78,7 +78,7 @@ describe('Typesense', () => {
 
     expect(params).toEqual({
       per_page: 20,
-      query_by: 'post_title,post_excerpt',
+      query_by: 'post_title,post_excerpt,content',
       highlight_full_fields: 'post_title,post_excerpt',
     })
   })
@@ -94,7 +94,7 @@ describe('Typesense', () => {
       per_page: 2,
       page: 10,
       q: 'query',
-      query_by: 'post_title,post_excerpt',
+      query_by: 'post_title,post_excerpt,content',
       highlight_full_fields: 'post_title,post_excerpt',
     })
   })

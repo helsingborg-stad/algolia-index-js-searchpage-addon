@@ -82,7 +82,7 @@ export const typesenseParamTransform = (
 ): TypesenseNativeQueryParams => {
   return {
     per_page: params.page_size || 20,
-    query_by: params.query_by || 'post_title,post_excerpt',
+    query_by: params.query_by || 'post_title,post_excerpt,content',
     page: params.page,
     q: params.query,
     highlight_full_fields: params.highlight_full_fields || 'post_title,post_excerpt',

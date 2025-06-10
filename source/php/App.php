@@ -72,31 +72,39 @@ class App
             'facetFilterString' => __("Select origin", 'algolia-index-js-searchpage'),
         ]);
 
-        wp_localize_script('algolia-index-js-searchpage', 'searchParams', apply_filters(
-            'AlgoliaIndex/SearchParams',
-            [
-                'query' => get_search_query(),
-                'query_by' => 'post_title,post_excerpt',
-                'page' => get_query_var('paged') ? get_query_var('paged') : 1,
-                'page_size' => 20,
-                'highlight_full_fields' => 'post_title,post_excerpt',
-            ])
+        wp_localize_script(
+            'algolia-index-js-searchpage',
+            'searchParams',
+            apply_filters(
+                'AlgoliaIndex/SearchParams',
+                [
+                    'query' => get_search_query(),
+                    'query_by' => 'post_title,post_excerpt,content',
+                    'page' => get_query_var('paged') ? get_query_var('paged') : 1,
+                    'page_size' => 20,
+                    'highlight_full_fields' => 'post_title,post_excerpt',
+                ]
+            )
         );
-        
+
         //Get keys & indexname
-        wp_localize_script('algolia-index-js-searchpage', 'searchConfig', apply_filters(
-            'AlgoliaIndex/SearchConfig',
-            [
-                'type' => 'algolia',
-                'host' => '',
-                'port' => 0,
-                'protocol' => '',
-                'apiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
-                'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
-                'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
-                'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
-                'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
-            ])
+        wp_localize_script(
+            'algolia-index-js-searchpage',
+            'searchConfig',
+            apply_filters(
+                'AlgoliaIndex/SearchConfig',
+                [
+                    'type' => 'algolia',
+                    'host' => '',
+                    'port' => 0,
+                    'protocol' => '',
+                    'apiKey' => \AlgoliaIndex\Helper\Options::publicApiKey(),
+                    'applicationId' => \AlgoliaIndex\Helper\Options::applicationId(),
+                    'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
+                    'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
+                    'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
+                ]
+            )
         );
 
         //UI settings
