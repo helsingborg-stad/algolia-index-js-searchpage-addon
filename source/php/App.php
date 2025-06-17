@@ -53,6 +53,19 @@ class App
             return;
         }
 
+        //Add algolia domains to csp allowed domains (Plugin: WPMUSecurity, Feat: CSP). 
+        add_filter(
+            'WpSecurity/Csp',
+            function ($domains) {
+                if(!isset($domains['connect-src'])) {
+                    $domains['connect-src'] = [];
+                }
+                $domains['connect-src'][] = 'https://*.algolianet.com';
+                $domains['connect-src'][] = 'https://*.algolia.net';
+                return $domains;
+            }
+        );
+
         //Register & enqueue script
         wp_enqueue_script(
             'algolia-index-js-searchpage',
