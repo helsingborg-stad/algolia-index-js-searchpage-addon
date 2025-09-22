@@ -62,8 +62,6 @@ class App
                 }
                 $domains['connect-src'][] = 'https://*.algolianet.com';
                 $domains['connect-src'][] = 'https://*.algolia.net';
-                $domains['connect-src'][] = 'https://*.elastx.net';
-                $domains['connect-src'][] = 'https://*.jls-sto2.elastx.net';
                 return $domains;
             }
         );
