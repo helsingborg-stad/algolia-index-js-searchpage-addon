@@ -4,6 +4,8 @@ import {
   GenericSearchResultItem,
   GenericSearchResult,
   GenericSearchQueryParams,
+  FacetResult,
+  FacetValue,
 } from './types'
 
 /**
@@ -18,6 +20,8 @@ const getHtmlTemplates = (): string[] =>
     'template[data-js-search-page-stats]',
     'template[data-js-search-page-pagination-item]',
     'template[data-js-search-page-pagination-icon]',
+    'template[data-js-search-page-facet]',
+    'template[data-js-search-page-facet-item]',
   ].map(selector => document.querySelector(selector)?.innerHTML ?? '')
 
 /**
@@ -29,6 +33,7 @@ const getHtmlElements = (): HTMLElement[] =>
     '[data-js-search-page-search-input]',
     '[data-js-search-page-hits]',
     '[data-js-search-page-pagination]',
+    '[data-js-search-page-facets]',
   ].map(
     selector =>
       document.querySelector(selector) || document.createElement('div')
@@ -49,10 +54,17 @@ export const HtmlRenderFactory = (
     templateStats = '',
     templatePaginationItem = '',
     templatePaginationIcon = '',
+    templateFacet = '',
+    templateFacetItem = '',
   ] = getHtmlTemplates()
 
-  const [searchInput, searchContainer, searchPagination] =
-    getHtmlElements() as [HTMLInputElement, HTMLElement, HTMLElement]
+  const [searchInput, searchContainer, searchPagination, searchFacets] =
+    getHtmlElements() as [
+      HTMLInputElement,
+      HTMLElement,
+      HTMLElement,
+      HTMLElement,
+    ]
 
   const [
     translateHit,
@@ -60,6 +72,8 @@ export const HtmlRenderFactory = (
     translateStats,
     translatePaginationItem,
     translatePaginationIcon,
+    translateFacet,
+    translateFacetItem,
   ] = [
     (item: GenericSearchResultItem): string =>
       (item.image ? templateHitHtml : templateNoImgHtml)
@@ -86,6 +100,16 @@ export const HtmlRenderFactory = (
         .replaceAll('{ALGOLIA_JS_PAGINATION_ICON}', icon)
         .replaceAll('{ALGOLIA_JS_PAGINATION_HREF}', '#')
         .replaceAll('{ALGOLIA_JS_PAGINATION_PAGE_NUMBER}', page),
+    (facet: FacetResult, itemsHtml: string): string =>
+      templateFacet
+        .replaceAll('{ALGOLIA_JS_FACET_LABEL}', facet.label)
+        .replaceAll('{ALGOLIA_JS_FACET_ATTRIBUTE}', facet.attribute)
+        .replaceAll('{ALGOLIA_JS_FACET_ITEMS}', itemsHtml),
+    (facet: FacetResult, value: FacetValue): string =>
+      templateFacetItem
+        .replaceAll('{ALGOLIA_JS_FACET_VALUE}', value.value)
+        .replaceAll('{ALGOLIA_JS_FACET_COUNT}', String(value.count))
+        .replaceAll('{ALGOLIA_JS_FACET_ATTRIBUTE}', facet.attribute),
   ]
   // Set initial value
   searchInput.value = params.query || ''
@@ -105,11 +129,20 @@ export const HtmlRenderFactory = (
      */
     getPaginationContainer: () => searchPagination,
     /**
+     * Returns the facets container for search filters
+     * @returns The facets container element
+     */
+    getFacetsContainer: () =>
+      searchFacets.tagName !== 'DIV' ? searchFacets : null,
+    /**
      * Resets the search results and pagination
      */
     reset: () => {
       searchContainer.innerHTML = ''
       searchPagination.innerHTML = ''
+      if (searchFacets.tagName !== 'DIV') {
+        searchFacets.innerHTML = ''
+      }
     },
     /**
      * Render stats for the search results
@@ -169,6 +202,26 @@ export const HtmlRenderFactory = (
           )
         )
       }
+    },
+    /**
+     * Render facets for the search results
+     * @param result The search result to translate into HTML facets
+     */
+    renderFacets: (result: GenericSearchResult): void => {
+      if (
+        !result.facets ||
+        result.facets.length === 0 ||
+        searchFacets.tagName === 'DIV'
+      ) {
+        return
+      }
+
+      result.facets.forEach(facet => {
+        const itemsHtml = facet.values
+          .map(value => translateFacetItem(facet, value))
+          .join('')
+        append(searchFacets, translateFacet(facet, itemsHtml))
+      })
     },
   }
 }

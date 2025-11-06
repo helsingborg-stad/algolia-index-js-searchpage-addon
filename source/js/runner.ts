@@ -18,6 +18,7 @@ export const Runner = (
       setUrlSearchParam(params.query)
       html.reset()
       html.renderStats(result)
+      html.renderFacets(result)
       html.renderItems(result)
       html.renderPagination(result)
       binder.registerPagination(
@@ -29,6 +30,17 @@ export const Runner = (
           })
         }
       )
+      // Register facet events if facets container exists
+      const facetsContainer = html.getFacetsContainer()
+      if (facetsContainer) {
+        binder.registerFacets(facetsContainer, (facetFilters: string[][]) => {
+          exec({
+            ...params,
+            page: 1, // Reset to first page when filtering
+            facetFilters,
+          })
+        })
+      }
     })
   }
   // Register event handlers and callback for input-field

@@ -11,6 +11,8 @@
             'search-panel'
         ],
     ])
+        @include('partials.searchField')
+        @include('partials.facets')
         @element([
             'classList' => [
                 'search-panel__results',
@@ -20,7 +22,6 @@
                 'unlist',
             ]
         ])
-            @include('partials.searchField')
             @include('partials.noresult')
             @include('partials.stats')
             @include('partials.hits')

@@ -116,6 +116,9 @@ class App
                     'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
                     'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
                     'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
+                    'facetingEnabled' => apply_filters('AlgoliaIndex/FacetingEnabled', true),
+                    'facets' => apply_filters('AlgoliaIndex/Facets', []),
+                    'facetingAppearanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU'),
                 ]
             )
         );

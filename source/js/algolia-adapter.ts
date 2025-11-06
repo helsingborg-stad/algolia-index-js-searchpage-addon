@@ -7,6 +7,8 @@ import type {
   SearchService,
   GenericSearchResultItem,
   WPPost,
+  FacetResult,
+  FacetValue,
 } from './types'
 import { decodeHtml } from './mappers'
 
@@ -17,6 +19,8 @@ export interface AlgoliaNativeQueryParams {
   hitsPerPage?: number
   page?: number
   query?: string
+  facets?: string[]
+  facetFilters?: string[][]
 }
 /**
  * Partial document structure
@@ -66,16 +70,58 @@ export const algoliaDataTransform = (
 /**
  * Converts generic search parameters to Algolia native query parameters
  * @param params The search query parameters to transform
+ * @param config The search configuration containing facet settings
  * @returns The native Algolia query parameters
  */
 export const algoliaParamTransform = (
-  params: GenericSearchQueryParams
+  params: GenericSearchQueryParams,
+  config?: SearchConfig
 ): AlgoliaNativeQueryParams => {
+  const facets =
+    config?.facetingEnabled && config?.facets
+      ? config.facets.filter(f => f.enabled).map(f => f.attribute)
+      : undefined
+
   return {
     hitsPerPage: params?.page_size ?? 20,
     page: params.page ? params.page - 1 : undefined,
     query: params.query,
+    facets: facets && facets.length > 0 ? facets : undefined,
+    facetFilters: params.facetFilters,
   }
+}
+
+/**
+ * Converts Algolia facet results to generic format
+ * @param facets The facets object from Algolia response
+ * @param config The search configuration containing facet labels
+ * @returns An array of generic facet results
+ */
+export const algoliaFacetTransform = (
+  facets: Record<string, Record<string, number>> | undefined,
+  config: SearchConfig
+): FacetResult[] => {
+  if (!facets || !config.facets) {
+    return []
+  }
+
+  return config.facets
+    .filter(facetConfig => facets[facetConfig.attribute])
+    .map(facetConfig => {
+      const facetData = facets[facetConfig.attribute]
+      const values: FacetValue[] = Object.entries(facetData).map(
+        ([value, count]) => ({
+          value,
+          count,
+        })
+      )
+
+      return {
+        attribute: facetConfig.attribute,
+        label: facetConfig.label,
+        values,
+      }
+    })
 }
 
 /**
@@ -95,7 +141,7 @@ export const AlgoliaAdapter = (config: SearchConfig): SearchService => {
           requests: [
             {
               indexName: config.collectionName,
-              ...algoliaParamTransform(params),
+              ...algoliaParamTransform(params, config),
             },
           ],
         })
@@ -105,6 +151,7 @@ export const AlgoliaAdapter = (config: SearchConfig): SearchService => {
         currentPage: results[0]?.page ? results[0]?.page + 1 : 1,
         totalPages: results[0]?.nbPages ?? 1,
         hits: algoliaDataTransform(results[0]?.hits ?? []),
+        facets: algoliaFacetTransform(results[0]?.facets, config),
       }
     },
   }

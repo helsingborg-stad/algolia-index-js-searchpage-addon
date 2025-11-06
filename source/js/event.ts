@@ -53,4 +53,55 @@ export const HtmlEventFactory = ({
       })
     })
   },
+  /**
+   * Binds events related to facet filtering
+   * @param element A reference to the facets container element
+   * @param callback Callback on event triggered with selected facet filters
+   */
+  registerFacets: (element, callback) => {
+    if (!element) return
+
+    const getFacetFilters = (): string[][] => {
+      const filters: Map<string, string[]> = new Map()
+
+      element
+        .querySelectorAll<HTMLInputElement>(
+          'input[data-js-facet-filter]:checked'
+        )
+        .forEach(input => {
+          const attribute = input.dataset.facetAttribute || ''
+          const value = input.value
+
+          if (!filters.has(attribute)) {
+            filters.set(attribute, [])
+          }
+          filters.get(attribute)?.push(`${attribute}:${value}`)
+        })
+
+      return Array.from(filters.values())
+    }
+
+    // Handle checkbox changes
+    element.addEventListener('change', (event: Event) => {
+      const target = event.target as HTMLInputElement
+      if (target.dataset.jsFacetFilter !== undefined) {
+        callback(getFacetFilters())
+      }
+    })
+
+    // Handle select/dropdown changes
+    element.addEventListener('change', (event: Event) => {
+      const target = event.target as HTMLSelectElement
+      if (target.dataset.jsFacetSelect !== undefined) {
+        const attribute = target.dataset.facetAttribute || ''
+        const value = target.value
+
+        if (value && value !== '') {
+          callback([[`${attribute}:${value}`]])
+        } else {
+          callback([])
+        }
+      }
+    })
+  },
 })
