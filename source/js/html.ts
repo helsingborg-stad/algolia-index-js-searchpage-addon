@@ -28,16 +28,13 @@ const getHtmlTemplates = (): string[] =>
  * Queries elements from the HTML document
  * @returns An array of HTML elements
  */
-const getHtmlElements = (): HTMLElement[] =>
+const getHtmlElements = (): (HTMLElement | null)[] =>
   [
     '[data-js-search-page-search-input]',
     '[data-js-search-page-hits]',
     '[data-js-search-page-pagination]',
     '[data-js-search-page-facets]',
-  ].map(
-    selector =>
-      document.querySelector(selector) || document.createElement('div')
-  )
+  ].map(selector => document.querySelector(selector))
 
 /**
  * Creates a service for manipulating HTML related to search results
@@ -60,11 +57,25 @@ export const HtmlRenderFactory = (
 
   const [searchInput, searchContainer, searchPagination, searchFacets] =
     getHtmlElements() as [
-      HTMLInputElement,
-      HTMLElement,
-      HTMLElement,
-      HTMLElement,
+      HTMLInputElement | null,
+      HTMLElement | null,
+      HTMLElement | null,
+      HTMLElement | null,
     ]
+
+  // Provide defaults for required elements
+  const safeSearchInput =
+    searchInput || (document.createElement('input') as HTMLInputElement)
+  const safeSearchContainer =
+    searchContainer || document.createElement('div')
+  const safeSearchPagination =
+    searchPagination || document.createElement('div')
+
+  /**
+   * Helper to check if facets container is available
+   * @returns true if facets container exists in the DOM
+   */
+  const hasFacetsContainer = (): boolean => searchFacets !== null
 
   const [
     translateHit,
@@ -112,7 +123,7 @@ export const HtmlRenderFactory = (
         .replaceAll('{ALGOLIA_JS_FACET_ATTRIBUTE}', facet.attribute),
   ]
   // Set initial value
-  searchInput.value = params.query || ''
+  safeSearchInput.value = params.query || ''
 
   const append = (parent: Element, content: string): void =>
     parent.insertAdjacentHTML('beforeend', content)
@@ -122,25 +133,24 @@ export const HtmlRenderFactory = (
      * Returns the input field for search queries
      * @returns The search input field element
      */
-    getInputField: () => searchInput,
+    getInputField: () => safeSearchInput,
     /**
      * Returns the pagination container for search results
      * @returns The pagination container element
      */
-    getPaginationContainer: () => searchPagination,
+    getPaginationContainer: () => safeSearchPagination,
     /**
      * Returns the facets container for search filters
-     * @returns The facets container element
+     * @returns The facets container element or null if not available
      */
-    getFacetsContainer: () =>
-      searchFacets.tagName !== 'DIV' ? searchFacets : null,
+    getFacetsContainer: () => searchFacets,
     /**
      * Resets the search results and pagination
      */
     reset: () => {
-      searchContainer.innerHTML = ''
-      searchPagination.innerHTML = ''
-      if (searchFacets.tagName !== 'DIV') {
+      safeSearchContainer.innerHTML = ''
+      safeSearchPagination.innerHTML = ''
+      if (hasFacetsContainer() && searchFacets) {
         searchFacets.innerHTML = ''
       }
     },
@@ -149,7 +159,7 @@ export const HtmlRenderFactory = (
      * @param result The search result to translate into HTML
      */
     renderStats: (result: GenericSearchResult): void => {
-      append(searchContainer, translateStats(result))
+      append(safeSearchContainer, translateStats(result))
     },
     /**
      * Render search result items
@@ -158,10 +168,10 @@ export const HtmlRenderFactory = (
     renderItems: (result: GenericSearchResult): void => {
       if (result.hits.length > 0) {
         // Has results
-        result.hits.forEach(hit => append(searchContainer, translateHit(hit)))
+        result.hits.forEach(hit => append(safeSearchContainer, translateHit(hit)))
       } else {
         // No results
-        append(searchContainer, translateNoResults())
+        append(safeSearchContainer, translateNoResults())
       }
     },
     /**
@@ -174,7 +184,7 @@ export const HtmlRenderFactory = (
       // Back button
       if (!service.isFirstPage()) {
         append(
-          searchPagination,
+          safeSearchPagination,
           translatePaginationIcon(
             String(result.currentPage - 1),
             'keyboard_arrow_left'
@@ -188,14 +198,14 @@ export const HtmlRenderFactory = (
             : ['default', '']
 
         append(
-          searchPagination,
+          safeSearchPagination,
           translatePaginationItem(String(id), color, className)
         )
       })
       // Forward button
       if (!service.isLastPage()) {
         append(
-          searchPagination,
+          safeSearchPagination,
           translatePaginationIcon(
             String(result.currentPage + 1),
             'keyboard_arrow_right'
@@ -209,9 +219,10 @@ export const HtmlRenderFactory = (
      */
     renderFacets: (result: GenericSearchResult): void => {
       if (
+        !hasFacetsContainer() ||
+        !searchFacets ||
         !result.facets ||
-        result.facets.length === 0 ||
-        searchFacets.tagName === 'DIV'
+        result.facets.length === 0
       ) {
         return
       }

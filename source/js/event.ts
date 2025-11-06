@@ -81,18 +81,24 @@ export const HtmlEventFactory = ({
       return Array.from(filters.values())
     }
 
-    // Handle checkbox changes
+    // Handle both checkbox and select/dropdown changes in a single event handler
     element.addEventListener('change', (event: Event) => {
-      const target = event.target as HTMLInputElement
-      if (target.dataset.jsFacetFilter !== undefined) {
-        callback(getFacetFilters())
-      }
-    })
+      const target = event.target as HTMLInputElement | HTMLSelectElement
 
-    // Handle select/dropdown changes
-    element.addEventListener('change', (event: Event) => {
-      const target = event.target as HTMLSelectElement
-      if (target.dataset.jsFacetSelect !== undefined) {
+      // Handle checkbox changes
+      if (
+        target instanceof HTMLInputElement &&
+        target.dataset.jsFacetFilter !== undefined
+      ) {
+        callback(getFacetFilters())
+        return
+      }
+
+      // Handle select/dropdown changes
+      if (
+        target instanceof HTMLSelectElement &&
+        target.dataset.jsFacetSelect !== undefined
+      ) {
         const attribute = target.dataset.facetAttribute || ''
         const value = target.value
 
