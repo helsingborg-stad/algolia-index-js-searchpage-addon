@@ -117,14 +117,8 @@ class App
                     'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
                     'facetingEnabled' => apply_filters('AlgoliaIndex/FacetingEnabled', true),
                     'facets' => apply_filters('AlgoliaIndex/Facets', []),
-                    'facetingAppearanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU'),
                 ]
             )
         );
-
-        //UI settings
-        wp_localize_script('algolia-index-js-searchpage', 'algoliaSettings', [
-            'facettingApperanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU') ? "true" : "false",
-        ]);
     }
 }

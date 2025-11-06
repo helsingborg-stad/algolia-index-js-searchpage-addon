@@ -33,7 +33,6 @@ export interface SearchConfig {
   searchAsYouType: boolean
   facets?: FacetConfig[]
   facetingEnabled?: boolean
-  facetingAppearanceMenu?: boolean
 }
 
 export interface FacetValue {

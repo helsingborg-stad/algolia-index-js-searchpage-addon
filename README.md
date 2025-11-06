@@ -11,7 +11,6 @@ Replaces search page with a js (instant search) page.
 
 ## Constants
 
-- `ALGOLIA_INDEX_FACETTING_APPERANCE_MENU` - Define to display origin site facetting as a dropdown menu. 
 - `ALGOLIA_INDEX_MOUNT_POINT` - On what action to run js. Default: get_search_form
 
 ## Faceting Configuration
@@ -57,14 +56,6 @@ add_filter('AlgoliaIndex/Facets', function($facets) {
 ### Origin Site Faceting
 
 The `origin_site` facet is particularly useful when multiple WordPress sites share the same Algolia index. It allows users to filter results by their source site.
-
-### Facet Display Modes
-
-By default, facets are displayed as checkboxes. To display the origin site facet as a dropdown menu, define the constant:
-
-```php
-define('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU', true);
-```
 
 ## Filters
 
