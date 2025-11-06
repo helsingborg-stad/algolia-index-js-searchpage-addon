@@ -116,6 +116,7 @@ export const TypesenseAdapter = (config: SearchConfig): SearchService => {
         totalPages: Math.ceil(result.found / (params.page_size ?? 20)),
         currentPage: result.page || 1,
         hits: typesenseDataTransform(result.hits ?? []),
+        facets: [], // Typesense faceting not implemented in this adapter
       }
     },
   }

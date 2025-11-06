@@ -82,7 +82,6 @@ class App
             'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
             'placeholder' => __("What are you looking for?", 'algolia-index-js-searchpage'),
             'submit' => __("Search", 'algolia-index-js-searchpage'),
-            'facetFilterString' => __("Select origin", 'algolia-index-js-searchpage'),
         ]);
 
         wp_localize_script(
