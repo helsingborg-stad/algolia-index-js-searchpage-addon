@@ -3,13 +3,14 @@
     "description": "https://github.com/helsingborg-stad/algolia-index-js-searchpage-addon",
     "type": "wordpress-plugin",
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Sebastian Thulin",
             "email": "sebastian.thulin@helsingborg.se"
         }
     ],
-    "minimum-stability": "stable",
     "repositories": [
         {
             "type": "composer",
@@ -20,11 +21,29 @@
             "url": "https://wpackagist.org"
         }
     ],
-    "require": {},
+    "require": {
+        "helsingborg-stad/municipio": "^6.0.0"
+    },
     "autoload": {
         "psr-4": {
             "AlgoliaIndexJsSearchpage\\": "source/php/"
         }
     },
-    "version": "3.3.7"
+    "extra": {
+        "installer-paths": {
+            "vendor/{$vendor}/{$name}": [
+                "type:wordpress-muplugin",
+                "type:wordpress-theme",
+                "type:wordpress-plugin",
+                "type:acf-plugin"
+            ]
+        }
+    },
+
+    "version": "3.3.7",
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
 }
