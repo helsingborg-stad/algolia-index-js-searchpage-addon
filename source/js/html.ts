@@ -72,7 +72,7 @@ export const HtmlRenderFactory = (
   const safeSearchPagination =
     searchPagination || document.createElement('div')
   const safeSearchHitsContainer =
-    searchContainer || document.createElement('div')
+    searchHitsContainer || document.createElement('div')
 
   /**
    * Helper to check if facets container is available
