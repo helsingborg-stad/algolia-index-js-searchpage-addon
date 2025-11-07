@@ -32,7 +32,6 @@ const getHtmlElements = (): (HTMLElement | null)[] =>
   [
     '[data-js-search-page-search-input]',
     '[data-js-search-page-hits]',
-    '[data-js-search-page-stat]',
     '[data-js-search-page-pagination]',
     '[data-js-search-page-facets]',
   ].map(selector => document.querySelector(selector))
@@ -56,10 +55,9 @@ export const HtmlRenderFactory = (
     templateFacetItem = '',
   ] = getHtmlTemplates()
 
-  const [searchInput, searchContainer, searchPagination, searchFacets, searchHitsContainer] =
+  const [searchInput, searchContainer, searchPagination, searchFacets] =
     getHtmlElements() as [
       HTMLInputElement | null,
-      HTMLElement | null,
       HTMLElement | null,
       HTMLElement | null,
       HTMLElement | null,
@@ -72,14 +70,8 @@ export const HtmlRenderFactory = (
     searchContainer || document.createElement('div')
   const safeSearchPagination =
     searchPagination || document.createElement('div')
-  const safeSearchHitsContainer =
-    searchHitsContainer || document.createElement('div')
-
-  /**
-   * Helper to check if facets container is available
-   * @returns true if facets container exists in the DOM
-   */
-  const hasFacetsContainer = (): boolean => searchFacets !== null
+  const safeSearchFacets = 
+  searchFacets || document.createElement('div')
 
   const [
     translateHit,
@@ -88,7 +80,7 @@ export const HtmlRenderFactory = (
     translatePaginationItem,
     translatePaginationIcon,
     translateFacet,
-    translateFacetItem
+    translateFacetItem,
   ] = [
     (item: GenericSearchResultItem): string =>
       (item.image ? templateHitHtml : templateNoImgHtml)
@@ -154,16 +146,14 @@ export const HtmlRenderFactory = (
     reset: () => {
       safeSearchContainer.innerHTML = ''
       safeSearchPagination.innerHTML = ''
-      if (hasFacetsContainer() && searchFacets) {
-        searchFacets.innerHTML = ''
-      }
+      safeSearchFacets.innerHTML = ''
     },
     /**
      * Render stats for the search results
      * @param result The search result to translate into HTML
      */
     renderStats: (result: GenericSearchResult): void => {
-      append(safeSearchHitsContainer, translateStats(result))
+      append(safeSearchContainer, translateStats(result))
     },
     /**
      * Render search result items
@@ -223,26 +213,25 @@ export const HtmlRenderFactory = (
      */
     renderFacets: (result: GenericSearchResult, facetFilters?: string[][]): void => {
       // Prevent facet change events during rendering
-      const win = window as Window & { setRenderingFacets?: (state: boolean) => void };
-      if (typeof win.setRenderingFacets === 'function') {
-        win.setRenderingFacets(true);
+      if (typeof (window as any).setRenderingFacets === 'function') {
+        (window as any).setRenderingFacets(true);
       }
-      if (searchFacets) {
-        searchFacets.innerHTML = '';
-      }
+
+      // No facets to render
       if (
-        !hasFacetsContainer() ||
-        !searchFacets ||
         !result.facets ||
         result.facets.length === 0
       ) {
-        if (typeof win.setRenderingFacets === 'function') {
-          win.setRenderingFacets(false);
+        if (typeof (window as any).setRenderingFacets === 'function') {
+          (window as any).setRenderingFacets(false);
         }
         return;
       }
+
+      // Prepare selected facets set
       const selectedFilters = Array.isArray(facetFilters) ? facetFilters : [];
-      const selectedSet = new Set(selectedFilters.flat());
+      const selectedSet     = new Set(selectedFilters.flat());
+      
       result.facets.forEach(facet => {
         const itemsHtml = facet.values
           .map(value => {
@@ -254,11 +243,12 @@ export const HtmlRenderFactory = (
             );
           })
           .join('');
-        append(searchFacets, translateFacet(facet, itemsHtml));
+        append(safeSearchFacets, translateFacet(facet, itemsHtml));
       });
+
       // Re-enable facet change events after rendering
-      if (typeof win.setRenderingFacets === 'function') {
-        win.setRenderingFacets(false);
+      if (typeof (window as any).setRenderingFacets === 'function') {
+        (window as any).setRenderingFacets(false);
       }
     },
   }

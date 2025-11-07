@@ -1,7 +1,7 @@
 @element([
     'componentElement' => 'template',
     'attributeList' => [
-        'data-js-search-page-stats' => true
+        'data-js-search-page-stat' => true
     ]
 ])
     @typography([
@@ -14,5 +14,5 @@
 @endelement
 
 <div data-js-search-page-stats>
-
-STATS HERE!</div>
+STATS HERE
+</div>
