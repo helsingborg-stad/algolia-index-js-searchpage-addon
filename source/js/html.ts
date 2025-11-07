@@ -218,6 +218,15 @@ export const HtmlRenderFactory = (
      * @param result The search result to translate into HTML facets
      */
     renderFacets: (result: GenericSearchResult): void => {
+
+      console.log(
+        "FACETT DATA:",
+        hasFacetsContainer(),
+        searchFacets,
+        result.facets,
+        result.facets?.length
+      );
+
       if (
         !hasFacetsContainer() ||
         !searchFacets ||
@@ -227,10 +236,15 @@ export const HtmlRenderFactory = (
         return
       }
 
+      console.log("RENDERING FACETS:", result.facets);
+
       result.facets.forEach(facet => {
         const itemsHtml = facet.values
           .map(value => translateFacetItem(facet, value))
           .join('')
+
+        console.log("FACET ITEMS HTML:", itemsHtml);
+
         append(searchFacets, translateFacet(facet, itemsHtml))
       })
     },

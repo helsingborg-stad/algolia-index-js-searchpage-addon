@@ -1,6 +1,8 @@
+
 @element([
+    'componentElement' => 'template',
     'attributeList' => [
-        'data-js-search-page-facets' => true
+        'data-js-search-page-facet' => true
     ],
     'classList' => [
         'search-panel__facets',
@@ -11,33 +13,14 @@
 ])
 @endelement
 
-@element([
-    'componentElement' => 'template',
-    'attributeList' => [
-        'data-js-search-page-facet' => true
-    ]
-])
-    @group([
-        'classList' => ['facet-group']
-    ])
-        @typography([
-            'variant' => 'h4',
-            'element' => 'h4',
-            'classList' => ['facet-group__title']
-        ])
-        {ALGOLIA_JS_FACET_LABEL}
-        @endtypography
-        
-        @element([
-            'classList' => ['facet-group__items'],
-            'attributeList' => [
-                'data-facet-attribute' => '{ALGOLIA_JS_FACET_ATTRIBUTE}'
-            ]
-        ])
-        {ALGOLIA_JS_FACET_ITEMS}
-        @endelement
-    @endgroup
-@endelement
+<template data-js-search-page-facet>
+    <div class="facet-group c-paper u-padding--4 u-margin__top--2">
+        <h4 class="facet-group__title">{ALGOLIA_JS_FACET_LABEL}</h4>
+        <div class="facet-group__items" data-facet-attribute="{ALGOLIA_JS_FACET_ATTRIBUTE}">
+            {ALGOLIA_JS_FACET_ITEMS}
+        </div>
+    </div>
+</template>
 
 @element([
     'componentElement' => 'template',
@@ -45,15 +28,26 @@
         'data-js-search-page-facet-item' => true
     ]
 ])
-    @field([
+     @option([
+        'id' => 'facet_{ALGOLIA_JS_FACET_ATTRIBUTE}_{ALGOLIA_JS_FACET_VALUE}',
         'type' => 'checkbox',
-        'name' => 'facet_{ALGOLIA_JS_FACET_ATTRIBUTE}[]',
-        'value' => '{ALGOLIA_JS_FACET_VALUE}',
-        'label' => '{ALGOLIA_JS_FACET_VALUE} ({ALGOLIA_JS_FACET_COUNT})',
         'attributeList' => [
             'data-js-facet-filter' => true,
             'data-facet-attribute' => '{ALGOLIA_JS_FACET_ATTRIBUTE}'
-        ]
+        ],
+        'name' => 'facet_{ALGOLIA_JS_FACET_ATTRIBUTE}[]',
+        'value' => '{ALGOLIA_JS_FACET_VALUE}',
+        'label' => '{ALGOLIA_JS_FACET_VALUE} ({ALGOLIA_JS_FACET_COUNT})',
     ])
-    @endfield
+    @endoption
+@endelement
+
+<!-- Facet container -->
+@element([
+    'componentElement' => 'div',
+    'attributeList' => [
+        'data-js-search-page-facets' => true
+    ]
+])
+hej
 @endelement
