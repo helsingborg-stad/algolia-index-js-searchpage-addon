@@ -5,22 +5,27 @@
         'data-js-search-page-facet' => true
     ],
     'classList' => [
+        'facet-group',
+        'c-paper',
         'search-panel__facets',
         'u-display--flex',
         'u-flex--gridgap',
         'u-flex-direction--column',
+        'u-margin__top--6'
     ]
 ])
+    @card([
+        'componentElement' => 'template',
+        'color' => 'primary',
+        'heading' => '{ALGOLIA_JS_FACET_LABEL}',
+        'content' => '{ALGOLIA_JS_FACET_ITEMS}',
+        'classList' => [
+            'facet-group__card',
+            'u-margin__top--6'
+        ]
+    ])
+    @endcard
 @endelement
-
-<template data-js-search-page-facet>
-    <div class="facet-group c-paper u-padding--4 u-margin__top--2">
-        <h4 class="facet-group__title">{ALGOLIA_JS_FACET_LABEL}</h4>
-        <div class="facet-group__items" data-facet-attribute="{ALGOLIA_JS_FACET_ATTRIBUTE}">
-            {ALGOLIA_JS_FACET_ITEMS}
-        </div>
-    </div>
-</template>
 
 @element([
     'componentElement' => 'template',
@@ -28,7 +33,7 @@
         'data-js-search-page-facet-item' => true
     ]
 ])
-     @option([
+    @option([
         'id' => 'facet_{ALGOLIA_JS_FACET_ATTRIBUTE}_{ALGOLIA_JS_FACET_VALUE}',
         'type' => 'checkbox',
         'attributeList' => [
@@ -49,5 +54,5 @@
         'data-js-search-page-facets' => true
     ]
 ])
-hej
+    <!-- Loading facets... -->
 @endelement
