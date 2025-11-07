@@ -23,6 +23,21 @@
             'u-margin__bottom--2'
         ]
     ])
+        @element(['classList' => ['c-card__body']])
+            @typography([
+                'variant' => 'h2',
+                'element' => 'h2',
+                'classList' => [
+                    'c-card__heading',
+                ]
+            ])
+                {ALGOLIA_JS_FACET_LABEL}
+            @endtypography
+
+            @element(['classList' => ['c-card__content']])
+                {ALGOLIA_JS_FACET_ITEMS}
+            @endelement
+        @endelement
     @endcard
 @endelement
 

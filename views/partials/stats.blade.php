@@ -18,5 +18,5 @@
         'data-js-search-page-stats' => true
     ]
 ])
-    Stats will be placed here
+    <!-- Loading stats... -->
 @endelement
