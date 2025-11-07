@@ -139,7 +139,7 @@ export const HtmlRenderFactory = (
      * Returns the facets container for search filters
      * @returns The facets container element or null if not available
      */
-    getFacetsContainer: () => searchFacets,
+    getFacetsContainer: () => safeSearchFacets,
     /**
      * Resets the search results and pagination
      */
