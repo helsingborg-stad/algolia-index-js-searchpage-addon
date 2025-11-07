@@ -15,8 +15,8 @@
 
  // Protect agains direct file access
 
- use ComponentLibrary\Init as ComponentLibraryInit;
- use AlgoliaIndexJsSearchpage\Blade\Blade;
+use ComponentLibrary\Init as ComponentLibraryInit;
+use AlgoliaIndexJsSearchpage\Blade\Blade;
 use AlgoliaIndexJsSearchpage\UI\Render;
 
 if (! defined('WPINC')) {
