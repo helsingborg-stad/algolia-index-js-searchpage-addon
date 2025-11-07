@@ -10,8 +10,7 @@
         'search-panel__facets',
         'u-display--flex',
         'u-flex--gridgap',
-        'u-flex-direction--column',
-        'u-margin__top--6'
+        'u-flex-direction--column'
     ]
 ])
     @card([
@@ -21,7 +20,7 @@
         'content' => '{ALGOLIA_JS_FACET_ITEMS}',
         'classList' => [
             'facet-group__card',
-            'u-margin__top--6'
+            'u-margin__bottom--2'
         ]
     ])
     @endcard

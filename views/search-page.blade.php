@@ -18,7 +18,10 @@
         
 
         <div class="o-grid">
-            <div class="o-grid-12@sm o-grid-6@md o-grid-4@lg o-grid-9@xl">
+            <div class="o-grid-12@sm o-grid-4@md o-grid-3@lg o-grid-3@xl">
+                @include('partials.facets')
+            </div>
+            <div class="o-grid-12@sm o-grid-8@md o-grid-9@lg o-grid-9@xl">
                 @element([
                     'classList' => [
                         'search-panel__results',
@@ -31,9 +34,6 @@
                     @include('partials.hits')
                     @include('partials.pagination')
                 @endelement
-            </div>
-            <div class="o-grid-12@sm o-grid-6@md o-grid-4@lg o-grid-3@xl">
-                @include('partials.facets')
             </div>
         </div>
     @endelement
