@@ -16,7 +16,6 @@
         @include('partials.noresult')
         @include('partials.stats')
         
-
         <div class="o-grid">
             <div class="o-grid-12@sm o-grid-4@md o-grid-3@lg o-grid-3@xl">
                 @include('partials.facets')

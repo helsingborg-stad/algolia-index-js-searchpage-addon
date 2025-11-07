@@ -4,12 +4,12 @@
         'data-js-search-page-stats' => true
     ]
 ])
-@typography([
-    'variant' => 'p',
-    'element' => 'p',
-    'classList' => ['u-text-small']
+    @typography([
+        'variant' => 'p',
+        'element' => 'p',
+        'classList' => ['u-text-small']
 
-])
-{{$lang['algoliaStats']}}
-@endtypography
+    ])
+    {{$lang['algoliaStats']}}
+    @endtypography
 @endelement
