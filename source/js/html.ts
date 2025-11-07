@@ -62,6 +62,7 @@ export const HtmlRenderFactory = (
       HTMLElement | null,
       HTMLElement | null,
       HTMLElement | null,
+      HTMLElement | null,
     ]
 
   // Provide defaults for required elements
@@ -87,7 +88,7 @@ export const HtmlRenderFactory = (
     translatePaginationItem,
     translatePaginationIcon,
     translateFacet,
-    translateFacetItem,
+    translateFacetItem
   ] = [
     (item: GenericSearchResultItem): string =>
       (item.image ? templateHitHtml : templateNoImgHtml)
