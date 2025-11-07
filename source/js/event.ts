@@ -59,55 +59,65 @@ export const HtmlEventFactory = ({
    * @param callback Callback on event triggered with selected facet filters
    */
   registerFacets: (element, callback) => {
-    if (!element) return
+    if (!element) return;
+
+    let isRenderingFacets = false;
+
+    // Expose a way to set rendering state from outside (html.ts)
+    (window as Window & { setRenderingFacets?: (state: boolean) => void }).setRenderingFacets = (state: boolean) => {
+      isRenderingFacets = state;
+    };
 
     const getFacetFilters = (): string[][] => {
-      const filters: Map<string, string[]> = new Map()
-
+      const filters: Map<string, string[]> = new Map();
       element
-        .querySelectorAll<HTMLInputElement>(
-          'input[data-js-facet-filter]:checked'
-        )
+        .querySelectorAll<HTMLInputElement>('input[data-js-facet-filter]:checked')
         .forEach(input => {
-          const attribute = input.dataset.facetAttribute || ''
-          const value = input.value
-
+          const attribute = input.dataset.facetAttribute || '';
+          const value = input.value;
           if (!filters.has(attribute)) {
-            filters.set(attribute, [])
+            filters.set(attribute, []);
           }
-          filters.get(attribute)?.push(`${attribute}:${value}`)
-        })
+          filters.get(attribute)?.push(`${attribute}:${value}`);
+        });
+      return Array.from(filters.values());
+    };
 
-      return Array.from(filters.values())
-    }
+    // Debounce utility
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+    const debounce = (fn: () => void, delay = 200) => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(fn, delay);
+    };
 
-    // Handle both checkbox and select/dropdown changes in a single event handler
     element.addEventListener('change', (event: Event) => {
-      const target = event.target as HTMLInputElement | HTMLSelectElement
-
-      // Handle checkbox changes
-      if (
-        target instanceof HTMLInputElement &&
-        target.dataset.jsFacetFilter !== undefined
-      ) {
-        callback(getFacetFilters())
-        return
-      }
-
-      // Handle select/dropdown changes
-      if (
-        target instanceof HTMLSelectElement &&
-        target.dataset.jsFacetSelect !== undefined
-      ) {
-        const attribute = target.dataset.facetAttribute || ''
-        const value = target.value
-
-        if (value && value !== '') {
-          callback([[`${attribute}:${value}`]])
-        } else {
-          callback([])
+      if (isRenderingFacets) return;
+      const target = event.target as HTMLInputElement | HTMLSelectElement;
+      if (event.isTrusted) {
+        // Handle checkbox changes
+        if (
+          target instanceof HTMLInputElement &&
+          target.dataset.jsFacetFilter !== undefined
+        ) {
+          debounce(() => callback(getFacetFilters()));
+          return;
+        }
+        // Handle select/dropdown changes
+        if (
+          target instanceof HTMLSelectElement &&
+          target.dataset.jsFacetSelect !== undefined
+        ) {
+          const attribute = target.dataset.facetAttribute || '';
+          const value = target.value;
+          debounce(() => {
+            if (value && value !== '') {
+              callback([[`${attribute}:${value}`]]);
+            } else {
+              callback([]);
+            }
+          });
         }
       }
-    })
+    });
   },
 })

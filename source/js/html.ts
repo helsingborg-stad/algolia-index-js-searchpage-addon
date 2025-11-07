@@ -217,36 +217,45 @@ export const HtmlRenderFactory = (
      * Render facets for the search results
      * @param result The search result to translate into HTML facets
      */
-    renderFacets: (result: GenericSearchResult): void => {
-
-      console.log(
-        "FACETT DATA:",
-        hasFacetsContainer(),
-        searchFacets,
-        result.facets,
-        result.facets?.length
-      );
-
+    renderFacets: (result: GenericSearchResult, facetFilters?: string[][]): void => {
+      // Prevent facet change events during rendering
+      const win = window as Window & { setRenderingFacets?: (state: boolean) => void };
+      if (typeof win.setRenderingFacets === 'function') {
+        win.setRenderingFacets(true);
+      }
+      if (searchFacets) {
+        searchFacets.innerHTML = '';
+      }
       if (
         !hasFacetsContainer() ||
         !searchFacets ||
         !result.facets ||
         result.facets.length === 0
       ) {
-        return
+        if (typeof win.setRenderingFacets === 'function') {
+          win.setRenderingFacets(false);
+        }
+        return;
       }
-
-      console.log("RENDERING FACETS:", result.facets);
-
+      const selectedFilters = Array.isArray(facetFilters) ? facetFilters : [];
+      const selectedSet = new Set(selectedFilters.flat());
       result.facets.forEach(facet => {
         const itemsHtml = facet.values
-          .map(value => translateFacetItem(facet, value))
-          .join('')
-
-        console.log("FACET ITEMS HTML:", itemsHtml);
-
-        append(searchFacets, translateFacet(facet, itemsHtml))
-      })
+          .map(value => {
+            const filterStr = `${facet.attribute}:${value.value}`;
+            const checked = selectedSet.has(filterStr) ? 'checked' : '';
+            return translateFacetItem(facet, value).replace(
+              '<input ',
+              `<input ${checked} `
+            );
+          })
+          .join('');
+        append(searchFacets, translateFacet(facet, itemsHtml));
+      });
+      // Re-enable facet change events after rendering
+      if (typeof win.setRenderingFacets === 'function') {
+        win.setRenderingFacets(false);
+      }
     },
   }
 }

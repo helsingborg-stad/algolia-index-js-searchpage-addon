@@ -16,11 +16,11 @@ export const Runner = (
   const exec = (params: GenericSearchQueryParams) => {
     adapter.search(params).then(result => {
       setUrlSearchParam(params.query)
-      html.reset()
-      html.renderStats(result)
-      html.renderFacets(result)
-      html.renderItems(result)
-      html.renderPagination(result)
+  html.reset()
+  html.renderStats(result)
+  html.renderFacets(result, params.facetFilters)
+  html.renderItems(result)
+  html.renderPagination(result)
       binder.registerPagination(
         html.getPaginationContainer(),
         (page: number) => {

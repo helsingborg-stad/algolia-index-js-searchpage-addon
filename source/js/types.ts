@@ -93,7 +93,7 @@ export interface HtmlRenderService {
   renderStats: (result: GenericSearchResult) => void
   renderItems: (result: GenericSearchResult) => void
   renderPagination: (result: GenericSearchResult) => void
-  renderFacets: (result: GenericSearchResult) => void
+  renderFacets: (result: GenericSearchResult, facetFilters?: string[][]) => void
   reset: () => void
 }
 export interface PaginationService {
