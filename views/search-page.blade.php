@@ -8,32 +8,38 @@
 ])  
     @element([
         'classList' => [
-            'search-panel'
+            'search-panel',
+            'o-layout-grid',
+            'o-layout-grid--cols-1',
+            'o-layout-grid--gap-8'
         ],
     ])
-        @include('partials.searchField')
+
+        <div class="o-layout-grid o-layout-grid--cols-1 o-layout-grid--gap-3">
+            @include('partials.searchField')
+            @include('partials.stats')
+        </div>
 
         @include('partials.noresult')
-        @include('partials.stats')
         
-        <div class="o-grid">
-            <div class="o-grid-12@sm o-grid-4@md o-grid-3@lg o-grid-3@xl">
-                @include('partials.facets')
-            </div>
-            <div class="o-grid-12@sm o-grid-8@md o-grid-9@lg o-grid-9@xl">
-                @element([
-                    'classList' => [
-                        'search-panel__results',
-                        'u-display--flex',
-                        'u-flex--gridgap',
-                        'u-flex-direction--column',
-                        'unlist',
-                    ]
-                ])
-                    @include('partials.hits')
-                    @include('partials.pagination')
-                @endelement
-            </div>
+        <div class="c-element o-layout-grid o-layout-grid--cols-12 o-layout-grid--gap-8">
+
+            @include('partials.facets')
+
+            @element([
+                'classList' => [
+                    'search-panel__results',
+                    'u-flex-direction--column',
+                    'unlist',
+                    'o-layout-grid',
+                    'o-layout-grid--col-span-9',
+                    'o-layout-grid--gap-8'
+                ]
+            ])
+                @include('partials.hits')
+                @include('partials.pagination')
+            @endelement
+
         </div>
     @endelement
     @include('post.card')

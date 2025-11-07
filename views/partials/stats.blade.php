@@ -6,7 +6,10 @@
 ])
     @typography([
         'variant' => 'meta',
-        'element' => 'div'
+        'element' => 'div',
+        'classList' => [
+            'u-color__text--dark'
+        ]
     ])
     {{$lang['algoliaStats']}}
     @endtypography

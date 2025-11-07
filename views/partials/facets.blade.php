@@ -5,23 +5,14 @@
         'data-js-search-page-facet' => true
     ],
     'classList' => [
-        'facet-group',
-        'c-paper',
-        'search-panel__facets',
-        'u-display--flex',
-        'u-flex--gridgap',
-        'u-flex-direction--column'
+        'c-paper'
     ]
 ])
     @card([
         'componentElement' => 'template',
         'color' => 'primary',
         'heading' => '{ALGOLIA_JS_FACET_LABEL}',
-        'content' => '{ALGOLIA_JS_FACET_ITEMS}',
-        'classList' => [
-            'facet-group__card',
-            'u-margin__bottom--2'
-        ]
+        'content' => '{ALGOLIA_JS_FACET_ITEMS}'
     ])
         @element(['classList' => ['c-card__body']])
             @typography([
@@ -66,6 +57,12 @@
     'componentElement' => 'div',
     'attributeList' => [
         'data-js-search-page-facets' => true
+    ],
+    'classList' => [
+        'o-layout-grid--col-span-3',
+        'o-layout-grid',
+        'o-layout-grid--gap-8',
+        'o-layout-grid--grid-auto-rows-max-content'
     ]
 ])
     <!-- Loading facets... -->
