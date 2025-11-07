@@ -17,7 +17,7 @@ const getHtmlTemplates = (): string[] =>
     'template[data-js-search-hit-template]',
     'template[data-js-search-hit-noimage-template]',
     'template[data-js-search-page-no-results]',
-    'template[data-js-search-page-stats]',
+    'template[data-js-search-page-stat]',
     'template[data-js-search-page-pagination-item]',
     'template[data-js-search-page-pagination-icon]',
     'template[data-js-search-page-facet]',
@@ -34,6 +34,7 @@ const getHtmlElements = (): (HTMLElement | null)[] =>
     '[data-js-search-page-hits]',
     '[data-js-search-page-pagination]',
     '[data-js-search-page-facets]',
+    '[data-js-search-page-stats]',
   ].map(selector => document.querySelector(selector))
 
 /**
@@ -55,9 +56,10 @@ export const HtmlRenderFactory = (
     templateFacetItem = '',
   ] = getHtmlTemplates()
 
-  const [searchInput, searchContainer, searchPagination, searchFacets] =
+  const [searchInput, searchContainer, searchPagination, searchFacets, statsContainer] =
     getHtmlElements() as [
       HTMLInputElement | null,
+      HTMLElement | null,
       HTMLElement | null,
       HTMLElement | null,
       HTMLElement | null,
@@ -72,6 +74,8 @@ export const HtmlRenderFactory = (
     searchPagination || document.createElement('div')
   const safeSearchFacets = 
   searchFacets || document.createElement('div')
+  const safeStatsContainer =
+  statsContainer || document.createElement('div');
 
   const [
     translateHit,
@@ -147,13 +151,14 @@ export const HtmlRenderFactory = (
       safeSearchContainer.innerHTML = ''
       safeSearchPagination.innerHTML = ''
       safeSearchFacets.innerHTML = ''
+      safeStatsContainer.innerHTML = ''
     },
     /**
      * Render stats for the search results
      * @param result The search result to translate into HTML
      */
     renderStats: (result: GenericSearchResult): void => {
-      append(safeSearchContainer, translateStats(result))
+      append(safeStatsContainer, translateStats(result))
     },
     /**
      * Render search result items

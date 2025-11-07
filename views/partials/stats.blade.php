@@ -5,14 +5,18 @@
     ]
 ])
     @typography([
-        'variant' => 'p',
-        'element' => 'p',
-        'classList' => ['u-text-small']
+        'variant' => 'meta',
+        'element' => 'div'
     ])
     {{$lang['algoliaStats']}}
     @endtypography
 @endelement
 
-<div data-js-search-page-stats>
-STATS HERE
-</div>
+@element([
+    'componentElement' => 'div',
+    'attributeList' => [
+        'data-js-search-page-stats' => true
+    ]
+])
+    Stats will be placed here
+@endelement

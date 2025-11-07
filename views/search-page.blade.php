@@ -1,6 +1,6 @@
 @element([
     'classList' => [
-        'container'
+        'search-container'
     ],
     'attributeList' => [
         'data-js-search-page-container' => true
