@@ -8,8 +8,11 @@
         'variant' => 'p',
         'element' => 'p',
         'classList' => ['u-text-small']
-
     ])
     {{$lang['algoliaStats']}}
     @endtypography
 @endelement
+
+<div data-js-search-page-stats>
+
+STATS HERE!</div>

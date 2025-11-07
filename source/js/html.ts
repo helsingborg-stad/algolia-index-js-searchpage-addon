@@ -32,6 +32,7 @@ const getHtmlElements = (): (HTMLElement | null)[] =>
   [
     '[data-js-search-page-search-input]',
     '[data-js-search-page-hits]',
+    '[data-js-search-page-stat]',
     '[data-js-search-page-pagination]',
     '[data-js-search-page-facets]',
   ].map(selector => document.querySelector(selector))
@@ -55,7 +56,7 @@ export const HtmlRenderFactory = (
     templateFacetItem = '',
   ] = getHtmlTemplates()
 
-  const [searchInput, searchContainer, searchPagination, searchFacets] =
+  const [searchInput, searchContainer, searchPagination, searchFacets, searchHitsContainer] =
     getHtmlElements() as [
       HTMLInputElement | null,
       HTMLElement | null,
@@ -70,6 +71,8 @@ export const HtmlRenderFactory = (
     searchContainer || document.createElement('div')
   const safeSearchPagination =
     searchPagination || document.createElement('div')
+  const safeSearchHitsContainer =
+    searchContainer || document.createElement('div')
 
   /**
    * Helper to check if facets container is available
@@ -159,7 +162,7 @@ export const HtmlRenderFactory = (
      * @param result The search result to translate into HTML
      */
     renderStats: (result: GenericSearchResult): void => {
-      append(safeSearchContainer, translateStats(result))
+      append(safeSearchHitsContainer, translateStats(result))
     },
     /**
      * Render search result items
