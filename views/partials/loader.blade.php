@@ -1,3 +1,4 @@
+<!-- Ghostloader -->
 @element([
     'classList' => [
         'u-display--flex',

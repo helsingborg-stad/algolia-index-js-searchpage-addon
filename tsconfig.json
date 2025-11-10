@@ -21,6 +21,7 @@
   "include": [
     "./source/js/**/*.ts",
     "source/js/algolia-adapter.ts.wait",
-    "source/js/algolia-index-js-searchpage.ts.wait"
+    "source/js/algolia-index-js-searchpage.ts.wait",
+    "source/js/facetStorage.ts"
   ]
 }

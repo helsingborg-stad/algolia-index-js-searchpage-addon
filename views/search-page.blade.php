@@ -1,46 +1,62 @@
-@element([
+@paper([
+    'id' => 'search-panel__container',
     'classList' => [
-        'search-container'
+        'o-layout-grid', 
+        'o-layout-grid--cols-12'
     ],
     'attributeList' => [
         'data-js-search-page-container' => true
     ]
 ])  
-    @element([
-        'classList' => [
-            'search-panel',
-            'o-layout-grid',
-            'o-layout-grid--cols-1',
-            'o-layout-grid--gap-8'
-        ],
-    ])
-
-        <div class="o-layout-grid o-layout-grid--cols-1 o-layout-grid--gap-3">
-            @include('partials.searchField')
-            @include('partials.stats')
-        </div>
-
-        @include('partials.noresult')
-        
-        <div class="c-element o-layout-grid o-layout-grid--cols-12 o-layout-grid--gap-8">
-
+        @element([
+            'id' => 'search-panel__facets',
+            'classList' => [
+                'o-layout-grid',
+                'o-layout-grid--col-span-3',
+                'o-layout-grid--gap-8',
+                'o-layout-grid--col-span-12@xs',
+                'o-layout-grid--col-span-12@sm',
+                'o-layout-grid--col-span-3@md',
+                'o-layout-grid--col-span-3@lg',
+                'u-display--none@sm',
+                'u-position--absolute@sm',
+                
+            ],
+            'attributeList' => [
+                'data-js-toggle-item' => 'search-page-facets',
+                'data-js-toggle-class' => 'u-display--none@xs',
+            ]
+        ])
             @include('partials.facets')
+        @endelement
 
-            @element([
-                'classList' => [
-                    'search-panel__results',
-                    'u-flex-direction--column',
-                    'unlist',
-                    'o-layout-grid',
-                    'o-layout-grid--col-span-9',
-                    'o-layout-grid--gap-8'
-                ]
-            ])
-                @include('partials.hits')
-                @include('partials.pagination')
-            @endelement
+        @element([
+            'id' => 'search-panel__results',
+            'classList' => [
+                'u-flex-direction--column',
+                'unlist',
+                'o-layout-grid',
+                'o-layout-grid--col-span-9',
+                'o-layout-grid--gap-8',
+                'o-layout-grid--col-span-12@xs',
+                'o-layout-grid--col-span-12@sm',
+                'o-layout-grid--col-span-9@md',
+                'o-layout-grid--col-span-9@lg',
 
-        </div>
-    @endelement
-    @include('post.card')
-@endelement
+            ]
+        ])
+            <div class="o-layout-grid o-layout-grid--col-span-9 o-layout-grid--gap-2">
+                @include('partials.field')
+                @include('partials.stats')
+            </div>
+
+            @include('partials.hits')
+            @include('partials.pagination')
+        @endelement
+@endpaper
+
+{{-- Include all templates in the templates directory --}}
+@foreach ($templates as $template)
+    <!-- Template: {{$template}} -->
+    @include($template)
+@endforeach
