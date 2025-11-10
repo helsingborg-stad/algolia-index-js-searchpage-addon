@@ -39,6 +39,7 @@
         ],
         'attributeList' => [
             'data-js-toggle-trigger' => 'search-page-facets',
+            'aria-pressed' => 'false',
         ]
     ])
     @endbutton

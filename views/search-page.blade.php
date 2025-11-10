@@ -14,13 +14,15 @@
                 'o-layout-grid',
                 'o-layout-grid--col-span-3',
                 'o-layout-grid--gap-8',
+                'o-layout-grid--gap-0@xs',
+                'o-layout-grid--gap-0@sm',
                 'o-layout-grid--col-span-12@xs',
                 'o-layout-grid--col-span-12@sm',
                 'o-layout-grid--col-span-3@md',
                 'o-layout-grid--col-span-3@lg',
                 'u-display--none@sm',
                 'u-position--absolute@sm',
-                
+
             ],
             'attributeList' => [
                 'data-js-toggle-item' => 'search-page-facets',
@@ -28,6 +30,29 @@
             ]
         ])
             @include('partials.facets')
+
+
+            @button([
+                'text' => 'Apply filters',
+                'color' => 'default',
+                'style' => 'filled',
+                'icon' => 'filter_alt',
+                'reversePositions' => true,
+                'classList' => [
+                    'u-margin__x--3',
+                    'u-margin__bottom--3',
+                    'u-margin__top--0',
+                    'u-display--none@md',
+                    'u-display--none@lg',
+                    'u-display--none@xl',
+                ],
+                'attributeList' => [
+                    'data-js-toggle-trigger' => 'search-page-facets',
+                    'aria-pressed' => 'false',
+                ]
+            ])
+            @endbutton
+
         @endelement
 
         @element([
