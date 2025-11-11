@@ -11,6 +11,8 @@
   --search-border-color: #00000011;
   --search-shadow-separator-size: 12px;
 
+  border: 1px solid var(--search-border-color, #eee);
+
   #search-panel__facets {
     position: relative;
     background-color: inherit;
