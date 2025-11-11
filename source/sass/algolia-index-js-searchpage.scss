@@ -68,7 +68,7 @@
     @media screen and (max-width: 56em) {
       grid-auto-rows: min-content;
       position: fixed;
-      inset: calc(var(--base, 8px) * 17) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
+      inset: calc(var(--base, 8px) * 16) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
       width: calc(100% - calc(var(--base, 8px) * 3) * 2);
       max-width: unset;
       background-color: #ffffffec;
@@ -87,6 +87,42 @@
         transform: translateY(0) scaleY(1);
         opacity: 1;
       }
+    }
+  }
+
+  /* Layout grid adjustments */
+  #search-panel__results {
+    display: grid;
+    grid-column: span 9;
+    gap: calc(var(--base, 8px) * 2);
+
+    @media screen and (max-width: 56em) {
+      grid-column: span 12;
+    }
+
+    @media screen and (min-width: 56em) {
+      grid-column: span 9;
+    }
+
+    @media screen and (min-width: 78em) {
+      grid-column: span 9;
+    }
+  }
+
+  #search-panel__facets {
+    display: grid;
+    grid-column: span 3;
+
+    @media screen and (max-width: 56em) {
+      grid-column: span 12;
+    }
+
+    @media screen and (min-width: 56em) {
+      grid-column: span 3;
+    }
+
+    @media screen and (min-width: 78em) {
+      grid-column: span 3;
     }
   }
 

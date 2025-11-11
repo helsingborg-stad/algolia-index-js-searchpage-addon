@@ -60,14 +60,6 @@
             'classList' => [
                 'u-flex-direction--column',
                 'unlist',
-                'o-layout-grid',
-                'o-layout-grid--col-span-9',
-                'o-layout-grid--gap-8',
-                'o-layout-grid--col-span-12@xs',
-                'o-layout-grid--col-span-12@sm',
-                'o-layout-grid--col-span-9@md',
-                'o-layout-grid--col-span-9@lg',
-
             ]
         ])
             <div class="o-layout-grid o-layout-grid--col-span-9 o-layout-grid--gap-2">
