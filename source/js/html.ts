@@ -218,34 +218,39 @@ export const HtmlRenderFactory = (
      * @param result The search result to translate into HTML facets
      */
     renderFacets: (result: GenericSearchResult, facetFilters?: string[][]): void => {
-      const facetsContainer = document.querySelector('[data-js-search-page-facets]') as HTMLElement | null;
-      const storage = new FacetStorage(); // Use localStorage by default
-      const storedFilters = storage.loadFacets(); // Retrieve stored facets
+      const storage       = new FacetStorage();
+      const storedFilters = storage.loadFacets();
 
-      if (facetsContainer && result.facets) {
-        facetsContainer.innerHTML = ''; // Clear previous facets
+      if (safeSearchFacets && result.facets) {
+
+        // START: Check selected facets from storage
         const selectedFilters = Array.isArray(facetFilters)
           ? facetFilters
           : Array.isArray(storedFilters)
           ? storedFilters
-          : Object.keys(storedFilters); // Ensure storedFilters is an array of arrays or keys
+          : Object.keys(storedFilters); 
+        
         const selectedSet = new Set(selectedFilters.flat());
+
         result.facets.forEach(facet => {
           const itemsHtml = facet.values
-            .map(value => {
-              const filterStr = `${facet.attribute}:${value.value}`;
-              const checked = selectedSet.has(filterStr) ? 'checked' : '';
-              return translateFacetItem(facet, value).replace(
-                '<input ',
-                `<input ${checked} data-filter="${filterStr}" `
-              );
-            })
-            .join('');
-          append(facetsContainer, translateFacet(facet, itemsHtml));
+          .map(value => {
+            const filterStr = `${facet.attribute}:${value.value}`;
+            const checked = selectedSet.has(filterStr) ? 'checked' : '';
+            return translateFacetItem(facet, value).replace(
+              '<input ',
+              `<input ${checked} data-filter="${filterStr}" `
+            );
+          })
+          .join('');
+            append(safeSearchFacets, translateFacet(facet, itemsHtml));
         });
+        // END: Check selected facets from storage
 
-        // Add event listener to save selected facets
-        facetsContainer.addEventListener('change', event => {
+        
+
+        // START: Add event listener to save selected facets
+        safeSearchFacets.addEventListener('change', event => {
           const target = event.target as HTMLInputElement;
           if (target && target.dataset.filter) {
             const filter = target.dataset.filter;
@@ -261,6 +266,9 @@ export const HtmlRenderFactory = (
             storage.saveFacets(facetsObject); // Save updated facets
           }
         });
+        // END: Add event listener to save selected facets
+
+
       }
     },
   }
