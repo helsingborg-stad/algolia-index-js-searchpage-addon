@@ -51,7 +51,6 @@
         background: linear-gradient(90deg,rgba(0, 0, 0, .05) 0%, rgba(0, 0, 0, 0) 100%);
       }
     }
-
   }
 
   .search-page__facet-group-heading {
@@ -68,7 +67,7 @@
     @media screen and (max-width: 56em) {
       grid-auto-rows: min-content;
       position: fixed;
-      inset: calc(var(--base, 8px) * 16) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
+      inset: calc(var(--base, 8px) * 14) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
       width: calc(100% - calc(var(--base, 8px) * 3) * 2);
       max-width: unset;
       background-color: #ffffffec;
@@ -125,5 +124,4 @@
       grid-column: span 3;
     }
   }
-
 }
