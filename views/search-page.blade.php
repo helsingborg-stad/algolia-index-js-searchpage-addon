@@ -1,13 +1,16 @@
 @paper([
     'id' => 'search-panel__container',
-    'classList' => [
-        'o-layout-grid', 
-        'o-layout-grid--cols-12'
-    ],
     'attributeList' => [
         'data-js-search-page-container' => true
     ]
 ])  
+    @element([
+        'id' => 'search-panel__container-paint',
+        'classList' => [
+            'o-layout-grid', 
+            'o-layout-grid--cols-12'
+        ],
+    ])
         @element([
             'id' => 'search-panel__facets',
             'classList' => [
@@ -77,6 +80,7 @@
             @include('partials.hits')
             @include('partials.pagination')
         @endelement
+    @endelement
 @endpaper
 
 {{-- Include all templates in the templates directory --}}

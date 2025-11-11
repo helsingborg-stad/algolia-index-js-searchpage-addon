@@ -7,14 +7,17 @@
 */
 
 #search-panel__container {
-
   --search-border-color: #00000011;
   --search-shadow-separator-size: 12px;
 
-  border: 1px solid var(--search-border-color, #eee);
+  #search-panel__container-paint {
+    border-radius: inherit;
+    contain: paint;
+    border: 1px solid var(--search-border-color, #eee);
+    position: relative;
+  }
 
   #search-panel__facets {
-    position: relative;
     background-color: inherit;
     z-index: 1000;
     border-top-left-radius: inherit;
@@ -30,35 +33,25 @@
     .search-page__facet-group + .search-page__facet-group {
       border-top: 1px solid var(--search-border-color, #eee);
     }
-
-    &:before {
-      content: "";
-      width: 1px;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      background: var(--search-border-color, #eee);
-      box-shadow: 0 0 var(--search-shadow-separator-size, 12px) #0000007f;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      width: var(--search-shadow-separator-size, 12px);
-      background-color: inherit;
-    }
   }
 
   #search-panel__results {
     background-color: rgba($color: #000000, $alpha: 0.05);
     padding: calc(var(--base, 8px) * 3);
-    border-top-right-radius: inherit;
-    border-bottom-right-radius: inherit;
     position: relative;
+
+    @media screen and (min-width: 56em) {
+      &:before {
+        content: "";
+        width: var(--search-shadow-separator-size, 12px);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg,rgba(0, 0, 0, .05) 0%, rgba(0, 0, 0, 0) 100%);
+      }
+    }
+
   }
 
   .search-page__facet-group-heading {
@@ -70,5 +63,4 @@
     background: inherit;
     border-radius: inherit;
   }
-
 }
