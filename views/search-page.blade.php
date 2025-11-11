@@ -26,7 +26,7 @@
             ],
             'attributeList' => [
                 'data-js-toggle-item' => 'search-page-facets',
-                'data-js-toggle-class' => 'u-display--none@xs',
+                'data-js-toggle-class' => ['u-display--none@xs', 'u-display--none@sm'],
             ]
         ])
             @include('partials.facets')
