@@ -63,4 +63,31 @@
     background: inherit;
     border-radius: inherit;
   }
+
+  #search-panel__facets {
+    @media screen and (max-width: 56em) {
+      grid-auto-rows: min-content;
+      position: fixed;
+      inset: calc(var(--base, 8px) * 17) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
+      width: calc(100% - calc(var(--base, 8px) * 3) * 2);
+      max-width: unset;
+      background-color: #ffffffec;
+      filter: var(--drop-shadow-2, drop-shadow(0px calc(6px * var(--drop-shadow-amount, .7)) calc(8px * var(--drop-shadow-amount, .7)) var(--drop-shadow-color, rgba(0, 0, 0, .1))));
+      transform: translateY(calc(var(--base, 8px) * 10)) scaleY(1.1);
+      transition: 
+        opacity 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+        transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      z-index: 1500;
+      overflow-y: auto;
+      opacity: 0;
+      backdrop-filter: blur(8px);
+      border-radius: inherit;
+
+      &.is-open {
+        transform: translateY(0) scaleY(1);
+        opacity: 1;
+      }
+    }
+  }
+
 }

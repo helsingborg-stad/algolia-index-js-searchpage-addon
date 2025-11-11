@@ -22,14 +22,12 @@
                 'o-layout-grid--col-span-12@xs',
                 'o-layout-grid--col-span-12@sm',
                 'o-layout-grid--col-span-3@md',
-                'o-layout-grid--col-span-3@lg',
-                'u-display--none@sm',
-                'u-position--absolute@sm',
+                'o-layout-grid--col-span-3@lg'
 
             ],
             'attributeList' => [
                 'data-js-toggle-item' => 'search-page-facets',
-                'data-js-toggle-class' => 'u-display--none@xs u-display--none@xs',
+                'data-js-toggle-class' => 'is-open',
             ]
         ])
             @include('partials.facets')
