@@ -31,9 +31,8 @@
         ])
             @include('partials.facets')
 
-
             @button([
-                'search-page__filter-button-close',
+                'id' => 'search-page__filter-button-close',
                 'text' => 'Apply filters',
                 'color' => 'default',
                 'style' => 'filled',
