@@ -26,13 +26,14 @@
             ],
             'attributeList' => [
                 'data-js-toggle-item' => 'search-page-facets',
-                'data-js-toggle-class' => ['u-display--none@xs', 'u-display--none@sm'],
+                'data-js-toggle-class' => 'u-display--none@xs u-display--none@xs',
             ]
         ])
             @include('partials.facets')
 
 
             @button([
+                'search-page__filter-button-close',
                 'text' => 'Apply filters',
                 'color' => 'default',
                 'style' => 'filled',
@@ -47,8 +48,7 @@
                     'u-display--none@xl',
                 ],
                 'attributeList' => [
-                    'data-js-toggle-trigger' => 'search-page-facets',
-                    'aria-pressed' => 'false',
+                    'data-simulate-click' => "button#search-page__filter-button"
                 ]
             ])
             @endbutton

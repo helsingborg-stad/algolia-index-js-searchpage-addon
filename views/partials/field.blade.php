@@ -26,6 +26,7 @@
     @endfield
 
     @button([
+        'id' => 'search-page__filter-button',
         'text' => 'Filter',
         'color' => 'default',
         'style' => 'basic',
