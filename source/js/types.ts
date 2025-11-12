@@ -118,11 +118,3 @@ export interface HtmlEventService {
     callback: (facetFilters: string[][]) => void
   ) => void
 }
-
-/**
- * Represents a function to translate a facet item into HTML
- * @param facet The facet result
- * @param value The facet value
- * @returns HTML string for the facet item
- */
-export type TranslateFacetItem = (facet: FacetResult, value: FacetValue) => string;
