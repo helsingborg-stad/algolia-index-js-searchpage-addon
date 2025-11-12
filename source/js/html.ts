@@ -223,52 +223,48 @@ export const HtmlRenderFactory = (
 
       if (safeSearchFacets && result.facets) {
 
-        // START: Check selected facets from storage
-        const selectedFilters = Array.isArray(facetFilters)
+        //Function: Get facets
+        const selectedSet = (() => 
+          new Set(
+            (
+              Array.isArray(facetFilters)
           ? facetFilters
           : Array.isArray(storedFilters)
-          ? storedFilters
-          : Object.keys(storedFilters); 
-        
-        const selectedSet = new Set(selectedFilters.flat());
+            ? storedFilters
+            : Object.keys(storedFilters)
+            ).flat()
+          )
+        )();
 
-        result.facets.forEach(facet => {
+        console.log('Selected facets:', [...selectedSet]);
+
+        //Function: Render facets with selected states
+        const renderFacetItems = (facet: FacetResult) => {
           const itemsHtml = facet.values
-          .map(value => {
-            const filterStr = `${facet.attribute}:${value.value}`;
-            const checked = selectedSet.has(filterStr) ? 'checked' : '';
-            return translateFacetItem(facet, value).replace(
-              '<input ',
-              `<input ${checked} data-filter="${filterStr}" `
-            );
-          })
-          .join('');
-            append(safeSearchFacets, translateFacet(facet, itemsHtml));
-        });
-        // END: Check selected facets from storage
+            .map(value => {
+              const filterStr = `${facet.attribute}:${value.value}`;
+              const checked = selectedSet.has(filterStr) ? 'checked' : '';
+              return translateFacetItem(facet, value).replace(
+          '<input ',
+          `<input ${checked} data-filter="${filterStr}" `
+              );
+            })
+            .join('');
+          append(safeSearchFacets, translateFacet(facet, itemsHtml));
+        };
 
-        
+        result.facets.forEach(renderFacetItems);
 
-        // START: Add event listener to save selected facets
-        safeSearchFacets.addEventListener('change', event => {
-          const target = event.target as HTMLInputElement;
-          if (target && target.dataset.filter) {
-            const filter = target.dataset.filter;
-            if (target.checked) {
-              selectedSet.add(filter);
-            } else {
-              selectedSet.delete(filter);
-            }
-            const facetsObject: Record<string, boolean> = {};
-            selectedSet.forEach(facet => {
-              facetsObject[facet] = true;
-            });
-            storage.saveFacets(facetsObject); // Save updated facets
+        //Function: Store facet selection changes
+        safeSearchFacets.addEventListener('change', (event) => {
+          const input = event.target as HTMLInputElement;
+          const filter = input?.dataset.filter;
+          if (filter) {
+            void (input.checked ? selectedSet.add(filter) : selectedSet.delete(filter));
+            storage.saveFacets(Object.fromEntries([...selectedSet].map(f => [f, true])));
           }
         });
-        // END: Add event listener to save selected facets
-
-
+        
       }
     },
   }

@@ -1,14 +1,14 @@
 @element([
     'componentElement' => 'template',
     'attributeList' => [
-        'data-js-search-page-facet' => true
+        'data-js-search-page-facet-empty' => true
     ],
 ])
-    @element(['classList' => ['search-page__facet-group']])
+    @element(['classList' => ['search-page__facet-empty']])
 
         @typography([
-            'variant' => 'h2',
-            'element' => 'h2',
+            'variant' => '',
+            'element' => 'div',
             'classList' => [
                 'search-page__facet-group-heading',
             ]
