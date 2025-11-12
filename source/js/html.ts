@@ -223,7 +223,7 @@ export const HtmlRenderFactory = (
 
       if (safeSearchFacets && result.facets) {
 
-        // START: Check selected facets from storage
+        // Add event listener to save selected facets
         const selectedFilters = Array.isArray(facetFilters)
           ? facetFilters
           : Array.isArray(storedFilters)
@@ -245,11 +245,8 @@ export const HtmlRenderFactory = (
           .join('');
             append(safeSearchFacets, translateFacet(facet, itemsHtml));
         });
-        // END: Check selected facets from storage
 
-        
-
-        // START: Add event listener to save selected facets
+        // Add event listener to save selected facets
         safeSearchFacets.addEventListener('change', event => {
           const target = event.target as HTMLInputElement;
           if (target && target.dataset.filter) {
@@ -266,10 +263,8 @@ export const HtmlRenderFactory = (
             storage.saveFacets(facetsObject); // Save updated facets
           }
         });
-        // END: Add event listener to save selected facets
 
-
-        // If no facets available, show notice div.data-js-search-page-facet-notice
+        // Toggle facet notice visibility
         const notice = document.querySelector('div[data-js-search-page-facet-notice]');
         if (notice) {
           notice.setAttribute('aria-hidden', result.facets.length > 0 ? 'true' : 'false');
