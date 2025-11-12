@@ -5,9 +5,9 @@ import {
   GenericSearchResult,
   GenericSearchQueryParams,
   FacetResult,
-  FacetValue,
 } from './types'
 import { FacetStorage } from './facetStorage'
+import { FacettingFactory } from './facetting'
 
 /**
  * Queries template content from the HTML document
@@ -54,7 +54,6 @@ export const HtmlRenderFactory = (
     templatePaginationItem = '',
     templatePaginationIcon = '',
     templateFacet = '',
-    templateFacetItem = '',
   ] = getHtmlTemplates()
 
   const [searchInput, searchContainer, searchPagination, searchFacets, statsContainer] =
@@ -85,7 +84,6 @@ export const HtmlRenderFactory = (
     translatePaginationItem,
     translatePaginationIcon,
     translateFacet,
-    translateFacetItem,
   ] = [
     (item: GenericSearchResultItem): string =>
       (item.image ? templateHitHtml : templateNoImgHtml)
@@ -117,11 +115,6 @@ export const HtmlRenderFactory = (
         .replaceAll('{ALGOLIA_JS_FACET_LABEL}', facet.label)
         .replaceAll('{ALGOLIA_JS_FACET_ATTRIBUTE}', facet.attribute)
         .replaceAll('{ALGOLIA_JS_FACET_ITEMS}', itemsHtml),
-    (facet: FacetResult, value: FacetValue): string =>
-      templateFacetItem
-        .replaceAll('{ALGOLIA_JS_FACET_VALUE}', value.value)
-        .replaceAll('{ALGOLIA_JS_FACET_COUNT}', String(value.count))
-        .replaceAll('{ALGOLIA_JS_FACET_ATTRIBUTE}', facet.attribute),
   ]
   // Set initial value
   safeSearchInput.value = params.query || ''
@@ -218,44 +211,20 @@ export const HtmlRenderFactory = (
      * @param result The search result to translate into HTML facets
      */
     renderFacets: (result: GenericSearchResult, facetFilters?: string[][]): void => {
-      const storage       = new FacetStorage();
-      const storedFilters = storage.loadFacets();
+      const storage          = new FacetStorage();
+      const storedFilters    = storage.loadFacets() as Record<string, boolean>;
+      const facettingService = FacettingFactory();
 
       if (safeSearchFacets && result.facets) {
+        const selectedSet = facettingService.getSelectedFacets(facetFilters, storedFilters);
 
-        //Function: Get facets
-        const selectedSet = (() => 
-          new Set(
-            (
-              Array.isArray(facetFilters)
-          ? facetFilters
-          : Array.isArray(storedFilters)
-            ? storedFilters
-            : Object.keys(storedFilters)
-            ).flat()
-          )
-        )();
-
-        console.log('Selected facets:', [...selectedSet]);
-
-        //Function: Render facets with selected states
-        const renderFacetItems = (facet: FacetResult) => {
-          const itemsHtml = facet.values
-            .map(value => {
-              const filterStr = `${facet.attribute}:${value.value}`;
-              const checked = selectedSet.has(filterStr) ? 'checked' : '';
-              return translateFacetItem(facet, value).replace(
-          '<input ',
-          `<input ${checked} data-filter="${filterStr}" `
-              );
-            })
-            .join('');
+        //Loop through facetpanels and render
+        result.facets.forEach(facet => {
+          const itemsHtml = facettingService.renderFacetItems(facet, selectedSet);
           append(safeSearchFacets, translateFacet(facet, itemsHtml));
-        };
+        });
 
-        result.facets.forEach(renderFacetItems);
-
-        //Function: Store facet selection changes
+        //Store facet selections on change
         safeSearchFacets.addEventListener('change', (event) => {
           const input = event.target as HTMLInputElement;
           const filter = input?.dataset.filter;
@@ -264,7 +233,6 @@ export const HtmlRenderFactory = (
             storage.saveFacets(Object.fromEntries([...selectedSet].map(f => [f, true])));
           }
         });
-        
       }
     },
   }
