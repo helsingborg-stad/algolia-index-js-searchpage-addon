@@ -2,7 +2,7 @@
     'id' => 'search-panel__container',
     'classList' => [
         'search-panel__container',
-        'search-panel__container--no-facets'
+        $enableFacets ? '' : 'search-panel__container--no-facets',
     ],
     'attributeList' => [
         'data-js-search-page-container' => true
@@ -27,7 +27,6 @@
                 'o-layout-grid--col-span-12@sm',
                 'o-layout-grid--col-span-3@md',
                 'o-layout-grid--col-span-3@lg'
-
             ],
             'attributeList' => [
                 'data-js-toggle-item' => 'search-page-facets',

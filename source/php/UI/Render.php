@@ -15,6 +15,11 @@ class Render implements RenderInterface
     {
     }
 
+    /**
+     * Render the search page.
+     * 
+     * @return void
+     */
     public function renderSearchPage()
     {
         if (!$this->shouldRenderSearchPage()) {
@@ -25,6 +30,7 @@ class Render implements RenderInterface
             'search-page',
             [
                 'lang' => Lang::getLang(),
+                'enableFacets' => $this->enableFacets(),
                 'templates' => $this->getFilesInTemplateDirectory('templates', true)
             ],
             true,
@@ -34,6 +40,30 @@ class Render implements RenderInterface
         self::$hasRenderedSearchPage = true;
     }
 
+    /**
+     * Determine if facets should be enabled.
+     * 
+     * @return bool
+     */
+    private function enableFacets(): bool
+    {
+        $facets = get_field('algolia_index_facetting', 'options');        
+        if (!empty($facets) || is_array($facets)) {
+            $facetsEnabled = array_filter($facets, function ($facet) {
+                return $facet['enabled'] == true;
+            });
+            return !empty($facetsEnabled);
+        }
+        return false;
+    }
+
+    /**
+     * Get all files in template directory.
+     * 
+     * @param string $directory
+     * @param bool $templateNames If true, format file names to blade template names.
+     * @return array
+     */
     private function getFilesInTemplateDirectory(string $directory, $templateNames = false): array
     {
         $files = [];
@@ -63,6 +93,11 @@ class Render implements RenderInterface
         return $files;
     }
     
+    /**
+     * Determine if the search page should be rendered.
+     * 
+     * @return bool
+     */
     private function shouldRenderSearchPage(): bool
     {
         return !self::$hasRenderedSearchPage && IsSearchPage::isSearchPage();
