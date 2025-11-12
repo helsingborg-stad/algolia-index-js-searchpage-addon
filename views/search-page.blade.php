@@ -1,5 +1,9 @@
 @paper([
     'id' => 'search-panel__container',
+    'classList' => [
+        'search-panel__container',
+        'search-panel__container--no-facets'
+    ],
     'attributeList' => [
         'data-js-search-page-container' => true
     ]
@@ -32,9 +36,24 @@
         ])
             @include('partials.facets')
 
+            @notice([
+                'id' => 'search-page__facet-notice',
+                'type' => 'info',
+                'message' => [
+                    'text' => $lang['nofacets'],
+                ],
+                'classList' => [
+                    'u-margin--3'
+                ],
+                'attributeList' => [
+                    'data-js-search-page-facet-notice' => true
+                ]
+            ])
+            @endnotice
+
             @button([
                 'id' => 'search-page__filter-button-close',
-                'text' => 'Apply filters',
+                'text' => $lang['applyFilters'],
                 'color' => 'default',
                 'style' => 'filled',
                 'icon' => 'filter_alt',

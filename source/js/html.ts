@@ -269,6 +269,11 @@ export const HtmlRenderFactory = (
         // END: Add event listener to save selected facets
 
 
+        // If no facets available, show notice div.data-js-search-page-facet-notice
+        const notice = document.querySelector('div[data-js-search-page-facet-notice]');
+        if (notice) {
+          notice.setAttribute('aria-hidden', result.facets.length > 0 ? 'true' : 'false');
+        }
       }
     },
   }

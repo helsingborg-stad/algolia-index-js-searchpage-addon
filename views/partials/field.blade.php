@@ -14,7 +14,7 @@
         ],
         'attributeList' => [
             'data-js-search-page-search-input' => true,
-            'aria-label' => $lang['algoliaSearchPlaceholder']
+            'aria-label' => $lang['searchLabel']
         ],
         'type' => 'text',
         'type' => 'search',
@@ -27,7 +27,7 @@
 
     @button([
         'id' => 'search-page__filter-button',
-        'text' => 'Filter',
+        'text' => $lang['openFilters'],
         'color' => 'default',
         'style' => 'basic',
         'icon' => 'filter_alt',
