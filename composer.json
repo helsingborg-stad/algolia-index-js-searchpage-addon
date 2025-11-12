@@ -20,11 +20,30 @@
             "url": "https://wpackagist.org"
         }
     ],
-    "require": {},
+    "require": {
+        "helsingborg-stad/wputilservice": "^0.2.44"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test:coverage": "XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-html .coverage/html --coverage-clover .coverage/clover.xml",
+        "test:setup": "tests/install-wp-tests.sh",
+        "lint": "vendor/carthage-software/mago/composer/bin/mago lint",
+        "lint:fix": "vendor/carthage-software/mago/composer/bin/mago lint --fix --format",
+        "format": "vendor/carthage-software/mago/composer/bin/mago fmt"
+    },
     "autoload": {
         "psr-4": {
             "AlgoliaIndexJsSearchpage\\": "source/php/"
         }
     },
-    "version": "3.3.26"
+    "version": "3.3.26",
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "carthage-software/mago": "1.0.0-rc.1"
+    },
+    "config": {
+        "allow-plugins": {
+            "carthage-software/mago": true
+        }
+    }
 }
