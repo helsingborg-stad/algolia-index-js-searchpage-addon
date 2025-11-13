@@ -2,12 +2,13 @@
 
 namespace AlgoliaIndexJsSearchpage;
 
+use WpUtilService\Features\Enqueue\EnqueueManager;
 use AlgoliaIndexJsSearchpage\UI\RenderInterface;
 use AlgoliaIndexJsSearchpage\Helper\IsSearchPage;
 
 class App
 {
-    public function __construct(RenderInterface $renderer)
+    public function __construct( private EnqueueManager $wpEnqueue,RenderInterface $renderer)
     {
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
@@ -35,11 +36,8 @@ class App
         if (!IsSearchPage::isSearchPage()) {
             return;
         }
-        wp_enqueue_style(
-            'algolia-index-js-searchpage',
-            ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
-                'css/instantsearch.css'
-            )
+        $this->wpEnqueue->add(
+            src: 'css/instantsearch.css',
         );
     }
 
@@ -67,22 +65,18 @@ class App
         );
 
         //Register & enqueue script
-        wp_enqueue_script(
-            'algolia-index-js-searchpage',
-            ALGOLIAINDEXJSSEARCHPAGE_URL . '/assets/dist/' . \AlgoliaIndexJsSearchpage\Helper\CacheBust::name(
-                'js/main.js'
-            ),
-            []
-        );
-
-        //Localize script
-        wp_localize_script('algolia-index-js-searchpage', 'algoliaTranslations', [
+        $this->wpEnqueue->add(
+            src: 'js/main.js',
+        )->with()->translation('algolia-index-js-searchpage', 'algoliaTranslations', [
             'noresult' => __("No matches where found on the query", 'algolia-index-js-searchpage'),
             'filter' => __("Filter results from", 'algolia-index-js-searchpage'),
             'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
             'placeholder' => __("What are you looking for?", 'algolia-index-js-searchpage'),
             'submit' => __("Search", 'algolia-index-js-searchpage'),
-        ]);
+            'facetFilterString' => __("Select origin", 'algolia-index-js-searchpage'),
+        ])->and()->data;
+
+
 
         wp_localize_script(
             'algolia-index-js-searchpage',
