@@ -6,5 +6,5 @@
         'data-js-search-page-facets' => true
     ]
 ])
-    <!-- Loading facets... -->
+    @include('partials.facets-loader')
 @endelement

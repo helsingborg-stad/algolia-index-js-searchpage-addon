@@ -9,5 +9,5 @@
         'o-layout-grid--gap-8'
     ]
 ])
-    @include('partials.loader')
+    @include('partials.hits-loader')
 @endelement
