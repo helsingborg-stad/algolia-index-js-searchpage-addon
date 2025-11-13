@@ -9,6 +9,7 @@
 #search-panel__container {
   --search-border-color: #00000011;
   --search-shadow-separator-size: 12px;
+  --search-mark-color: #fff20040;
 
   &.search-panel__container--no-facets {
     #search-panel__facets {
@@ -72,6 +73,15 @@
     background-color: rgba($color: #000000, $alpha: 0.05);
     padding: calc(var(--base, 8px) * 3);
     position: relative;
+
+    em {
+      background-color: var(--search-mark-color, #fff20040);
+      padding: 0px var(--base, 8px);
+      border-radius: calc(var(--base, 8px) * 2);
+      box-shadow: 0 0 var(--base, 8px) #00000016;
+      text-decoration: none;
+      font-style: normal;
+    }
 
     @media screen and (min-width: 56em) {
       &:before {
