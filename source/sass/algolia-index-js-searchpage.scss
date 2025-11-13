@@ -119,6 +119,9 @@
         transform: translateY(0) scaleY(1);
         opacity: 1;
       }
+      &:not(.is-open) {
+        display: none;
+      }
     }
   }
 
