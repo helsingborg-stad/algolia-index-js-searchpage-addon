@@ -4,7 +4,7 @@
  * Plugin Name:       Algolia Index Js Search Page
  * Plugin URI:        (#plugin_url#)
  * Description:       Replaces search page with a js (instant search) page.
- * Version: 3.3.15
+ * Version: 3.3.16
  * Author:            Sebastian Thulin
  * Author URI:        (#plugin_author_url#)
  * License:           MIT
