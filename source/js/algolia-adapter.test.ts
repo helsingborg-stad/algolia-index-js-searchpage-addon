@@ -1,5 +1,9 @@
 import { WPPost } from './types'
-import { algoliaDataTransform, algoliaParamTransform } from './algolia-adapter'
+import {
+  algoliaDataTransform,
+  algoliaParamTransform,
+  algoliaFacetTransform,
+} from './algolia-adapter'
 
 describe('Algolia', () => {
   const document: WPPost = {
@@ -69,6 +73,7 @@ describe('Algolia', () => {
 
     expect(params).toEqual({
       hitsPerPage: 20,
+      facetFilters: undefined,
     })
   })
   it('should transform query parameters', async () => {
@@ -82,6 +87,92 @@ describe('Algolia', () => {
       hitsPerPage: 2,
       page: 9, // Converted to zero-based index
       query: 'query',
+      facetFilters: undefined,
+    })
+  })
+  it('should transform facets from Algolia response', async () => {
+    const config = {
+      type: 'algolia' as const,
+      host: '',
+      port: 0,
+      protocol: '',
+      apiKey: 'test-key',
+      applicationId: 'test-app',
+      collectionName: 'test-index',
+      searchAsYouType: true,
+      facetingEnabled: true,
+      facets: [
+        { attribute: 'origin_site', label: 'Origin Site', enabled: true },
+        { attribute: 'categories', label: 'Categories', enabled: true },
+      ],
+    }
+    const facets = {
+      origin_site: {
+        'Site A': 10,
+        'Site B': 5,
+      },
+      categories: {
+        News: 8,
+        Events: 3,
+      },
+    }
+
+    const result = algoliaFacetTransform(facets, config)
+
+    expect(result).toEqual([
+      {
+        attribute: 'origin_site',
+        label: 'Origin Site',
+        values: [
+          { value: 'Site A', count: 10 },
+          { value: 'Site B', count: 5 },
+        ],
+      },
+      {
+        attribute: 'categories',
+        label: 'Categories',
+        values: [
+          { value: 'News', count: 8 },
+          { value: 'Events', count: 3 },
+        ],
+      },
+    ])
+  })
+  it('should include facets when faceting is enabled', async () => {
+    const config = {
+      type: 'algolia' as const,
+      host: '',
+      port: 0,
+      protocol: '',
+      apiKey: 'test-key',
+      applicationId: 'test-app',
+      collectionName: 'test-index',
+      searchAsYouType: true,
+      facetingEnabled: true,
+      facets: [
+        { attribute: 'origin_site', label: 'Origin Site', enabled: true },
+        { attribute: 'categories', label: 'Categories', enabled: true },
+      ],
+    }
+    const params = algoliaParamTransform({ query: 'test' }, config)
+
+    expect(params).toEqual({
+      hitsPerPage: 20,
+      query: 'test',
+      facets: ['origin_site', 'categories'],
+      facetFilters: undefined,
+    })
+  })
+  it('should include facet filters when provided', async () => {
+    const params = algoliaParamTransform({
+      query: 'test',
+      facetFilters: [['origin_site:Site A']],
+    })
+
+    expect(params).toEqual({
+      hitsPerPage: 20,
+      query: 'test',
+      facetFilters: [['origin_site:Site A']],
     })
   })
 })

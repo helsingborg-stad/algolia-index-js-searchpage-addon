@@ -1,20 +1,163 @@
-em {
-  background-color: mark;
-  font-style: normal;
-}
+/*
+--breakpoint-xs: 0;
+--breakpoint-sm: 32.5em;
+--breakpoint-md: 56em;
+--breakpoint-lg: 78em;
+--breakpoint-xl: 100em;
+*/
 
-@media screen and (max-width: 56rem) {
-  .search-panel {
-    .c-card {
-      flex-direction: column;
-    } 
+#search-panel__container {
+  --search-border-color: #00000011;
+  --search-shadow-separator-size: 12px;
 
-    .c-card__image-container {
+  &.search-panel__container--no-facets {
+    #search-panel__facets {
       display: none;
     }
-    
-    .c-card__image  {
-      overflow: hidden;
+
+    #search-panel__results {
+      grid-column: span 12;
+
+      &:before {
+        display: none;
+      }
+    }
+
+    #search-page__filter-button {
+      display: none;
     }
   }
-} 
+
+  #search-panel__container-paint {
+    border-radius: inherit;
+    contain: paint;
+    border: 1px solid var(--search-border-color, #eee);
+    position: relative;
+  }
+
+  #search-panel__facets {
+    background-color: inherit;
+    z-index: 1000;
+    border-top-left-radius: inherit;
+    border-bottom-left-radius: inherit;
+    min-width: calc(var(--base, 8px) * 30);
+
+    .search-page__facet-group {
+      position: relative;
+      padding: calc(var(--base, 8px) * 3);
+      z-index: 2000;
+    }
+
+    .search-page__facet-group + .search-page__facet-group {
+      border-top: 1px solid var(--search-border-color, #eee);
+    }
+  }
+
+  #search-page__facet-notice {
+    color: var(--color-text-muted, #666);
+    border: 1px solid var(--search-border-color, #eee);
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    display: none;
+    font-size: .95em;
+    
+    &[aria-hidden="false"] {
+      display: grid;
+    }
+  }
+  div[data-js-search-page-facets]:empty {
+    display: none;
+  }
+
+  #search-panel__results {
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    padding: calc(var(--base, 8px) * 3);
+    position: relative;
+
+    @media screen and (min-width: 56em) {
+      &:before {
+        content: "";
+        width: var(--search-shadow-separator-size, 12px);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg,rgba(0, 0, 0, .05) 0%, rgba(0, 0, 0, 0) 100%);
+      }
+    }
+  }
+
+  .search-page__facet-group-heading {
+    margin-bottom: calc(var(--base, 8px) * 1.5);
+  }
+
+  .c-field__inner--search {
+    border-color: var(--search-border-color, #eee);
+    background: inherit;
+    border-radius: inherit;
+  }
+
+  #search-panel__facets {
+    @media screen and (max-width: 56em) {
+      grid-auto-rows: min-content;
+      position: fixed;
+      inset: calc(var(--base, 8px) * 14) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
+      width: calc(100% - calc(var(--base, 8px) * 3) * 2);
+      max-width: unset;
+      background-color: #ffffffec;
+      filter: var(--drop-shadow-2, drop-shadow(0px calc(6px * var(--drop-shadow-amount, .7)) calc(8px * var(--drop-shadow-amount, .7)) var(--drop-shadow-color, rgba(0, 0, 0, .1))));
+      transform: translateY(calc(var(--base, 8px) * 10)) scaleY(1.1);
+      transition: 
+        opacity 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+        transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      z-index: 1500;
+      overflow-y: auto;
+      opacity: 0;
+      backdrop-filter: blur(8px);
+      border-radius: inherit;
+
+      &.is-open {
+        transform: translateY(0) scaleY(1);
+        opacity: 1;
+      }
+      &:not(.is-open) {
+        display: none;
+      }
+    }
+  }
+
+  /* Layout grid adjustments */
+  #search-panel__results {
+    display: grid;
+    grid-column: span 9;
+    gap: calc(var(--base, 8px) * 2);
+
+    @media screen and (max-width: 56em) {
+      grid-column: span 12;
+    }
+
+    @media screen and (min-width: 56em) {
+      grid-column: span 9;
+    }
+
+    @media screen and (min-width: 78em) {
+      grid-column: span 9;
+    }
+  }
+
+  #search-panel__facets {
+    display: grid;
+    grid-column: span 3;
+
+    @media screen and (max-width: 56em) {
+      grid-column: span 12;
+    }
+
+    @media screen and (min-width: 56em) {
+      grid-column: span 3;
+    }
+
+    @media screen and (min-width: 78em) {
+      grid-column: span 3;
+    }
+  }
+}

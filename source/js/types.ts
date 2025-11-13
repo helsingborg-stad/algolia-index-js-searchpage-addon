@@ -4,6 +4,7 @@ export interface GenericSearchResult {
   currentPage: number
   totalPages: number
   hits: GenericSearchResultItem[]
+  facets?: FacetResult[]
 }
 
 export interface GenericSearchResultItem {
@@ -15,6 +16,12 @@ export interface GenericSearchResultItem {
   url: string
 }
 
+export interface FacetConfig {
+  attribute: string
+  label: string
+  enabled: boolean
+}
+
 export interface SearchConfig {
   type: 'typesense' | 'algolia'
   host: string
@@ -24,6 +31,20 @@ export interface SearchConfig {
   applicationId: string
   collectionName: string
   searchAsYouType: boolean
+  facets?: FacetConfig[]
+  facetingEnabled?: boolean
+}
+
+export interface FacetValue {
+  value: string
+  count: number
+  highlighted?: string
+}
+
+export interface FacetResult {
+  attribute: string
+  label: string
+  values: FacetValue[]
 }
 
 export interface GenericSearchQueryParams {
@@ -32,6 +53,7 @@ export interface GenericSearchQueryParams {
   page?: number
   page_size?: number
   highlight_full_fields?: string
+  facetFilters?: string[][]
 }
 
 export interface WPPost {
@@ -67,9 +89,11 @@ export interface SearchService {
 export interface HtmlRenderService {
   getInputField: () => HTMLInputElement
   getPaginationContainer: () => HTMLElement
+  getFacetsContainer: () => HTMLElement | null
   renderStats: (result: GenericSearchResult) => void
   renderItems: (result: GenericSearchResult) => void
   renderPagination: (result: GenericSearchResult) => void
+  renderFacets: (result: GenericSearchResult, facetFilters?: string[][]) => void
   reset: () => void
 }
 export interface PaginationService {
@@ -88,5 +112,9 @@ export interface HtmlEventService {
   registerPagination: (
     element: HTMLElement,
     callback: (page: number) => void
+  ) => void
+  registerFacets: (
+    element: HTMLElement,
+    callback: (facetFilters: string[][]) => void
   ) => void
 }

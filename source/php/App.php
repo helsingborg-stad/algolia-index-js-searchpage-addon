@@ -82,7 +82,6 @@ class App
             'nposts' => __("posts found on your query.", 'algolia-index-js-searchpage'),
             'placeholder' => __("What are you looking for?", 'algolia-index-js-searchpage'),
             'submit' => __("Search", 'algolia-index-js-searchpage'),
-            'facetFilterString' => __("Select origin", 'algolia-index-js-searchpage'),
         ]);
 
         wp_localize_script(
@@ -116,13 +115,10 @@ class App
                     'collectionName' => \AlgoliaIndex\Helper\Options::indexName(),
                     'searchAsYouType' => apply_filters('AlgoliaIndex/SearchAsYouType', true),
                     'clientConfig' => apply_filters('AlgoliaIndex/ClientConfig', []),
+                    'facetingEnabled' => apply_filters('AlgoliaIndex/FacetingEnabled', true),
+                    'facets' => apply_filters('AlgoliaIndex/Facets', []),
                 ]
             )
         );
-
-        //UI settings
-        wp_localize_script('algolia-index-js-searchpage', 'algoliaSettings', [
-            'facettingApperanceMenu' => defined('ALGOLIA_INDEX_FACETTING_APPERANCE_MENU') ? "true" : "false",
-        ]);
     }
 }

@@ -1,14 +1,13 @@
+<!-- Hits -->
 @element([
     'attributeList' => [
         'data-js-search-page-hits' => true
     ],
     'classList' => [
-        'u-display--flex',
-        'u-flex--gridgap',
-        'u-flex-direction--column',
-        'unlist'
+        'o-layout-grid',
+        'o-layout-grid--col-span-9',
+        'o-layout-grid--gap-8'
     ]
 ])
     @include('partials.loader')
-    @include('partials.noresult')
 @endelement
