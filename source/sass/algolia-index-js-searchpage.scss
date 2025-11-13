@@ -85,12 +85,13 @@
       }
     }
 
-    .c-card--has-image {
+    .c-card--has-image .c-card__paint-container {
       flex-direction: row-reverse;
-      @container (max-width: 500px) {
-        .c-card__image-container {
-          display: none;
-        }
+    }
+
+    @container (max-width: 500px) {
+      .c-card__image-container {
+        display: none;
       }
     }
   }
