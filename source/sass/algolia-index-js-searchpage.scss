@@ -76,8 +76,7 @@
 
     em {
       background-color: var(--search-mark-color, #fff20040);
-      padding: 0px var(--base, 8px);
-      border-radius: calc(var(--base, 8px) * 2);
+      border-radius: calc(var(--base, 8px) * 0.5);
       box-shadow: 0 0 var(--base, 8px) #00000016;
       text-decoration: none;
       font-style: normal;
