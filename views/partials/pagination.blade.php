@@ -5,8 +5,8 @@
     ],
     'classList' => [
         'c-pagination',
-        'u-margin__x--auto',
-        'u-margin__bottom--4'
+        'u-margin__top--4'
     ]
 ])
+    <!-- Loading pagination... -->
 @endelement

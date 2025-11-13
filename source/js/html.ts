@@ -57,26 +57,30 @@ export const HtmlRenderFactory = (
     templateFacetItem = '',
   ] = getHtmlTemplates()
 
-  const [searchInput, searchContainer, searchPagination, searchFacets, statsContainer] =
-    getHtmlElements() as [
-      HTMLInputElement | null,
-      HTMLElement | null,
-      HTMLElement | null,
-      HTMLElement | null,
-      HTMLElement | null,
-    ]
+  const [
+    searchInput,
+    searchContainer,
+    searchPagination,
+    searchFacets,
+    statsContainer,
+  ] = getHtmlElements() as [
+    HTMLInputElement | null,
+    HTMLElement | null,
+    HTMLElement | null,
+    HTMLElement | null,
+    HTMLElement | null,
+  ]
 
   // Provide defaults for required elements
   const safeSearchInput =
     searchInput || (document.createElement('input') as HTMLInputElement)
-  const safeSearchContainer =
-    searchContainer || document.createElement('div')
-  const safeSearchPagination =
-    searchPagination || document.createElement('div')
-  const safeSearchFacets = 
-  searchFacets || document.createElement('div')
-  const safeStatsContainer =
-  statsContainer || document.createElement('div');
+  const safeSearchContainer = searchContainer || document.createElement('div')
+  const safeSearchPagination = searchPagination || document.createElement('div')
+
+  console.log('Safe Search Pagination:', safeSearchPagination)
+
+  const safeSearchFacets = searchFacets || document.createElement('div')
+  const safeStatsContainer = statsContainer || document.createElement('div')
 
   const [
     translateHit,
@@ -168,7 +172,9 @@ export const HtmlRenderFactory = (
     renderItems: (result: GenericSearchResult): void => {
       if (result.hits.length > 0) {
         // Has results
-        result.hits.forEach(hit => append(safeSearchContainer, translateHit(hit)))
+        result.hits.forEach(hit =>
+          append(safeSearchContainer, translateHit(hit))
+        )
       } else {
         // No results
         append(safeSearchContainer, translateNoResults())
@@ -217,57 +223,64 @@ export const HtmlRenderFactory = (
      * Render facets for the search results
      * @param result The search result to translate into HTML facets
      */
-    renderFacets: (result: GenericSearchResult, facetFilters?: string[][]): void => {
-      const storage       = new FacetStorage();
-      const storedFilters = storage.loadFacets();
+    renderFacets: (
+      result: GenericSearchResult,
+      facetFilters?: string[][]
+    ): void => {
+      const storage = new FacetStorage()
+      const storedFilters = storage.loadFacets()
 
       if (safeSearchFacets && result.facets) {
-
         // Add event listener to save selected facets
         const selectedFilters = Array.isArray(facetFilters)
           ? facetFilters
           : Array.isArray(storedFilters)
-          ? storedFilters
-          : Object.keys(storedFilters); 
-        
-        const selectedSet = new Set(selectedFilters.flat());
+            ? storedFilters
+            : Object.keys(storedFilters)
+
+        const selectedSet = new Set(selectedFilters.flat())
 
         result.facets.forEach(facet => {
           const itemsHtml = facet.values
-          .map(value => {
-            const filterStr = `${facet.attribute}:${value.value}`;
-            const checked = selectedSet.has(filterStr) ? 'checked' : '';
-            return translateFacetItem(facet, value).replace(
-              '<input ',
-              `<input ${checked} data-filter="${filterStr}" `
-            );
-          })
-          .join('');
-            append(safeSearchFacets, translateFacet(facet, itemsHtml));
-        });
+            .map(value => {
+              const filterStr = `${facet.attribute}:${value.value}`
+              const checked = selectedSet.has(filterStr) ? 'checked' : ''
+              return translateFacetItem(facet, value).replace(
+                '<input ',
+                `<input ${checked} data-filter="${filterStr}" `
+              )
+            })
+            .join('')
+          append(safeSearchFacets, translateFacet(facet, itemsHtml))
+        })
 
         // Add event listener to save selected facets
         safeSearchFacets.addEventListener('change', event => {
-          const target = event.target as HTMLInputElement;
+          const target = event.target as HTMLInputElement
           if (target && target.dataset.filter) {
-            const filter = target.dataset.filter;
+            const filter = target.dataset.filter
             if (target.checked) {
-              selectedSet.add(filter);
+              selectedSet.add(filter)
             } else {
-              selectedSet.delete(filter);
+              selectedSet.delete(filter)
             }
-            const facetsObject: Record<string, boolean> = {};
+            const facetsObject: Record<string, boolean> = {}
             selectedSet.forEach(facet => {
-              facetsObject[facet] = true;
-            });
-            storage.saveFacets(facetsObject); // Save updated facets
+              facetsObject[facet] = true
+            })
+            storage.saveFacets(facetsObject) // Save updated facets
           }
-        });
+        })
 
         // Toggle facet notice visibility
-        const notice = document.querySelector('div[data-js-search-page-facet-notice]');
+        const notice = document.querySelector(
+          'div[data-js-search-page-facet-notice]'
+        )
         if (notice) {
-          notice.setAttribute('aria-hidden', result.facets.length > 0 ? 'true' : 'false');
+          notice.setAttribute(
+            'aria-hidden',
+            result.facets.length > 0 ? 'true' : 'false'
+          )
         }
       }
     },
