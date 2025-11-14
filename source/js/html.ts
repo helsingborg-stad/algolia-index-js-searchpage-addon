@@ -170,9 +170,9 @@ export const HtmlRenderFactory = (
 		renderItems: (result: GenericSearchResult): void => {
 			if (result.hits.length > 0) {
 				// Has results
-				result.hits.forEach((hit) =>
-					append(safeSearchContainer, translateHit(hit)),
-				);
+				result.hits.forEach((hit) => {
+					append(safeSearchContainer, translateHit(hit));
+				});
 			} else {
 				// No results
 				append(safeSearchContainer, translateNoResults());
