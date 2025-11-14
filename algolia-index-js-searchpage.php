@@ -16,6 +16,8 @@
 use ComponentLibrary\Init as ComponentLibraryInit;
 use AlgoliaIndexJsSearchpage\Blade\Blade;
 use AlgoliaIndexJsSearchpage\UI\Render;
+use WpService\Implementations\NativeWpService;
+use WpUtilService\WpUtilService;
 
 if (! defined('WPINC')) {
     die;
@@ -37,4 +39,9 @@ add_action('init', function () {
 });
 
 // Start application
-new AlgoliaIndexJsSearchpage\App(new Render(new Blade(new ComponentLibraryInit([]))));
+$wpService = new NativeWpService();
+$wpUtilService = new WpUtilService($wpService);
+
+
+// Start application
+new AlgoliaIndexJsSearchpage\App($wpUtilService->enqueue(__DIR__),new Render(new Blade(new ComponentLibraryInit([]))));

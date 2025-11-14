@@ -61,7 +61,11 @@ $removables = [
     './source/js/',
     'LICENSE',
     'babel.config.js',
-    'yarn.lock'
+    'yarn.lock',
+    'vite.config.mjs',
+    'tsconfig.json',
+    'mago.toml',
+    '.vscode',
 ];
 
 $dirName = basename(dirname(__FILE__));
