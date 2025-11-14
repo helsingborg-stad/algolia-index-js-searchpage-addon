@@ -11,6 +11,8 @@
   --search-shadow-separator-size: 12px;
   --search-mark-color: #fff20040;
 
+  margin-bottom: calc(var(--base, 8px) * 12);
+
   &.search-panel__container--no-facets {
     #search-panel__facets {
       display: none;
