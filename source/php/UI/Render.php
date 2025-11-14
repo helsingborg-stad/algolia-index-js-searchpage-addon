@@ -11,13 +11,13 @@ class Render implements RenderInterface
 {
     private static $hasRenderedSearchPage = false;
 
-    public function __construct(private Blade $blade)
-    {
-    }
+    public function __construct(
+        private Blade $blade,
+    ) {}
 
     /**
      * Render the search page.
-     * 
+     *
      * @return void
      */
     public function renderSearchPage()
@@ -43,12 +43,12 @@ class Render implements RenderInterface
 
     /**
      * Determine if facets should be enabled.
-     * 
+     *
      * @return bool
      */
     private function enableFacets(): bool
     {
-        $facets = get_field('algolia_index_facetting', 'options');        
+        $facets = get_field('algolia_index_facetting', 'options');
         if (!empty($facets) || is_array($facets)) {
             $facetsEnabled = array_filter($facets, function ($facet) {
                 return $facet['enabled'] == true;
@@ -60,7 +60,7 @@ class Render implements RenderInterface
 
     /**
      * Get all files in template directory.
-     * 
+     *
      * @param string $directory
      * @param bool $templateNames If true, format file names to blade template names.
      * @return array
@@ -93,10 +93,10 @@ class Render implements RenderInterface
 
         return $files;
     }
-    
+
     /**
      * Determine if the search page should be rendered.
-     * 
+     *
      * @return bool
      */
     private function shouldRenderSearchPage(): bool

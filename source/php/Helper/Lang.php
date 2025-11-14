@@ -9,7 +9,10 @@ class Lang
         return [
             'searchLabel' => __('What are you looking for?', 'algolia-index-js-searchpage'),
             'noresults' => __('No search results found on your query.', 'algolia-index-js-searchpage'),
-            'algoliaStats' => sprintf(__('%s search results found.', 'algolia-index-js-searchpage'), '{ALGOLIA_JS_STATS_COUNT}'),
+            'algoliaStats' => sprintf(
+                __('%s search results found.', 'algolia-index-js-searchpage'),
+                '{ALGOLIA_JS_STATS_COUNT}',
+            ),
             'nofacets' => __('No facets available for your search.', 'algolia-index-js-searchpage'),
             'applyFilters' => __('Apply filters', 'algolia-index-js-searchpage'),
             'clearFilters' => __('Clear filters', 'algolia-index-js-searchpage'),
