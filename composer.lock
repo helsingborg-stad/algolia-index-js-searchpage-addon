@@ -57,16 +57,16 @@
         },
         {
             "name": "helsingborg-stad/wputilservice",
-            "version": "0.2.45",
+            "version": "0.2.46",
             "source": {
                 "type": "git",
                 "url": "https://github.com/helsingborg-stad/wputilservice.git",
-                "reference": "24cc9f499a8c9ba82605df733732d6dc57f7c740"
+                "reference": "e8a14d961b850987ef0714fa7dc03b15c19dd290"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/helsingborg-stad/wputilservice/zipball/24cc9f499a8c9ba82605df733732d6dc57f7c740",
-                "reference": "24cc9f499a8c9ba82605df733732d6dc57f7c740",
+                "url": "https://api.github.com/repos/helsingborg-stad/wputilservice/zipball/e8a14d961b850987ef0714fa7dc03b15c19dd290",
+                "reference": "e8a14d961b850987ef0714fa7dc03b15c19dd290",
                 "shasum": ""
             },
             "require": {
@@ -99,9 +99,9 @@
             "description": "Simplifies WordPress development by providing a centralized WpUtilService that exposes a WordPress api wrapped in a streamlined manner. Simplify your development workflow and enhance WordPress integration with ease.",
             "support": {
                 "issues": "https://github.com/helsingborg-stad/wputilservice/issues",
-                "source": "https://github.com/helsingborg-stad/wputilservice/tree/0.2.45"
+                "source": "https://github.com/helsingborg-stad/wputilservice/tree/0.2.46"
             },
-            "time": "2025-11-14T12:20:50+00:00"
+            "time": "2025-11-14T13:05:33+00:00"
         }
     ],
     "packages-dev": [
