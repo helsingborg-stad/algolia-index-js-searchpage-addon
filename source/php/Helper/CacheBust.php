@@ -31,12 +31,20 @@ class CacheBust
      */
     public static function getRevManifest()
     {
-        $jsonPath = ALGOLIAINDEXJSSEARCHPAGE_PATH . apply_filters('AlgoliaIndexJsSearchpage/Helper/CacheBust/RevManifestPath', 'assets/dist/manifest.json');
+        $jsonPath =
+            ALGOLIAINDEXJSSEARCHPAGE_PATH
+            . apply_filters('AlgoliaIndexJsSearchpage/Helper/CacheBust/RevManifestPath', 'assets/dist/manifest.json');
 
         if (file_exists($jsonPath)) {
             return json_decode(file_get_contents($jsonPath), true);
         } elseif (WP_DEBUG) {
-            echo '<div style="color:red">Error: Assets not built. Go to ' . ALGOLIAINDEXJSSEARCHPAGE_PATH . ' and run npm build. See '. ALGOLIAINDEXJSSEARCHPAGE_PATH . 'README.md for more info.</div>';
+            echo
+                '<div style="color:red">Error: Assets not built. Go to '
+                    . ALGOLIAINDEXJSSEARCHPAGE_PATH
+                    . ' and run npm build. See '
+                    . ALGOLIAINDEXJSSEARCHPAGE_PATH
+                    . 'README.md for more info.</div>'
+            ;
         }
     }
 }

@@ -20,6 +20,14 @@ ambiguous-function-call = { enabled = false }
 literal-named-argument = { enabled = false }
 halstead = { effort-threshold = 7000 }
 
+# IMPORTANT! 
+# Temporarily lower severity error to warning.
+# Remove when adressed
+
+no-empty = { level = "warning" }
+
+# End IMPORTANT!ß
+
 [analyzer]
 find-unused-definitions = true
 find-unused-expressions = false

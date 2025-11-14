@@ -9,8 +9,9 @@ class Blade
 {
     private BladeServiceInterface $bladeEngine;
 
-    public function __construct(private ComponentLibraryInit $componentLibrary)
-    {
+    public function __construct(
+        private ComponentLibraryInit $componentLibrary,
+    ) {
         $this->bladeEngine = $this->componentLibrary->getEngine();
     }
 
@@ -27,9 +28,9 @@ class Blade
 
         if ($compress == true) {
             $replacements = array(
-                ["~<!--(.*?)-->~s", ""],
-                ["/\r|\n/", ""],
-                ["!\s+!", " "]
+                ['~<!--(.*?)-->~s', ''],
+                ["/\r|\n/",         ''],
+                ["!\s+!",           ' '],
             );
 
             foreach ($replacements as $replacement) {
