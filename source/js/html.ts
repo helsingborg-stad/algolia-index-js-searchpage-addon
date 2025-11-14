@@ -72,15 +72,11 @@ export const HtmlRenderFactory = (
   ]
 
   // Provide defaults for required elements
-  const safeSearchInput =
-    searchInput || (document.createElement('input') as HTMLInputElement)
-  const safeSearchContainer = searchContainer || document.createElement('div')
+  const safeSearchInput      = searchInput      || (document.createElement('input') as HTMLInputElement)
+  const safeSearchContainer  = searchContainer  || document.createElement('div')
   const safeSearchPagination = searchPagination || document.createElement('div')
-
-  console.log('Safe Search Pagination:', safeSearchPagination)
-
-  const safeSearchFacets = searchFacets || document.createElement('div')
-  const safeStatsContainer = statsContainer || document.createElement('div')
+  const safeSearchFacets     = searchFacets     || document.createElement('div')
+  const safeStatsContainer   = statsContainer   || document.createElement('div')
 
   const [
     translateHit,

@@ -99,7 +99,8 @@ export const algoliaParamTransform = (
  */
 export const algoliaFacetTransform = (
   facets: Record<string, Record<string, number>> | undefined,
-  config: SearchConfig
+  config: SearchConfig,
+  renderingContent?: any
 ): FacetResult[] => {
   if (!facets || !config.facets) {
     return []
@@ -108,16 +109,29 @@ export const algoliaFacetTransform = (
   return config.facets
     .filter(facetConfig => facets[facetConfig.attribute])
     .map(facetConfig => {
-      const facetData = facets[facetConfig.attribute]
-      const values: FacetValue[] = Object.entries(facetData).map(
-        ([value, count]) => ({
-          value,
-          count,
-        })
-      )
+      const attribute = facetConfig.attribute
+      const facetData = facets[attribute]
+
+      // read hide + sort rules for this facet
+      const facetConfigRC = renderingContent?.facetOrdering?.values?.[attribute]
+      const hiddenValues: string[] = facetConfigRC?.hide ?? []
+      const sortRemainingBy: 'count' | 'alpha' | undefined =
+        facetConfigRC?.sortRemainingBy
+
+      // Step 1: remove hidden values
+      const values: FacetValue[] = Object.entries(facetData)
+        .filter(([value]) => !hiddenValues.includes(value))
+        .map(([value, count]) => ({ value, count }))
+
+      // Step 2: apply optional sorting
+      if (sortRemainingBy === 'count') {
+        values.sort((a, b) => b.count - a.count)
+      } else if (sortRemainingBy === 'alpha') {
+        values.sort((a, b) => a.value.localeCompare(b.value))
+      }
 
       return {
-        attribute: facetConfig.attribute,
+        attribute,
         label: facetConfig.label,
         values,
       }
@@ -145,13 +159,14 @@ export const AlgoliaAdapter = (config: SearchConfig): SearchService => {
             },
           ],
         })
+
       return {
         query: params.query ?? '',
         totalHits: results[0]?.nbHits ?? 0,
         currentPage: results[0]?.page ? results[0]?.page + 1 : 1,
         totalPages: results[0]?.nbPages ?? 1,
         hits: algoliaDataTransform(results[0]?.hits ?? []),
-        facets: algoliaFacetTransform(results[0]?.facets, config),
+        facets: algoliaFacetTransform(results[0]?.facets, config, results[0]?.renderingContent),
       }
     },
   }
