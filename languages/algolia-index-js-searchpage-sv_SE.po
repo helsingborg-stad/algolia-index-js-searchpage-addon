@@ -2,53 +2,115 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Algolia Index Js Search Page\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-12 15:17+0100\n"
+"PO-Revision-Date: 2025-11-12 15:19+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: sv_SE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-07-05 09:35+0200\n"
-"PO-Revision-Date: 2022-07-05 09:36+0200\n"
-"Language: sv_SE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.7\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-WPHeader: algolia-index-js-searchpage.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: App.php:67
+#: examples/faceting-configuration.php:14
+msgid "Origin Site"
+msgstr "Källwebbplats"
+
+#: examples/faceting-configuration.php:19
+#: examples/faceting-configuration.php:46
+msgid "Categories"
+msgstr "Kategorier"
+
+#: examples/faceting-configuration.php:24
+msgid "Tags"
+msgstr "Taggar"
+
+#: examples/faceting-configuration.php:38
+msgid "Filter by Site"
+msgstr "Filtrera på webbplats"
+
+#: examples/faceting-configuration.php:67
+msgid "Content Type"
+msgstr "Innehållstyp"
+
+#: examples/faceting-configuration.php:72
+msgid "Custom Taxonomy"
+msgstr "Anpassad taxonomi"
+
+#: source/php/App.php:80
 msgid "No matches where found on the query"
 msgstr "Inga resultat på sökfrågan"
 
-#: App.php:68
+#: source/php/App.php:81
 msgid "Filter results from"
 msgstr "Filtrera på"
 
-#: App.php:69
+#: source/php/App.php:82
 msgid "posts found on your query."
 msgstr "träffar på din sökfråga."
 
-#: App.php:70
-#: Helper/Lang.php:10
+#: source/php/App.php:83 source/php/Helper/Lang.php:10
 msgid "What are you looking for?"
 msgstr "Vad letar du efter?"
 
-#: App.php:71
+#: source/php/App.php:84
 msgid "Search"
 msgstr "Sök"
 
-#: App.php:72
-msgid "Select origin"
-msgstr "Filtrera på ursprung"
+#: source/php/Helper/Lang.php:11
+msgid "No search results found on your query."
+msgstr "Inga sökträffar hittades på din fråga."
 
-#: Helper/Lang.php:12
+#: source/php/Helper/Lang.php:12
 #, php-format
 msgid "%s search results found."
 msgstr "%s träffar på din sökfråga."
 
-#: Helper/Lang.php:11
-msgid "No search results found on your query."
+#: source/php/Helper/Lang.php:13
+msgid "No facets available for your search."
+msgstr "Det är inte möjligt att filtrera den här sökfrågan. "
+
+#: source/php/Helper/Lang.php:14
+msgid "Apply filters"
+msgstr "Använd filter"
+
+#: source/php/Helper/Lang.php:15
+msgid "Clear filters"
+msgstr "Ta bort filtrering"
+
+#: source/php/Helper/Lang.php:16
+msgid "Filters"
+msgstr "Filter"
+
+#. Plugin Name of the plugin/theme
+msgid "Algolia Index Js Search Page"
+msgstr "Algolia Index Javascript Söksida"
+
+#. Plugin URI of the plugin/theme
+msgid "(#plugin_url#)"
 msgstr ""
+
+#. Description of the plugin/theme
+msgid "Replaces search page with a js (instant search) page."
+msgstr ""
+"Ersätter söksidan med en JavaScript-baserad sida för "
+"direktsök."
+
+#. Author of the plugin/theme
+msgid "Sebastian Thulin"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "(#plugin_author_url#)"
+msgstr ""
+
+#~ msgid "Select origin"
+#~ msgstr "Filtrera på ursprung"
