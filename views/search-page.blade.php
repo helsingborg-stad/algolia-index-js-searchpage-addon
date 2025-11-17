@@ -9,25 +9,10 @@
     ]
 ])  
     @element([
-        'id' => 'search-panel__container-paint',
-        'classList' => [
-            'o-layout-grid', 
-            'o-layout-grid--cols-12'
-        ],
+        'id' => 'search-panel__container-paint'
     ])
         @element([
             'id' => 'search-panel__facets',
-            'classList' => [
-                'o-layout-grid',
-                'o-layout-grid--col-span-3',
-                'o-layout-grid--gap-8',
-                'o-layout-grid--gap-0@xs',
-                'o-layout-grid--gap-0@sm',
-                'o-layout-grid--col-span-12@xs',
-                'o-layout-grid--col-span-12@sm',
-                'o-layout-grid--col-span-3@md',
-                'o-layout-grid--col-span-3@lg'
-            ],
             'attributeList' => [
                 'data-js-toggle-item' => 'search-page-facets',
                 'data-js-toggle-class' => 'is-open',
@@ -76,14 +61,13 @@
         @element([
             'id' => 'search-panel__results',
             'classList' => [
-                'u-flex-direction--column',
                 'unlist',
             ]
         ])
-            <div class="o-layout-grid o-layout-grid--col-span-9 o-layout-grid--gap-2">
+            @element(['id' => 'search-panel__results-header'])
                 @include('partials.field')
                 @include('partials.stats')
-            </div>
+            @endelement
 
             @include('partials.hits')
             @include('partials.pagination')

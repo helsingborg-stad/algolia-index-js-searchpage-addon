@@ -1,11 +1,8 @@
 <!-- searchfield -->
 @element([
+    'id' => 'search-panel__search-container',
     'attributeList' => [
         'data-js-search-page-search-container' => true
-    ],
-    'classList' => [
-        'u-display--flex',
-        'u-gridgap--4'
     ]
 ])
     @field([
@@ -33,7 +30,6 @@
         'icon' => 'filter_alt',
         'reversePositions' => true,
         'classList' => [
-            'u-margin__left--4',
             'u-display--none@md',
             'u-display--none@lg',
             'u-display--none@xl'

@@ -36,6 +36,8 @@
     contain: paint;
     border: 1px solid var(--search-border-color, #eee);
     position: relative;
+    display: flex;
+    flex-direction: row;
   }
 
   #search-panel__facets {
@@ -71,10 +73,39 @@
     display: none;
   }
 
+  #search-panel__hits {
+    gap: calc(var(--base, 8px) * 3);
+    display: grid;
+  }
+
+  #search-panel__results-header {
+    display: grid;
+    gap: calc(var(--base, 8px) * 1);
+  }
+
+  #search-panel__search-container {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--base, 8px) * 2);
+
+    @media screen and (min-width: 56em) {
+      flex-direction: row;
+    }
+  }
+
+  #search-page__filter-button-close {
+    width: calc(100% - calc(var(--base, 8px) * 6));
+  }
+
   #search-panel__results {
     background-color: rgba($color: #000000, $alpha: 0.05);
     padding: calc(var(--base, 8px) * 3);
     position: relative;
+    flex-grow: 1;
+    gap: calc(var(--base, 8px) * 4);
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
 
     em {
       background-color: var(--search-mark-color, #fff20040);
@@ -119,9 +150,8 @@
 
   #search-panel__facets {
     @media screen and (max-width: 56em) {
-      grid-auto-rows: min-content;
       position: fixed;
-      inset: calc(var(--base, 8px) * 14) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
+      inset: calc(var(--base, 8px) * 11) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
       width: calc(100% - calc(var(--base, 8px) * 3) * 2);
       max-width: unset;
       background-color: #ffffffec;
@@ -146,39 +176,9 @@
     }
   }
 
-  /* Layout grid adjustments */
-  #search-panel__results {
-    display: grid;
-    grid-column: span 9;
-    gap: calc(var(--base, 8px) * 2);
-
-    @media screen and (max-width: 56em) {
-      grid-column: span 12;
-    }
-
-    @media screen and (min-width: 56em) {
-      grid-column: span 9;
-    }
-
-    @media screen and (min-width: 78em) {
-      grid-column: span 9;
-    }
-  }
-
   #search-panel__facets {
-    display: grid;
-    grid-column: span 3;
-
-    @media screen and (max-width: 56em) {
-      grid-column: span 12;
-    }
-
     @media screen and (min-width: 56em) {
-      grid-column: span 3;
-    }
-
-    @media screen and (min-width: 78em) {
-      grid-column: span 3;
+      width: 300px;
     }
   }
 }
