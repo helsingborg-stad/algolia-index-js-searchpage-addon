@@ -31,7 +31,8 @@ class Render implements RenderInterface
             [
                 'lang' => Lang::getLang(),
                 'enableFacets' => $this->enableFacets(),
-                'templates' => $this->getFilesInTemplateDirectory('templates', true)
+                'templates' => $this->getFilesInTemplateDirectory('templates', true),
+                'facetingEnabled' => apply_filters('AlgoliaIndex/FacetingEnabled', true),
             ],
             true,
             [ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH]

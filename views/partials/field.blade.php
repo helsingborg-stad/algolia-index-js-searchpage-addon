@@ -22,24 +22,26 @@
     ])
     @endfield
 
-    @button([
-        'id' => 'search-page__filter-button',
-        'text' => $lang['openFilters'],
-        'color' => 'default',
-        'style' => 'basic',
-        'icon' => 'filter_alt',
-        'reversePositions' => true,
-        'classList' => [
-            'u-display--none@md',
-            'u-display--none@lg',
-            'u-display--none@xl'
-        ],
-        'attributeList' => [
-            'data-js-toggle-trigger' => 'search-page-facets',
-            'aria-pressed' => 'false',
-        ]
-    ])
-    @endbutton
+    @if($facetingEnabled)
+        @button([
+            'id' => 'search-page__filter-button',
+            'text' => $lang['openFilters'],
+            'color' => 'default',
+            'style' => 'basic',
+            'icon' => 'filter_alt',
+            'reversePositions' => true,
+            'classList' => [
+                'u-display--none@md',
+                'u-display--none@lg',
+                'u-display--none@xl'
+            ],
+            'attributeList' => [
+                'data-js-toggle-trigger' => 'search-page-facets',
+                'aria-pressed' => 'false',
+            ]
+        ])
+        @endbutton
+    @endif
 
 @endelement
 

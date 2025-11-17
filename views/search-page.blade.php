@@ -11,52 +11,56 @@
     @element([
         'id' => 'search-panel__container-paint'
     ])
-        @element([
-            'id' => 'search-panel__facets',
-            'attributeList' => [
-                'data-js-toggle-item' => 'search-page-facets',
-                'data-js-toggle-class' => 'is-open',
-            ]
-        ])
-            @include('partials.facets')
+        @if($facetingEnabled)
 
-            @notice([
-                'id' => 'search-page__facet-notice',
-                'type' => 'info',
-                'message' => [
-                    'text' => $lang['nofacets'],
-                ],
-                'classList' => [
-                    'u-margin--3'
-                ],
+            @element([
+                'id' => 'search-panel__facets',
                 'attributeList' => [
-                    'data-js-search-page-facet-notice' => true
+                    'data-js-toggle-item' => 'search-page-facets',
+                    'data-js-toggle-class' => 'is-open',
                 ]
             ])
-            @endnotice
+                @include('partials.facets')
 
-            @button([
-                'id' => 'search-page__filter-button-close',
-                'text' => $lang['applyFilters'],
-                'color' => 'default',
-                'style' => 'filled',
-                'icon' => 'filter_alt',
-                'reversePositions' => true,
-                'classList' => [
-                    'u-margin__x--3',
-                    'u-margin__bottom--3',
-                    'u-margin__top--0',
-                    'u-display--none@md',
-                    'u-display--none@lg',
-                    'u-display--none@xl',
-                ],
-                'attributeList' => [
-                    'data-simulate-click' => "button#search-page__filter-button"
-                ]
-            ])
-            @endbutton
+                @notice([
+                    'id' => 'search-page__facet-notice',
+                    'type' => 'info',
+                    'message' => [
+                        'text' => $lang['nofacets'],
+                    ],
+                    'classList' => [
+                        'u-margin--3'
+                    ],
+                    'attributeList' => [
+                        'data-js-search-page-facet-notice' => true
+                    ]
+                ])
+                @endnotice
 
-        @endelement
+                @button([
+                    'id' => 'search-page__filter-button-close',
+                    'text' => $lang['applyFilters'],
+                    'color' => 'default',
+                    'style' => 'filled',
+                    'icon' => 'filter_alt',
+                    'reversePositions' => true,
+                    'classList' => [
+                        'u-margin__x--3',
+                        'u-margin__bottom--3',
+                        'u-margin__top--0',
+                        'u-display--none@md',
+                        'u-display--none@lg',
+                        'u-display--none@xl',
+                    ],
+                    'attributeList' => [
+                        'data-simulate-click' => "button#search-page__filter-button"
+                    ]
+                ])
+                @endbutton
+
+            @endelement
+        
+        @endif
 
         @element([
             'id' => 'search-panel__results',
@@ -75,8 +79,11 @@
     @endelement
 @endpaper
 
-{{-- Include all templates in the templates directory --}}
+{{-- Include all templates in the templates directory (check if faceting is enabled) --}}
 @foreach ($templates as $template)
     <!-- Template: {{$template}} -->
+    @if($facetingEnabled && str_starts_with($template, 'facet'))
+        @continue
+    @endif
     @include($template)
 @endforeach
