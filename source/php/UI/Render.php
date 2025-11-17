@@ -25,18 +25,20 @@ class Render implements RenderInterface
         if (!$this->shouldRenderSearchPage()) {
             return;
         }
-        
-        echo $this->blade->render(
-            'search-page',
-            [
-                'lang' => Lang::getLang(),
-                'enableFacets' => $this->enableFacets(),
-                'templates' => $this->getFilesInTemplateDirectory('templates', true),
-                'facetingEnabled' => apply_filters('AlgoliaIndex/FacetingEnabled', true),
-            ],
-            true,
-            [ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH]
-        );
+
+        echo
+            $this->blade->render(
+                'search-page',
+                [
+                    'lang' => Lang::getLang(),
+                    'enableFacets' => $this->enableFacets(),
+                    'templates' => $this->getFilesInTemplateDirectory('templates', true),
+                    'facetingEnabled' => apply_filters('AlgoliaIndex/FacetingEnabled', true),
+                ],
+                true,
+                [ALGOLIAINDEXJSSEARCHPAGE_VIEW_PATH],
+            )
+        ;
 
         self::$hasRenderedSearchPage = true;
     }
