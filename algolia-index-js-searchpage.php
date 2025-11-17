@@ -4,7 +4,7 @@
  * Plugin Name:       Algolia Index Js Search Page
  * Plugin URI:        (#plugin_url#)
  * Description:       Replaces search page with a js (instant search) page.
- * Version: 3.3.21
+ * Version: 3.4.1
  * Author:            Sebastian Thulin
  * Author URI:        (#plugin_author_url#)
  * License:           MIT
@@ -13,12 +13,14 @@
  * Domain Path:       /languages
  */
 
-use ComponentLibrary\Init as ComponentLibraryInit;
 use AlgoliaIndexJsSearchpage\Blade\Blade;
 use AlgoliaIndexJsSearchpage\UI\Render;
+use ComponentLibrary\Init as ComponentLibraryInit;
+use WpService\Implementations\NativeWpService;
+use WpUtilService\WpUtilService;
 
-if (! defined('WPINC')) {
-    die;
+if (!defined('WPINC')) {
+    die();
 }
 
 define('ALGOLIAINDEXJSSEARCHPAGE_PATH', plugin_dir_path(__FILE__));
@@ -37,4 +39,8 @@ add_action('init', function () {
 });
 
 // Start application
-new AlgoliaIndexJsSearchpage\App(new Render(new Blade(new ComponentLibraryInit([]))));
+$wpService = new NativeWpService();
+$wpUtilService = new WpUtilService($wpService);
+
+// Start application
+new AlgoliaIndexJsSearchpage\App($wpUtilService->enqueue(__DIR__), new Render(new Blade(new ComponentLibraryInit([]))));

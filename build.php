@@ -72,6 +72,10 @@ $removables = [
     'babel.config.js',
     'yarn.lock',
     '.devcontainer',
+    'vite.config.mjs',
+    'tsconfig.json',
+    'mago.toml',
+    '.vscode',
 ];
 
 if (is_array($argv) && !in_array('--release', $argv)) {
