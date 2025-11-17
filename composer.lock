@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8cbbe7e96923dd6425787db00e41cb57",
+    "content-hash": "d39f82ae45d808117be79cfc30f42f0b",
     "packages": [
         {
             "name": "helsingborg-stad/wpservice",
@@ -1934,11 +1934,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "carthage-software/mago": 5
-    },
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": {},
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {},
     "platform-dev": {},
