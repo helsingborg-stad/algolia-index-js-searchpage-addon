@@ -44,7 +44,6 @@
             "AlgoliaIndexJsSearchpage\\": "source/php/"
         }
     },
-    "version": "3.4.1",
     "config": {
         "allow-plugins": {
             "composer/installers": true,
