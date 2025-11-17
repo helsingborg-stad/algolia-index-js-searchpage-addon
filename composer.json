@@ -44,11 +44,11 @@
             "AlgoliaIndexJsSearchpage\\": "source/php/"
         }
     },
-    "version": "3.3.26",
+    "version": "3.4.0",
     "config": {
         "allow-plugins": {
-            "carthage-software/mago": true,
-            "composer/installers": true
+            "composer/installers": true,
+            "carthage-software/mago": true
         }
     },
     "extra": {
