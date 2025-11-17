@@ -37,7 +37,7 @@
             "AlgoliaIndexJsSearchpage\\": "source/php/"
         }
     },
-    "version": "3.3.26",
+    "version": "3.4.0",
     "require-dev": {
         "phpunit/phpunit": "^11.5",
         "carthage-software/mago": "^1.0.0-rc.1"
