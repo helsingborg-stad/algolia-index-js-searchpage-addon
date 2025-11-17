@@ -1,6 +1,6 @@
 {
     "name": "@helsingborg-stad/algolia-index-js-searchpage-addon",
-    "version": "3.3.22",
+    "version": "3.3.24",
     "description": "Childtheme for Municipio theme",
     "author": "Sebastian Thulin",
     "license": "MIT",
