@@ -73,6 +73,19 @@
     margin-bottom: calc(var(--base, 8px) * 1.5);
   }
 
+  .facet-item__option {
+    max-width: 100%;
+    white-space: nowrap;
+
+    .c-option__checkbox--label {
+      width: 100%;
+    }
+
+    .c-option__checkbox--label-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 
   @media screen and (max-width: 56em) {
     position: fixed;
