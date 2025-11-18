@@ -1,5 +1,6 @@
 <!-- Pagination -->
 @element([
+    'componentElement' => 'ul',
     'attributeList' => [
         'data-js-search-page-pagination' => true
     ],
