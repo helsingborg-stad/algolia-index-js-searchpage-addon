@@ -12,10 +12,8 @@ export const Runner = (
 	adapter: SearchService,
 	html: HtmlRenderService,
 ): HtmlRunnerService => {
-	// Perfom search with the provided query
-	let isRenderingFacets = false;
 
-	// Register facet events ONCE
+	let isRenderingFacets = false;
 	const facetsContainer = html.getFacetsContainer();
 	if (facetsContainer) {
 		binder.registerFacets(facetsContainer, (facetFilters: string[][]) => {
@@ -52,9 +50,12 @@ export const Runner = (
 			);
 		});
 	};
-	binder.registerSearchBox(html.getInputField(), exec);
+	binder.registerSearchBox(html.getInputField(), (params) => {
+		exec({
+			...params,
+			facetFilters: params.facetFilters ?? lastParams.facetFilters,
+		});
+	});
 
-	return {
-		exec,
-	};
+	return {exec};
 };
