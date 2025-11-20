@@ -1,5 +1,35 @@
 import * as Typesense from "typesense";
 import { decodeHtml } from "./mappers";
+import type { FacetResult, FacetValue } from "./types";
+
+/**
+ * Converts Typesense facet results to generic format
+ * @param facets The facets object from Typesense response
+ * @param config The search configuration containing facet labels
+ * @returns An array of generic facet results
+ */
+export const typesenseFacetTransform = (
+	facets: Record<string, Array<{ value: string; count: number }>> | undefined,
+	config: SearchConfig
+): FacetResult[] => {
+	if (!facets || !config.facets) {
+		return [];
+	}
+
+	return config.facets
+		.filter((facetConfig) => facets[facetConfig.attribute])
+		.map((facetConfig) => {
+			const attribute = facetConfig.attribute;
+			const facetData = facets[attribute];
+			// Typesense facet data is already an array of { value, count }
+			const values: FacetValue[] = facetData.map(({ value, count }) => ({ value, count }));
+			return {
+				attribute,
+				label: facetConfig.label,
+				values,
+			};
+		});
+};
 import type {
 	GenericSearchQueryParams,
 	GenericSearchResult,
@@ -79,7 +109,15 @@ export const typesenseDataTransform = (
  */
 export const typesenseParamTransform = (
 	params: GenericSearchQueryParams,
+	config?: SearchConfig
 ): TypesenseNativeQueryParams => {
+	let facet_by: string | undefined = undefined;
+	if (config?.facetingEnabled && config?.facets) {
+		const enabledFacets = config.facets.filter(f => f.enabled).map(f => f.attribute);
+		if (enabledFacets.length > 0) {
+			facet_by = enabledFacets.join(",");
+		}
+	}
 	return {
 		per_page: params.page_size || 20,
 		query_by: params.query_by || "post_title,post_excerpt,content",
@@ -87,6 +125,7 @@ export const typesenseParamTransform = (
 		q: params.query,
 		highlight_full_fields:
 			params.highlight_full_fields || "post_title,post_excerpt",
+		...(facet_by ? { facet_by } : {}),
 	};
 };
 
@@ -106,18 +145,28 @@ export const TypesenseAdapter = (config: SearchConfig): SearchService => {
 		search: async (
 			params: GenericSearchQueryParams,
 		): Promise<GenericSearchResult> => {
-			const result = await client
-				.collections<WPPost>(config.collectionName)
-				.documents()
-				.search(typesenseParamTransform(params));
+					const result = await client
+						.collections<WPPost>(config.collectionName)
+						.documents()
+						.search(typesenseParamTransform(params, config));
 
 			return {
 				query: params.query || "",
 				totalHits: result.found,
 				totalPages: Math.ceil(result.found / (params.page_size ?? 20)),
 				currentPage: result.page || 1,
-				hits: typesenseDataTransform(result.hits ?? []),
-				facets: [], // Typesense faceting not implemented in this adapter
+					hits: typesenseDataTransform(result.hits ?? []),
+					facets: typesenseFacetTransform(
+					  result.facet_counts
+					    ? Object.fromEntries(
+					        result.facet_counts.map(f => [
+					          f.field_name,
+					          f.counts.map(({ value, count }) => ({ value, count })),
+					        ])
+					      )
+					    : undefined,
+					  config
+					),
 			};
 		},
 	};
