@@ -120,7 +120,7 @@ export const typesenseFacetTransform = (
 	}
 
 	return config.facets
-		.filter((facetConfig) => facets[facetConfig.attribute])
+		.filter((facetConfig) => Array.isArray(facets[facetConfig.attribute]) && facets[facetConfig.attribute].length > 0)
 		.map((facetConfig) => {
 			const attribute = facetConfig.attribute;
 			const facetData = facets[attribute];
