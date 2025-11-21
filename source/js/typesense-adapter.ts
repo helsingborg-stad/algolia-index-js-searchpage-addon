@@ -143,7 +143,6 @@ export const typesenseFacetTransform = (
 		.map((facetConfig) => {
 			const attribute = facetConfig.attribute;
 			const facetData = facets[attribute];
-			// Typesense facet data is already an array of { value, count }
 			const values: FacetValue[] = facetData.map(({ value, count }) => ({ value, count }));
 			return {
 				attribute,
