@@ -93,6 +93,24 @@ export function typesenseParamTransform(
 			facet_by = enabledFacets.join(",");
 		}
 	}
+
+	//Transform facetFilters to Typesense filter_by syntax
+	let filter_by: string | undefined = undefined;
+	if (params.facetFilters && Array.isArray(params.facetFilters) && params.facetFilters.length > 0) {
+		const andFilters = params.facetFilters.map((orGroup) => {
+			const orFilters = orGroup.map((filter) => {
+				const [attribute, value] = filter.split(":");
+				if (value && value.includes(",")) {
+					const values = value.split(",").map(v => `\"${v}\"`).join(",");
+					return `${attribute}:=[${values}]`;
+				}
+				return `${attribute}:=[\"${value}\"]`;
+			});
+			return orFilters.length > 1 ? `(${orFilters.join(" || ")})` : orFilters[0];
+		});
+		filter_by = andFilters.join(" && ");
+	}
+
 	return {
 		per_page: params.page_size || 20,
 		query_by: params.query_by || "post_title,post_excerpt,content",
@@ -101,6 +119,7 @@ export function typesenseParamTransform(
 		highlight_full_fields:
 			params.highlight_full_fields || "post_title,post_excerpt",
 		...(facet_by ? { facet_by } : {}),
+		...(filter_by ? { filter_by } : {}),
 		...(params.facet_query ? { facet_query: params.facet_query } : {}),
 	};
 };
