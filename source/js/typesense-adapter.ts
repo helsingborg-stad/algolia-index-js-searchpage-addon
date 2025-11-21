@@ -97,8 +97,8 @@ export function typesenseParamTransform(
 	//Transform facetFilters to Typesense filter_by syntax
 	let filter_by: string | undefined = undefined;
 	if (params.facetFilters && Array.isArray(params.facetFilters) && params.facetFilters.length > 0) {
-		const andFilters = params.facetFilters.map((orGroup) => {
-			const orFilters = orGroup.map((filter) => {
+		const andFilters = params.facetFilters.map((andGroup) => {
+			const andClauses = andGroup.map((filter) => {
 				const [attribute, value] = filter.split(":");
 				if (value && value.includes(",")) {
 					const values = value.split(",").map(v => `\"${v}\"`).join(",");
@@ -106,7 +106,7 @@ export function typesenseParamTransform(
 				}
 				return `${attribute}:=[\"${value}\"]`;
 			});
-			return orFilters.length > 1 ? `(${orFilters.join(" || ")})` : orFilters[0];
+			return andClauses.length > 1 ? `(${andClauses.join(" && ")})` : andClauses[0];
 		});
 		filter_by = andFilters.join(" && ");
 	}
