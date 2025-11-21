@@ -1,56 +1,30 @@
 import * as Typesense from "typesense";
 import { decodeHtml } from "./mappers";
-import type { FacetResult, FacetValue } from "./types";
 
-/**
- * Converts Typesense facet results to generic format
- * @param facets The facets object from Typesense response
- * @param config The search configuration containing facet labels
- * @returns An array of generic facet results
- */
-export const typesenseFacetTransform = (
-	facets: Record<string, Array<{ value: string; count: number }>> | undefined,
-	config: SearchConfig
-): FacetResult[] => {
-	if (!facets || !config.facets) {
-		return [];
-	}
-
-	return config.facets
-		.filter((facetConfig) => facets[facetConfig.attribute])
-		.map((facetConfig) => {
-			const attribute = facetConfig.attribute;
-			const facetData = facets[attribute];
-			// Typesense facet data is already an array of { value, count }
-			const values: FacetValue[] = facetData.map(({ value, count }) => ({ value, count }));
-			return {
-				attribute,
-				label: facetConfig.label,
-				values,
-			};
-		});
-};
 import type {
+	FacetResult,
+	FacetValue,
 	GenericSearchQueryParams,
 	GenericSearchResult,
+	GenericSearchResultItem,
 	SearchConfig,
 	SearchService,
 	WPPost,
 } from "./types";
-import type { GenericSearchResultItem } from "./types.js";
 
 /**
  * Partial native Queryparameters
  */
 export interface TypesenseNativeQueryParams {
-	per_page?: number;
-	filter_by?: string;
-	sort_by?: string;
-	query_by?: string;
-	query?: string;
-	page?: number;
-	q?: string;
-	highlight_full_fields?: string;
+  per_page?: number;
+  filter_by?: string;
+  sort_by?: string;
+  query_by?: string;
+  query?: string;
+  page?: number;
+  q?: string;
+  highlight_full_fields?: string;
+  facet_query?: string;
 }
 
 /**
@@ -74,6 +48,7 @@ interface TypesenseHighlightObject {
  * Supported highlight fields
  */
 type TypesenseHighlightField = "post_title" | "post_excerpt";
+
 /**
  * Native response to generic format conversion
  * @param response The response from the search adapter
@@ -107,10 +82,10 @@ export const typesenseDataTransform = (
  * @param params The search query parameters to transform
  * @returns The native Typesense query parameters
  */
-export const typesenseParamTransform = (
+export function typesenseParamTransform(
 	params: GenericSearchQueryParams,
 	config?: SearchConfig
-): TypesenseNativeQueryParams => {
+): TypesenseNativeQueryParams {
 	let facet_by: string | undefined = undefined;
 	if (config?.facetingEnabled && config?.facets) {
 		const enabledFacets = config.facets.filter(f => f.enabled).map(f => f.attribute);
@@ -126,7 +101,37 @@ export const typesenseParamTransform = (
 		highlight_full_fields:
 			params.highlight_full_fields || "post_title,post_excerpt",
 		...(facet_by ? { facet_by } : {}),
+		...(params.facet_query ? { facet_query: params.facet_query } : {}),
 	};
+};
+
+/**
+ * Converts Typesense facet results to generic format
+ * @param facets The facets object from Typesense response
+ * @param config The search configuration containing facet labels
+ * @returns An array of generic facet results
+ */
+export const typesenseFacetTransform = (
+	facets: Record<string, Array<{ value: string; count: number }>> | undefined,
+	config: SearchConfig
+): FacetResult[] => {
+	if (!facets || !config.facets) {
+		return [];
+	}
+
+	return config.facets
+		.filter((facetConfig) => facets[facetConfig.attribute])
+		.map((facetConfig) => {
+			const attribute = facetConfig.attribute;
+			const facetData = facets[attribute];
+			// Typesense facet data is already an array of { value, count }
+			const values: FacetValue[] = facetData.map(({ value, count }) => ({ value, count }));
+			return {
+				attribute,
+				label: facetConfig.label,
+				values,
+			};
+		});
 };
 
 /**
