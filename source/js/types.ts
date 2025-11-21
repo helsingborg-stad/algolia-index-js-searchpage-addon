@@ -1,3 +1,12 @@
+export interface GenericSearchQueryParams {
+	query?: string;
+	query_by?: string;
+	page?: number;
+	page_size?: number;
+	highlight_full_fields?: string;
+	facetFilters?: string[][];
+	facet_query?: string; // For Typesense facet value filtering
+}
 export interface GenericSearchResult {
 	query: string;
 	totalHits: number;
@@ -47,13 +56,13 @@ export interface FacetResult {
 	values: FacetValue[];
 }
 
-export interface GenericSearchQueryParams {
 	query?: string;
 	query_by?: string;
 	page?: number;
 	page_size?: number;
 	highlight_full_fields?: string;
 	facetFilters?: string[][];
+	facet_query?: string; // For Typesense facet value filtering
 }
 
 export interface WPPost {

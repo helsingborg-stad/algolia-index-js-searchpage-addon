@@ -1,26 +1,30 @@
 import * as Typesense from "typesense";
 import { decodeHtml } from "./mappers";
+
 import type {
+	FacetResult,
+	FacetValue,
 	GenericSearchQueryParams,
 	GenericSearchResult,
+	GenericSearchResultItem,
 	SearchConfig,
 	SearchService,
 	WPPost,
 } from "./types";
-import type { GenericSearchResultItem } from "./types.js";
 
 /**
  * Partial native Queryparameters
  */
 export interface TypesenseNativeQueryParams {
-	per_page?: number;
-	filter_by?: string;
-	sort_by?: string;
-	query_by?: string;
-	query?: string;
-	page?: number;
-	q?: string;
-	highlight_full_fields?: string;
+  per_page?: number;
+  filter_by?: string;
+  sort_by?: string;
+  query_by?: string;
+  query?: string;
+  page?: number;
+  q?: string;
+  highlight_full_fields?: string;
+  facet_query?: string;
 }
 
 /**
@@ -44,6 +48,7 @@ interface TypesenseHighlightObject {
  * Supported highlight fields
  */
 type TypesenseHighlightField = "post_title" | "post_excerpt";
+
 /**
  * Native response to generic format conversion
  * @param response The response from the search adapter
@@ -77,9 +82,35 @@ export const typesenseDataTransform = (
  * @param params The search query parameters to transform
  * @returns The native Typesense query parameters
  */
-export const typesenseParamTransform = (
+export function typesenseParamTransform(
 	params: GenericSearchQueryParams,
-): TypesenseNativeQueryParams => {
+	config?: SearchConfig
+): TypesenseNativeQueryParams {
+	let facet_by: string | undefined = undefined;
+	if (config?.facetingEnabled && config?.facets) {
+		const enabledFacets = config.facets.filter(f => f.enabled).map(f => f.attribute);
+		if (enabledFacets.length > 0) {
+			facet_by = enabledFacets.join(",");
+		}
+	}
+
+	//Transform facetFilters to Typesense filter_by syntax
+	let filter_by: string | undefined = undefined;
+	if (params.facetFilters && Array.isArray(params.facetFilters) && params.facetFilters.length > 0) {
+		const andFilters = params.facetFilters.map((andGroup) => {
+			const andClauses = andGroup.map((filter) => {
+				const [attribute, value] = filter.split(":");
+				if (value && value.includes(",")) {
+					const values = value.split(",").map(v => `\"${v}\"`).join(",");
+					return `${attribute}:=[${values}]`;
+				}
+				return `${attribute}:=[\"${value}\"]`;
+			});
+			return andClauses.length > 1 ? `(${andClauses.join(" && ")})` : andClauses[0];
+		});
+		filter_by = andFilters.join(" && ");
+	}
+
 	return {
 		per_page: params.page_size || 20,
 		query_by: params.query_by || "post_title,post_excerpt,content",
@@ -87,7 +118,38 @@ export const typesenseParamTransform = (
 		q: params.query,
 		highlight_full_fields:
 			params.highlight_full_fields || "post_title,post_excerpt",
+		...(facet_by ? { facet_by } : {}),
+		...(filter_by ? { filter_by } : {}),
+		...(params.facet_query ? { facet_query: params.facet_query } : {}),
 	};
+};
+
+/**
+ * Converts Typesense facet results to generic format
+ * @param facets The facets object from Typesense response
+ * @param config The search configuration containing facet labels
+ * @returns An array of generic facet results
+ */
+export const typesenseFacetTransform = (
+	facets: Record<string, Array<{ value: string; count: number }>> | undefined,
+	config: SearchConfig
+): FacetResult[] => {
+	if (!facets || !config.facets) {
+		return [];
+	}
+
+	return config.facets
+		.filter((facetConfig) => Array.isArray(facets[facetConfig.attribute]) && facets[facetConfig.attribute].length > 0)
+		.map((facetConfig) => {
+			const attribute = facetConfig.attribute;
+			const facetData = facets[attribute];
+			const values: FacetValue[] = facetData.map(({ value, count }) => ({ value, count }));
+			return {
+				attribute,
+				label: facetConfig.label,
+				values,
+			};
+		});
 };
 
 /**
@@ -106,18 +168,28 @@ export const TypesenseAdapter = (config: SearchConfig): SearchService => {
 		search: async (
 			params: GenericSearchQueryParams,
 		): Promise<GenericSearchResult> => {
-			const result = await client
-				.collections<WPPost>(config.collectionName)
-				.documents()
-				.search(typesenseParamTransform(params));
+					const result = await client
+						.collections<WPPost>(config.collectionName)
+						.documents()
+						.search(typesenseParamTransform(params, config));
 
 			return {
 				query: params.query || "",
 				totalHits: result.found,
 				totalPages: Math.ceil(result.found / (params.page_size ?? 20)),
 				currentPage: result.page || 1,
-				hits: typesenseDataTransform(result.hits ?? []),
-				facets: [], // Typesense faceting not implemented in this adapter
+					hits: typesenseDataTransform(result.hits ?? []),
+					facets: typesenseFacetTransform(
+					  result.facet_counts
+					    ? Object.fromEntries(
+					        result.facet_counts.map(f => [
+					          f.field_name,
+					          f.counts.map(({ value, count }) => ({ value, count })),
+					        ])
+					      )
+					    : undefined,
+					  config
+					),
 			};
 		},
 	};
