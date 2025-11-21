@@ -45,7 +45,8 @@
         },
         "collectCoverageFrom": [
             "source/**/*.js",
-            "source/**/*.ts"
+            "source/**/*.ts",
+            "vendor/**/*.js"
         ],
         "moduleFileExtensions": [
             "js",
@@ -55,7 +56,7 @@
             "**/*.test.(js|ts)"
         ],
         "transformIgnorePatterns": [
-            "node_modules/(?!(.*\\.mjs$))"
+            "/node_modules/"
         ]
     }
 }
