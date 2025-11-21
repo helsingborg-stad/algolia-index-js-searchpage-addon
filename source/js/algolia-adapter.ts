@@ -111,19 +111,16 @@ export const algoliaFacetTransform = (
 			const attribute = facetConfig.attribute;
 			const facetData = facets[attribute];
 
-			// read hide + sort rules for this facet
 			const facetConfigRC =
 				renderingContent?.facetOrdering?.values?.[attribute];
 			const hiddenValues: string[] = facetConfigRC?.hide ?? [];
 			const sortRemainingBy: "count" | "alpha" | undefined =
 				facetConfigRC?.sortRemainingBy;
 
-			// Step 1: remove hidden values
 			const values: FacetValue[] = Object.entries(facetData)
 				.filter(([value]) => !hiddenValues.includes(value))
 				.map(([value, count]) => ({ value, count }));
 
-			// Step 2: apply optional sorting
 			if (sortRemainingBy === "count") {
 				values.sort((a, b) => b.count - a.count);
 			} else if (sortRemainingBy === "alpha") {
