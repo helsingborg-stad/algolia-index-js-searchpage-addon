@@ -10,8 +10,9 @@ export class FacetStorage {
 	}
 
 	loadFacets(): Record<string, unknown> {
-		const storedFacets = localStorage.getItem(this.storageKey);
-		return storedFacets ? JSON.parse(storedFacets) : {};
+		return {};
+		//const storedFacets = localStorage.getItem(this.storageKey);
+		//return storedFacets ? JSON.parse(storedFacets) : {};
 	}
 
 	clearFacets(): void {
