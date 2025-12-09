@@ -1,15 +1,15 @@
-import { HtmlEventFactory } from "./event";
-import { FacetStorage } from "./facetStorage";
-import { HtmlRenderFactory } from "./html";
-import { Runner } from "./runner";
-import { SearchFactory } from "./search";
-import type { GenericSearchQueryParams, SearchConfig } from "./types";
+import { HtmlEventFactory } from './event';
+import { FacetStorage } from './facetStorage';
+import { HtmlRenderFactory } from './html';
+import { Runner } from './runner';
+import { SearchFactory } from './search';
+import type { GenericSearchQueryParams, SearchConfig } from './types';
 
 // PHP Provided configuration
 declare const searchConfig: SearchConfig;
 declare const searchParams: GenericSearchQueryParams;
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
 	// Load stored facet filters from localStorage
 	const storage = new FacetStorage();
 	const storedFacets = storage.loadFacets();
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		Object.keys(storedFacets).forEach((filterStr) => {
 			if (storedFacets[filterStr]) {
 				// Extract attribute from filter string (format: "attribute:value")
-				const colonIndex = filterStr.indexOf(":");
+				const colonIndex = filterStr.indexOf(':');
 				if (colonIndex > 0) {
 					const attribute = filterStr.substring(0, colonIndex);
 					if (!filtersByAttribute.has(attribute)) {
@@ -45,9 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		facetFilters: facetFilters.length > 0 ? facetFilters : undefined,
 	};
 
-	Runner(
-		HtmlEventFactory(searchConfig),
-		SearchFactory(searchConfig),
-		HtmlRenderFactory(searchParams),
-	).exec(initialParams);
+	Runner(HtmlEventFactory(searchConfig), SearchFactory(searchConfig), HtmlRenderFactory(searchParams)).exec(
+		initialParams,
+	);
 });

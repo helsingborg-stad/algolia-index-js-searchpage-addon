@@ -4,15 +4,14 @@ import type {
 	HtmlRenderService,
 	HtmlRunnerService,
 	SearchService,
-} from "./types";
-import { setUrlSearchParam } from "./url-param";
+} from './types';
+import { setUrlSearchParam } from './url-param';
 
 export const Runner = (
 	binder: HtmlEventService,
 	adapter: SearchService,
 	html: HtmlRenderService,
 ): HtmlRunnerService => {
-
 	let isRenderingFacets = false;
 	const facetsContainer = html.getFacetsContainer();
 	if (facetsContainer) {
@@ -39,15 +38,12 @@ export const Runner = (
 			isRenderingFacets = false;
 			html.renderItems(result);
 			html.renderPagination(result);
-			binder.registerPagination(
-				html.getPaginationContainer(),
-				(page: number) => {
-					exec({
-						...params,
-						page,
-					});
-				},
-			);
+			binder.registerPagination(html.getPaginationContainer(), (page: number) => {
+				exec({
+					...params,
+					page,
+				});
+			});
 		});
 	};
 	binder.registerSearchBox(html.getInputField(), (params) => {
@@ -57,5 +53,5 @@ export const Runner = (
 		});
 	});
 
-	return {exec};
+	return { exec };
 };
