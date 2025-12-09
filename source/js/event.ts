@@ -1,4 +1,4 @@
-import type { HtmlEventService, SearchConfig } from "./types";
+import type { HtmlEventService, SearchConfig } from './types';
 
 /**
  * Factory for binding events to HTML elements
@@ -6,9 +6,7 @@ import type { HtmlEventService, SearchConfig } from "./types";
  * @param param0.searchAsYouType Whether to trigger search on every input change
  * @returns A service that manages event binding
  */
-export const HtmlEventFactory = ({
-	searchAsYouType,
-}: SearchConfig): HtmlEventService => ({
+export const HtmlEventFactory = ({ searchAsYouType }: SearchConfig): HtmlEventService => ({
 	/**
 	 * Binds events related to search input
 	 * @param element A reference to the search input element
@@ -17,22 +15,20 @@ export const HtmlEventFactory = ({
 	registerSearchBox: (element, callback) => {
 		// Callback on input
 		if (searchAsYouType) {
-			element?.addEventListener("input", ({ target }) =>
-				callback({ query: (target as HTMLInputElement).value }),
-			);
+			element?.addEventListener('input', ({ target }) => callback({ query: (target as HTMLInputElement).value }));
 			return;
 		}
 		// Callback on enter key press
-		element?.addEventListener("keydown", (event: KeyboardEvent) => {
-			if (event.key === "Enter") {
+		element?.addEventListener('keydown', (event: KeyboardEvent) => {
+			if (event.key === 'Enter') {
 				callback({ query: (event.target as HTMLInputElement)?.value });
 			}
 		});
 		// Callback on empty field
-		element?.addEventListener("input", ({ target }) => {
+		element?.addEventListener('input', ({ target }) => {
 			const value = (target as HTMLInputElement)?.value;
 
-			if (value === "") {
+			if (value === '') {
 				callback({ query: value });
 			}
 		});
@@ -43,12 +39,12 @@ export const HtmlEventFactory = ({
 	 * @param callback Callback on event triggered
 	 */
 	registerPagination: (element, callback) => {
-		[...element.querySelectorAll<HTMLAnchorElement>("a")].forEach((element) => {
-			element.addEventListener("click", (event: MouseEvent) => {
+		[...element.querySelectorAll<HTMLAnchorElement>('a')].forEach((element) => {
+			element.addEventListener('click', (event: MouseEvent) => {
 				event.preventDefault();
 				const target = event.currentTarget as HTMLElement;
 
-				callback(Number(target?.dataset?.value ?? "1"));
+				callback(Number(target?.dataset?.value ?? '1'));
 				window.scrollTo(0, 0);
 			});
 		});
@@ -64,26 +60,20 @@ export const HtmlEventFactory = ({
 		let isRenderingFacets = false;
 
 		// Expose a way to set rendering state from outside (html.ts)
-		(
-			window as Window & { setRenderingFacets?: (state: boolean) => void }
-		).setRenderingFacets = (state: boolean) => {
+		(window as Window & { setRenderingFacets?: (state: boolean) => void }).setRenderingFacets = (state: boolean) => {
 			isRenderingFacets = state;
 		};
 
 		const getFacetFilters = (): string[][] => {
 			const filters: Map<string, string[]> = new Map();
-			element
-				.querySelectorAll<HTMLInputElement>(
-					"input[data-js-facet-filter]:checked",
-				)
-				.forEach((input) => {
-					const attribute = input.dataset.facetAttribute || "";
-					const value = input.value;
-					if (!filters.has(attribute)) {
-						filters.set(attribute, []);
-					}
-					filters.get(attribute)?.push(`${attribute}:${value}`);
-				});
+			element.querySelectorAll<HTMLInputElement>('input[data-js-facet-filter]:checked').forEach((input) => {
+				const attribute = input.dataset.facetAttribute || '';
+				const value = input.value;
+				if (!filters.has(attribute)) {
+					filters.set(attribute, []);
+				}
+				filters.get(attribute)?.push(`${attribute}:${value}`);
+			});
 			return Array.from(filters.values());
 		};
 
@@ -94,15 +84,12 @@ export const HtmlEventFactory = ({
 			debounceTimer = setTimeout(fn, delay);
 		};
 
-		element.addEventListener("change", (event: Event) => {
+		element.addEventListener('change', (event: Event) => {
 			if (isRenderingFacets) return;
 			const target = event.target as HTMLInputElement;
 			if (event.isTrusted) {
 				// Handle checkbox changes
-				if (
-					target instanceof HTMLInputElement &&
-					target.dataset.jsFacetFilter !== undefined
-				) {
+				if (target instanceof HTMLInputElement && target.dataset.jsFacetFilter !== undefined) {
 					debounce(() => callback(getFacetFilters()));
 				}
 			}

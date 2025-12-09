@@ -1,7 +1,7 @@
 export class FacetStorage {
 	private storageKey: string;
 
-	constructor(storageKey: string = "selectedFacets") {
+	constructor(storageKey: string = 'selectedFacets') {
 		this.storageKey = storageKey;
 	}
 

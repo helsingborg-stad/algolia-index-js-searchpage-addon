@@ -1,4 +1,4 @@
-import type { PaginationService, GenericSearchResult } from "./types";
+import type { PaginationService, GenericSearchResult } from './types';
 
 /**
  * Factory for creating a pagination service
@@ -7,10 +7,7 @@ import type { PaginationService, GenericSearchResult } from "./types";
  * @param currentPage The current page number in the search result
  * @returns A service object with methods to handle pagination
  */
-export const PaginationFactory = ({
-	totalPages,
-	currentPage,
-}: GenericSearchResult): PaginationService => {
+export const PaginationFactory = ({ totalPages, currentPage }: GenericSearchResult): PaginationService => {
 	return {
 		/**
 		 * @returns true if the current page is the last page, false otherwise
@@ -29,10 +26,7 @@ export const PaginationFactory = ({
 			// Complete row
 			const pages = new Array(totalPages).fill(0).map((_, index) => index + 1);
 
-			const from = Math.max(
-				Math.min(currentPage - 2, pages.length - maxItems),
-				0,
-			);
+			const from = Math.max(Math.min(currentPage - 2, pages.length - maxItems), 0);
 			return pages.splice(from, maxItems);
 		},
 	};

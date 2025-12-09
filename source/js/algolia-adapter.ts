@@ -1,5 +1,5 @@
-import { liteClient } from "algoliasearch/lite";
-import { decodeHtml } from "./mappers";
+import { liteClient } from 'algoliasearch/lite';
+import { decodeHtml } from './mappers';
 import type {
 	FacetResult,
 	FacetValue,
@@ -9,7 +9,7 @@ import type {
 	SearchConfig,
 	SearchService,
 	WPPost,
-} from "./types";
+} from './types';
 
 /**
  * Partial native Queryparameters
@@ -37,32 +37,27 @@ interface AlgoliaSearchResultItem extends WPPost {
 /**
  * Supported highlight fields
  */
-type AlgoliaHighlightField = "post_title" | "post_excerpt";
+type AlgoliaHighlightField = 'post_title' | 'post_excerpt';
 
 /**
  * Native response to generic format conversion
  * @param response The response from the search adapter
  * @returns A generic search result item array
  */
-export const algoliaDataTransform = (
-	response: AlgoliaSearchResultItem[],
-): GenericSearchResultItem[] => {
-	const getHighlightValue = (
-		item: AlgoliaSearchResultItem,
-		name: AlgoliaHighlightField,
-	): string => {
+export const algoliaDataTransform = (response: AlgoliaSearchResultItem[]): GenericSearchResultItem[] => {
+	const getHighlightValue = (item: AlgoliaSearchResultItem, name: AlgoliaHighlightField): string => {
 		if (item._highlightResult && item._highlightResult[name]) {
 			return decodeHtml(item._highlightResult[name].value);
 		}
-		return item[name] || "";
+		return item[name] || '';
 	};
 	return response.map((item) => ({
-		title: getHighlightValue(item, "post_title"),
-		summary: getHighlightValue(item, "post_excerpt"),
-		subtitle: item.origin_site || "",
-		image: item.thumbnail?.replaceAll("/wp/", "/"),
-		altText: item.thumbnail_alt || "",
-		url: item.permalink || "",
+		title: getHighlightValue(item, 'post_title'),
+		summary: getHighlightValue(item, 'post_excerpt'),
+		subtitle: item.origin_site || '',
+		image: item.thumbnail?.replaceAll('/wp/', '/'),
+		altText: item.thumbnail_alt || '',
+		url: item.permalink || '',
 	}));
 };
 
@@ -111,19 +106,17 @@ export const algoliaFacetTransform = (
 			const attribute = facetConfig.attribute;
 			const facetData = facets[attribute];
 
-			const facetConfigRC =
-				renderingContent?.facetOrdering?.values?.[attribute];
+			const facetConfigRC = renderingContent?.facetOrdering?.values?.[attribute];
 			const hiddenValues: string[] = facetConfigRC?.hide ?? [];
-			const sortRemainingBy: "count" | "alpha" | undefined =
-				facetConfigRC?.sortRemainingBy;
+			const sortRemainingBy: 'count' | 'alpha' | undefined = facetConfigRC?.sortRemainingBy;
 
 			const values: FacetValue[] = Object.entries(facetData)
 				.filter(([value]) => !hiddenValues.includes(value))
 				.map(([value, count]) => ({ value, count }));
 
-			if (sortRemainingBy === "count") {
+			if (sortRemainingBy === 'count') {
 				values.sort((a, b) => b.count - a.count);
-			} else if (sortRemainingBy === "alpha") {
+			} else if (sortRemainingBy === 'alpha') {
 				values.sort((a, b) => a.value.localeCompare(b.value));
 			}
 
@@ -144,30 +137,23 @@ export const AlgoliaAdapter = (config: SearchConfig): SearchService => {
 	const searchClient = liteClient(config.applicationId, config.apiKey);
 
 	return {
-		search: async (
-			params: GenericSearchQueryParams,
-		): Promise<GenericSearchResult> => {
-			const { results } =
-				await searchClient.searchForHits<AlgoliaSearchResultItem>({
-					requests: [
-						{
-							indexName: config.collectionName,
-							...algoliaParamTransform(params, config),
-						},
-					],
-				});
+		search: async (params: GenericSearchQueryParams): Promise<GenericSearchResult> => {
+			const { results } = await searchClient.searchForHits<AlgoliaSearchResultItem>({
+				requests: [
+					{
+						indexName: config.collectionName,
+						...algoliaParamTransform(params, config),
+					},
+				],
+			});
 
 			return {
-				query: params.query ?? "",
+				query: params.query ?? '',
 				totalHits: results[0]?.nbHits ?? 0,
 				currentPage: results[0]?.page ? results[0]?.page + 1 : 1,
 				totalPages: results[0]?.nbPages ?? 1,
 				hits: algoliaDataTransform(results[0]?.hits ?? []),
-				facets: algoliaFacetTransform(
-					results[0]?.facets,
-					config,
-					results[0]?.renderingContent,
-				),
+				facets: algoliaFacetTransform(results[0]?.facets, config, results[0]?.renderingContent),
 			};
 		},
 	};
