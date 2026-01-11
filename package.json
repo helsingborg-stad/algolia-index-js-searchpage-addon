@@ -34,7 +34,7 @@
         "sass-embedded": "^1.93.3"
     },
     "dependencies": {
-        "algoliasearch": "^5.43.0",
+        "algoliasearch": "^5.46.1",
         "typesense": "^2.0.3",
         "vite-config-factory": "^1.0.1"
     },
