@@ -51,7 +51,7 @@ class Render implements RenderInterface
     private function enableFacets(): bool
     {
         $facets = get_field('algolia_index_facetting', 'options');
-        if (!empty($facets) || is_array($facets)) {
+        if (!empty($facets) && is_array($facets)) {
             $facetsEnabled = array_filter($facets, function ($facet) {
                 return $facet['enabled'] == true;
             });
