@@ -17,7 +17,7 @@
         ],
         'name' => 'facet_{ALGOLIA_JS_FACET_ATTRIBUTE}[]',
         'value' => '{ALGOLIA_JS_FACET_VALUE}',
-        'label' => '{ALGOLIA_JS_FACET_VALUE} ({ALGOLIA_JS_FACET_COUNT})',
+        'label' => '{ALGOLIA_JS_FACET_VALUE} <span class="facet-item__count">({ALGOLIA_JS_FACET_COUNT})</span>',
     ])
     @endoption
 @endelement

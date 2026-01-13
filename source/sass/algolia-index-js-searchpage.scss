@@ -87,6 +87,34 @@
     }
   }
 
+  .facet-item__option {
+    .c-option__checkbox--label-text {
+      display: flex;
+      justify-content: space-between;
+      gap: calc(var(--base, 8px) * 2);
+    }
+
+    .facet-item__count {
+      --bg-color: var(--c-paper-color-background, var(--color-background-card, var(--color-white, #ffffff)));
+      background-color: var(--bg-color);
+      position: absolute;
+      right: 0;
+      padding-left: calc(var(--base, 8px) * 2);
+      height: 100%;
+
+      &::before {
+        content: "";
+        display: block;
+        width: calc(var(--base, 8px) * 3);
+        background: linear-gradient(90deg, transparent 0%, var(--bg-color) 100%);
+        position: absolute;
+        top: 0;
+        left: calc(var(--base, 8px) * -3);
+        bottom: 0;
+      }
+    }
+  }
+
   @media screen and (max-width: 56em) {
     position: fixed;
     inset: calc(var(--base, 8px) * 11) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3) calc(var(--base, 8px) * 3);
