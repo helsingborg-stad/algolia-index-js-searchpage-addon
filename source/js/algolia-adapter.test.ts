@@ -39,6 +39,9 @@ describe('Algolia', () => {
 		expect(data.summary).toEqual(
 			'Alejandro Bustos, en colombiansk entrepren&ouml;r, kom till Helsingborg 2021 och har inga planer p&aring; att l&auml;mna och &aring;ka tillbaka till Colombia. - Helsingborg &auml;r en mycket s&auml;ker stad med en v&auml;lkomnande atmosf&auml;r, s&auml;ger Alejandro. Alejandro Bustos trivs i Helsingborg Alejandro Bustos, en colombiansk entrepren&ouml;r, kom till Helsingborg 2021 f&ouml;r att &aring;terf&ouml;renas med sin d&aring;varande partner,...',
 		);
+		expect(data.ariaLabel).toEqual(
+			'Alejandro Bustos, en colombiansk entrepren&ouml;r, kom till Helsingborg 2021 och har inga planer p&aring; att l&auml;mna och &aring;ka tillbaka till Colombia. - Helsingborg &auml;r en mycket s&auml;ker stad med en v&auml;lkomnande atmosf&auml;r, s&auml;ger Alejandro. Alejandro Bustos trivs i Helsingborg Alejandro Bustos, en colombiansk entrepren&ouml;r, kom till Helsingborg 2021 f&ouml;r att &aring;terf&ouml;renas med sin d&aring;varande partner,...',
+		);
 		expect(data.image).toEqual(
 			'https://media.helsingborg.se/uploads/networks/1/sites/2/2024/05/img_3906-scaled-480x270.webp',
 		);
@@ -54,6 +57,7 @@ describe('Algolia', () => {
 		expect(data.title).toEqual('');
 		expect(data.subtitle).toEqual('');
 		expect(data.summary).toEqual('');
+		expect(data.ariaLabel).toEqual('');
 		expect(data.image).toEqual(undefined);
 		expect(data.url).toEqual('');
 	});

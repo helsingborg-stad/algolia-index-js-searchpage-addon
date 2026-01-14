@@ -67,6 +67,7 @@ export const typesenseDataTransform = (response: TypesenseSearchResultItem[]): G
 		title: getHighlightValue(item, 'post_title'),
 		summary: getHighlightValue(item, 'post_excerpt'),
 		subtitle: item.document.origin_site || '',
+		ariaLabel: item.document.post_excerpt || '',
 		image: item.document.thumbnail?.replaceAll('/wp/', '/'),
 		altText: item.document.thumbnail_alt || '',
 		url: item.document.permalink || '',
@@ -81,7 +82,7 @@ export function typesenseParamTransform(
 	params: GenericSearchQueryParams,
 	config?: SearchConfig,
 ): TypesenseNativeQueryParams {
-	let facet_by: string | undefined ;
+	let facet_by: string | undefined;
 	if (config?.facetingEnabled && config?.facets) {
 		const enabledFacets = config.facets.filter((f) => f.enabled).map((f) => f.attribute);
 		if (enabledFacets.length > 0) {
@@ -90,7 +91,7 @@ export function typesenseParamTransform(
 	}
 
 	//Transform facetFilters to Typesense filter_by syntax
-	let filter_by: string | undefined ;
+	let filter_by: string | undefined;
 	if (params.facetFilters && Array.isArray(params.facetFilters) && params.facetFilters.length > 0) {
 		const andFilters = params.facetFilters.map((andGroup) => {
 			const andClauses = andGroup.map((filter) => {
