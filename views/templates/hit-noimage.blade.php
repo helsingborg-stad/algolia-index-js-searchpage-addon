@@ -10,6 +10,7 @@
     "content"   => "{SEARCH_JS_HIT_EXCERPT}",
     "link"      => "{SEARCH_JS_HIT_LINK}",
     "classList" => ['c-card--size-md'],
+    "attributeList" => ['aria-label' => "{SEARCH_JS_HIT_ARIA_LABEL}"]
   ])
   @endcard
 @endelement

@@ -86,7 +86,8 @@ export const HtmlRenderFactory = (params: GenericSearchQueryParams): HtmlRenderS
 				.replaceAll('{SEARCH_JS_HIT_EXCERPT}', item.summary)
 				.replaceAll('{SEARCH_JS_HIT_IMAGE_URL}', item.image ?? '')
 				.replaceAll('{SEARCH_JS_HIT_IMAGE_ALT}', item.altText)
-				.replaceAll('{SEARCH_JS_HIT_LINK}', item.url),
+				.replaceAll('{SEARCH_JS_HIT_LINK}', item.url)
+				.replaceAll('{SEARCH_JS_HIT_ARIA_LABEL}', item.ariaLabel),
 		(): string => templateNoResults,
 		({ totalHits, query }: GenericSearchResult): string =>
 			templateStats

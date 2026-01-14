@@ -20,6 +20,7 @@ export interface GenericSearchResultItem {
 	title: string;
 	subtitle: string;
 	summary: string;
+	ariaLabel: string;
 	image?: string;
 	altText: string;
 	url: string;
@@ -81,6 +82,7 @@ export interface WPPost {
 	uuid?: string;
 	embedding?: number[];
 	id?: string;
+	_highlightResult?: Record<string, any>;
 }
 
 export interface SearchService {

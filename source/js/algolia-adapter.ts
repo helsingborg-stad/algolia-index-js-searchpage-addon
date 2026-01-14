@@ -55,6 +55,7 @@ export const algoliaDataTransform = (response: AlgoliaSearchResultItem[]): Gener
 		title: getHighlightValue(item, 'post_title'),
 		summary: getHighlightValue(item, 'post_excerpt'),
 		subtitle: item.origin_site || '',
+		ariaLabel: item.post_excerpt || '',
 		image: item.thumbnail?.replaceAll('/wp/', '/'),
 		altText: item.thumbnail_alt || '',
 		url: item.permalink || '',
